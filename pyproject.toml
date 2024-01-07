@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "proj"
-version = "0.4.0"
+version = "0.0.0"
 description = ""
 authors = ["andrey <aa.voyko@mail.ru>"]
 readme = "README.md"
@@ -13,6 +13,14 @@ python = "^3.11"
 pre-commit = "^3.5.0"
 commitizen = "^3.12.0"
 
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+tag_format = "$version"
+version_scheme = "pep440"
+version_provider = "poetry"
+update_changelog_on_bump = true
+major_version_zero = true
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
