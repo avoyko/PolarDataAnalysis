@@ -1,2 +1,4 @@
 bld
 .vscode/
+build
+.cache
