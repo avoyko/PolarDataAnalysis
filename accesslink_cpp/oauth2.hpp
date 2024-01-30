@@ -1,14 +1,22 @@
-#include <boost/format/format_fwd.hpp>
-#include <iterator>
-#include <string>
-#include "cpr/error.h"
-#include "cpr/parameters.h"
-#include "utils.hpp"
-#include "cpr/cpr.h"
-#include "cpr/response.h"
-#include "boost/format.hpp"
+#pragma once
 
+#include <boost/format/format_fwd.hpp>
+#include <cstdint>
+#include <iterator>
+#include <nlohmann/json_fwd.hpp>
+#include <string>
+#include <cpr/error.h>
+#include <cpr/parameters.h>
+#include "utils.hpp"
+#include <cpr/cpr.h>
+#include <cpr/response.h>
+#include <nlohmann/json.hpp>
+#include <boost/format.hpp>
+#include <variant>
+
+using json = nlohmann::json;
 using cpr::Response;
+using ParsedResponse = std::variant<std::string, json>;
 
 class OAuth2Client {
 public:
@@ -34,7 +42,9 @@ public:
 
     Kwargs __build_request(Kwargs &kw);
 
-    std::string parse_response(Response &response) {
+    ParsedResponse parse_response(Response &response) {
+
+        ParsedResponse answer{std::string()};
 
         if (response.status_code >= 400) {
             boost::format fmt =
@@ -44,18 +54,20 @@ public:
         }
 
         if (response.status_code == 204) {
-            return "";  /// not sure, need details
+            return answer;  /// not sure, need details
         }
 
         try {
-            ///here will be returned a JSON object - need to work on it
-        } catch (...) {          ///actually in python they catch value-error, i didnt find it:-)
-            return response.text;
+            json response_json = json::parse(response.text);
+            answer.emplace<1>(response_json);
+            return answer;
+        } catch (...) {  /// actually in python they catch value-error, i didnt find it:-)
+            answer.emplace<0>(response.text);
+            return answer;
         }
-        return "";
     };
 
-    auto __request( std::string method, Kwargs &kw) {
+    auto __request(std::string method, Kwargs &kw) {
         kw = __build_request(kw);
         Response response;
         method = "";  // must be something with request i guess
