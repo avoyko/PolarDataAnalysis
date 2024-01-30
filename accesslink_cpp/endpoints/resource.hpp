@@ -7,7 +7,6 @@
 #include "../oauth2.hpp"
 #include "string"
 #include "unordered_map"
-using Headers = std::unordered_map<std::string, std::string>;
 
 class Resource {
 public:

@@ -5,39 +5,62 @@
 #include <string>
 #include <utility>
 
-using KeyValue = std::pair<const std::string, std::string>;
+class Parameters {
 
-class Kwargs {
+    using KeyValue = std::pair<const std::string, std::string>;
+
 public:
-    Kwargs() = default;
+    Parameters() = default;
 
-    Kwargs(std::initializer_list<KeyValue> & lst) : mp_(lst){};
+    Parameters(const std::initializer_list<KeyValue>& lst) : mp_(lst){};
 
-    auto operator=(const Kwargs& other){
+    auto operator=(const Parameters& other) {
         mp_ = other.mp_;
         return *this;
     }
 
+    auto operator[](const std::string& key) {
+        return mp_[key];
+    }
 
     bool Contains(const std::string& key) {
         return mp_.find(key) != mp_.end();
     }
 
-    bool Erase(const std::string& key){
-        if (mp_.find(key) == mp_.end()){
+    bool Erase(const std::string& key) {
+        if (mp_.find(key) == mp_.end()) {
             return false;
         }
         mp_.erase(key);
         return true;
     }
 
-    Kwargs& Add(KeyValue field){
+    bool IsNone(const std::string& key) {
+        return mp_[key].empty();
+    }
+
+    Parameters& Add(KeyValue field) {
         mp_.insert(field);
         return *this;
     }
 
-    ~Kwargs() = default;
+    std::string UrlEncode() {
+        std::string urlcode;
+        for (auto each : mp_) {
+            urlcode += each.first + "=" + each.second + "&";
+        }
+        urlcode.pop_back();
+        return urlcode;
+    }
+
+    ~Parameters() = default;
 
 private:
     std::unordered_map<std::string, std::string> mp_;
+};
+
+/// handfull wrapper of boost::format
+class Formatter {
+public:
+private:
 };
