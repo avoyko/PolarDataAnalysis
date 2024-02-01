@@ -1,26 +1,35 @@
 #pragma once
 
 #include <cpr/cpr.h>
+#include <cstddef>
+#include <initializer_list>
 #include <nlohmann/json.hpp>
 #include <boost/format.hpp>
 #include <utility>
+#include "cpr/parameters.h"
 
-class Parameters {
+class QueryArgs {
 
     using KeyValue = std::pair<const std::string, std::string>;
 
 public:
-    Parameters() = default;
+    QueryArgs() = default;
 
-    Parameters(const std::initializer_list<KeyValue>& lst) : mp_(lst){};
+    QueryArgs(const std::initializer_list<KeyValue>& lst) : mp_(lst){};
 
-    auto operator=(const Parameters& other) {
+    auto operator=(const QueryArgs& other) {
         mp_ = other.mp_;
         return *this;
     }
+    
 
     auto operator[](const std::string& key) {
         return mp_[key];
+    }
+
+    QueryArgs& Add(KeyValue field) {
+        mp_.insert(field);
+        return *this;
     }
 
     bool Contains(const std::string& key) {
@@ -39,9 +48,12 @@ public:
         return mp_[key].empty();
     }
 
-    Parameters& Add(KeyValue field) {
-        mp_.insert(field);
-        return *this;
+    cpr::Parameters ConvertToCpr(){
+        cpr::Parameters parameters;   
+        for (auto each: mp_){
+            parameters.Add({each.first, each.second});
+        }
+        return parameters;
     }
 
     std::string UrlEncode() {
@@ -53,7 +65,7 @@ public:
         return urlcode;
     }
 
-    ~Parameters() = default;
+    ~QueryArgs() = default;
 
 private:
     std::unordered_map<std::string, std::string> mp_;

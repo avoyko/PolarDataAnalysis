@@ -1,5 +1,11 @@
 #include "oauth2.hpp"
+#include "cpr/parameters.h"
+#include "utils.hpp"
 
+/// Problems:
+
+/// 1. QueryArgs wrapper
+/// 2. ParsedResponse type
 
 Headers OAuth2Client::get_auth_headers(const std::string &access_token) {
     Headers headers{{"Authorization", "Bearer " + access_token},
@@ -9,12 +15,12 @@ Headers OAuth2Client::get_auth_headers(const std::string &access_token) {
 }
 
 std::string OAuth2Client::get_authorization_url(const std::string &response_type) {
-    Parameters params{{"client_id", client_id_}, {"response_type", response_type}};
+    QueryArgs params{{"client_id", client_id_}, {"response_type", response_type}};
     if (!redirect_url_.empty()) {
         params.Add({"redirect_uri", redirect_url_});
     }
 
-    boost::format fmt = boost::format("%1?%2") % authorization_url_ % params.UrlEncode();
+    boost::format fmt = boost::format("%1%?%2%") % authorization_url_ % params.UrlEncode();
     return fmt.str();
 }
 
@@ -22,40 +28,41 @@ std::string OAuth2Client::get_access_code(const std::string &authorization_code)
     Headers headers = {{"Content-Type", "application/x-www-form-urlencoded"},
                        {"Accept", "application/json;charset=UTF-8"}};
 
-    Body data = {R"(
+    boost::format fmt = boost::format(R"(
             {"grant_type" : "authorization_code",
-            "code" : authorization_code})"};  /// need to fix the "Unused parameter warning"
+            "code" : %1%})") %
+                        authorization_code;
+    Body data = {fmt.str()};
 
     Response response = cpr::Post(cpr::Url(access_token_url_), data, headers);
     return response.text;
 }
 
-Parameters OAuth2Client::__build_endpoint(Parameters &kw) {
-    if (kw.IsNone("endpoint")) {
-        if (!kw["endpoint"].empty()) {
-            kw["url"] = url_ + kw["endpoints"];
+QueryArgs OAuth2Client::__build_endpoint(QueryArgs &kwargs) {
+    if (kwargs.IsNone("endpoint")) {
+        if (!kwargs["endpoint"].empty()) {
+            kwargs["url"] = url_ + kwargs["endpoints"];
         }
-        kw.Erase("endpoint");
+        kwargs.Erase("endpoint");
     }
-    return kw;
+    return kwargs;
 }
 
-Headers OAuth2Client::__build_headers(Parameters &kw) {
+Headers OAuth2Client::__build_headers(QueryArgs &kwargs) {
     Headers headers;
-    if (kw.Contains("access_token")) {
-        headers = get_auth_headers(kw["access_token"]);
-        kw.Erase("access_token");
+    if (kwargs.Contains("access_token")) {
+        headers = get_auth_headers(kwargs["access_token"]);
+        kwargs.Erase("access_token");
     }
     return headers;
 }
 
-std::string OAuth2Client::__build_auth(Parameters &kw) {
-    Authentication auth = Authentication{"", "", cpr::AuthMode::BASIC};
-    if (!kw.Contains("auth")) {  /// i should store Authentication obj???
-        auth = Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC};
-        kw["auth"] = auth.GetAuthString();
+std::string OAuth2Client::__build_auth(QueryArgs &kwargs) {
+    if (!kwargs.Contains("auth")) {
+        Authentication auth = Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC};
+        kwargs["auth"] = auth.GetAuthString();
     }
-    return kw["auth"];
+    return kwargs["auth"];
 }
 
 ParsedResponse OAuth2Client::parse_response(Response &response) {
@@ -64,13 +71,13 @@ ParsedResponse OAuth2Client::parse_response(Response &response) {
 
     if (response.status_code >= 400) {
         boost::format fmt =
-            boost::format("%1 %2: %3") % response.status_code % response.reason % response.text;
+            boost::format("%1% %2%: %3%") % response.status_code % response.reason % response.text;
         std::string message = fmt.str();
         throw cpr::Error(response.status_code, std::move(message));
     }
 
     if (response.status_code == 204) {
-        return answer;  /// not sure, need details
+        return answer;
     }
 
     try {
@@ -84,26 +91,27 @@ ParsedResponse OAuth2Client::parse_response(Response &response) {
 };
 
 template <class Method>
-auto OAuth2Client::__request(Method method, Parameters &kw) {
-    kw = __build_endpoint(kw);
-    Headers headers = __build_headers(kw);
-    std::string auth_string = __build_auth(kw);  /// need to think
-    Response response = method.Request(kw);
-    return parse_response(response);
+auto OAuth2Client::__request(Method method, QueryArgs &kwargs) {
+    kwargs = __build_endpoint(kwargs);
+    Headers headers = __build_headers(kwargs);
+    std::string auth_string = __build_auth(kwargs);
+    Response response = method.Request(
+        kwargs.ConvertToCpr());  /// i think the number of args will depend on the type of request
+    return parse_response(response);  /// so it is still not the final version
 }
 
-auto OAuth2Client::get(std::string &endpoint, Parameters &kw) {
-    return __request(Get(), kw.Add({"endpoint", endpoint}));
+auto OAuth2Client::get(std::string &endpoint, QueryArgs &kwargs) {
+    return __request(Get(), kwargs.Add({"endpoint", endpoint}));
 }
 
-auto OAuth2Client::put(std::string &endpoint, Parameters &kw) {
-    return __request(Put(), kw.Add({"endpoint", endpoint}));
+auto OAuth2Client::put(std::string &endpoint, QueryArgs &kwargs) {
+    return __request(Put(), kwargs.Add({"endpoint", endpoint}));
 }
 
-auto OAuth2Client::post(std::string &endpoint, Parameters &kw) {
-    return __request(Post(), kw.Add({"endpoint", endpoint}));
+auto OAuth2Client::post(std::string &endpoint, QueryArgs &kwargs) {
+    return __request(Post(), kwargs.Add({"endpoint", endpoint}));
 }
 
-auto OAuth2Client::remove(std::string &endpoint, Parameters &kw) {
-    return __request(Delete(), kw.Add({"endpoint", endpoint}));
+auto OAuth2Client::remove(std::string &endpoint, QueryArgs &kwargs) {
+    return __request(Delete(), kwargs.Add({"endpoint", endpoint}));
 }

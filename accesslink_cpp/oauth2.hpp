@@ -29,26 +29,26 @@ public:
 
     std::string get_access_code(const std::string &authorization_code);
 
-    Parameters __build_endpoint(Parameters &kw);
+    QueryArgs __build_endpoint(QueryArgs &kw);
 
-    Headers __build_headers(Parameters &kw);
+    Headers __build_headers(QueryArgs &kw);
 
-    std::string __build_auth(Parameters &kw);
+    std::string __build_auth(QueryArgs &kw);
 
-    Parameters __build_request(Parameters &kw);
+    QueryArgs __build_request(QueryArgs &kw);
 
     ParsedResponse parse_response(Response &response);
 
     template <class Method>
-    auto __request(Method method, Parameters &kw);
+    auto __request(Method method, QueryArgs &kw);
 
-    auto get(std::string &endpoint, Parameters &kw);
+    auto get(std::string &endpoint, QueryArgs &kw);
 
-    auto put(std::string &endpoint, Parameters &kw);
+    auto put(std::string &endpoint, QueryArgs &kw);
 
-    auto post(std::string &endpoint, Parameters &kw);
+    auto post(std::string &endpoint, QueryArgs &kw);
 
-    auto remove(std::string &endpoint, Parameters &kw);
+    auto remove(std::string &endpoint, QueryArgs &kw);
     ~OAuth2Client() = default;
 
 private:
