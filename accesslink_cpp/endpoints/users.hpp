@@ -1,12 +1,9 @@
-#include <sys/types.h>
-#include <boost/uuid/random_generator.hpp>
-#include <boost/uuid/uuid.hpp>             // uuid class
-#include <boost/uuid/uuid_generators.hpp>  // generators
-#include <boost/uuid/uuid_io.hpp>          // streaming operators etc.
+#pragma once        // streaming operators etc.
 #include "resource.hpp"
 
 class Users : public Resource {
-    Users() = default;
+public:
+    Users(OAuth2Client &oauth);
 
     int record(std::string& access_token,
                boost::uuids::uuid member_id = boost::uuids::random_generator()()) {

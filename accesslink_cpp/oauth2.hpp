@@ -25,9 +25,9 @@ public:
 
     Headers get_auth_headers(const std::string &access_token);
 
-    std::string get_authorization_url(const std::string &response_type);
+    std::string get_authorization_url(const std::string response_type = "code");
 
-    std::string get_access_code(const std::string &authorization_code);
+    std::string get_access_token(const std::string &authorization_code);
 
     QueryArgs __build_endpoint(QueryArgs &kw);
 
@@ -40,15 +40,15 @@ public:
     ParsedResponse parse_response(Response &response);
 
     template <class Method>
-    auto __request(Method method, QueryArgs &kw);
+    ParsedResponse __request(Method method, QueryArgs &kw);
 
-    auto get(std::string &endpoint, QueryArgs &kw);
+    ParsedResponse get(std::string endpoint, QueryArgs kw);
 
-    auto put(std::string &endpoint, QueryArgs &kw);
+    ParsedResponse put(std::string &endpoint, QueryArgs kw);
 
-    auto post(std::string &endpoint, QueryArgs &kw);
+    ParsedResponse post(std::string &endpoint, QueryArgs kw);
 
-    auto remove(std::string &endpoint, QueryArgs &kw);
+    ParsedResponse remove(std::string &endpoint, QueryArgs kw);
     ~OAuth2Client() = default;
 
 private:

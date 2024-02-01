@@ -14,7 +14,7 @@ Headers OAuth2Client::get_auth_headers(const std::string &access_token) {
     return headers;
 }
 
-std::string OAuth2Client::get_authorization_url(const std::string &response_type) {
+std::string OAuth2Client::get_authorization_url(const std::string response_type) {
     QueryArgs params{{"client_id", client_id_}, {"response_type", response_type}};
     if (!redirect_url_.empty()) {
         params.Add({"redirect_uri", redirect_url_});
@@ -24,7 +24,7 @@ std::string OAuth2Client::get_authorization_url(const std::string &response_type
     return fmt.str();
 }
 
-std::string OAuth2Client::get_access_code(const std::string &authorization_code) {
+std::string OAuth2Client::get_access_token(const std::string &authorization_code) {
     Headers headers = {{"Content-Type", "application/x-www-form-urlencoded"},
                        {"Accept", "application/json;charset=UTF-8"}};
 
@@ -91,7 +91,7 @@ ParsedResponse OAuth2Client::parse_response(Response &response) {
 };
 
 template <class Method>
-auto OAuth2Client::__request(Method method, QueryArgs &kwargs) {
+ParsedResponse OAuth2Client::__request(Method method, QueryArgs &kwargs) {
     kwargs = __build_endpoint(kwargs);
     Headers headers = __build_headers(kwargs);
     std::string auth_string = __build_auth(kwargs);
@@ -100,18 +100,18 @@ auto OAuth2Client::__request(Method method, QueryArgs &kwargs) {
     return parse_response(response);  /// so it is still not the final version
 }
 
-auto OAuth2Client::get(std::string &endpoint, QueryArgs &kwargs) {
+ParsedResponse OAuth2Client::get(std::string endpoint, QueryArgs kwargs) {
     return __request(Get(), kwargs.Add({"endpoint", endpoint}));
 }
 
-auto OAuth2Client::put(std::string &endpoint, QueryArgs &kwargs) {
+ParsedResponse OAuth2Client::put(std::string &endpoint, QueryArgs kwargs) {
     return __request(Put(), kwargs.Add({"endpoint", endpoint}));
 }
 
-auto OAuth2Client::post(std::string &endpoint, QueryArgs &kwargs) {
+ParsedResponse OAuth2Client::post(std::string &endpoint, QueryArgs kwargs) {
     return __request(Post(), kwargs.Add({"endpoint", endpoint}));
 }
 
-auto OAuth2Client::remove(std::string &endpoint, QueryArgs &kwargs) {
+ParsedResponse OAuth2Client::remove(std::string &endpoint, QueryArgs kwargs) {
     return __request(Delete(), kwargs.Add({"endpoint", endpoint}));
 }

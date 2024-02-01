@@ -1,15 +1,10 @@
 #pragma once
 
-#include <cpr/cpr.h>
-
-#include <utility>
-
 #include "../oauth2.hpp"
-#include "string"
-#include "unordered_map"
 
 class Resource {
 public:
+    
     Resource(const OAuth2Client &oauth) : oauth_(oauth){};
 
     template <typename... Args>
