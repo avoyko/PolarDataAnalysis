@@ -29,26 +29,26 @@ public:
 
     std::string get_access_token(const std::string &authorization_code);
 
-    QueryArgs __build_endpoint(QueryArgs &kw);
+    QueryArgs __build_endpoint(QueryArgs &kwargs);
 
-    Headers __build_headers(QueryArgs &kw);
+    Headers __build_headers(QueryArgs &kwargs);
 
-    std::string __build_auth(QueryArgs &kw);
+    std::string __build_auth(QueryArgs &kwargs);
 
-    QueryArgs __build_request(QueryArgs &kw);
+    QueryArgs __build_request(QueryArgs &kwargs);
 
     ParsedResponse parse_response(Response &response);
 
     template <class Method>
-    ParsedResponse __request(Method method, QueryArgs &kw);
+    ParsedResponse __request(Method method, QueryArgs &kwargs);
 
-    ParsedResponse get(std::string endpoint, QueryArgs kw);
+    ParsedResponse get(std::string endpoint, QueryArgs kwargs);
 
-    ParsedResponse put(std::string &endpoint, QueryArgs kw);
+    ParsedResponse put(std::string &endpoint, QueryArgs kwargs);
 
-    ParsedResponse post(std::string &endpoint, QueryArgs kw);
+    ParsedResponse post(std::string &endpoint, QueryArgs kwargs);
 
-    ParsedResponse remove(std::string &endpoint, QueryArgs kw);
+    ParsedResponse remove(std::string &endpoint, QueryArgs kwargs);
     ~OAuth2Client() = default;
 
 private:
