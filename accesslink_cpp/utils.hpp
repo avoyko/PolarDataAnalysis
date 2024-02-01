@@ -65,7 +65,7 @@ public:
     BaseHTTP() = default;
     template <typename... Args>
     cpr::Response Request(Args&&... args) {
-        return static_cast<Method*>(this)->Request(std::forward(args...));
+        return static_cast<Method*>(this)->RequestImpl(std::forward(args...));
     }
     ~BaseHTTP() = default;
 };
@@ -74,7 +74,7 @@ class Get : public BaseHTTP<Get> {
 public:
     Get() = default;
     template <typename... Args>
-    cpr::Response Request(Args&&... args) {
+    cpr::Response RequestImpl(Args&&... args) {
         return cpr::Get(std::forward(args...));
     }
 };
@@ -83,7 +83,7 @@ class Post : public BaseHTTP<Get> {
 public:
     Post() = default;
     template <typename... Args>
-    cpr::Response Request(Args&&... args) {
+    cpr::Response RequestImpl(Args&&... args) {
         return cpr::Post(std::forward(args...));
     }
 };
@@ -92,7 +92,7 @@ class Put : public BaseHTTP<Get> {
 public:
     Put() = default;
     template <typename... Args>
-    cpr::Response Request(Args&&... args) {
+    cpr::Response RequestImpl(Args&&... args) {
         return cpr::Put(std::forward(args...));
     }
 };
@@ -101,7 +101,7 @@ class Delete : public BaseHTTP<Get> {
 public:
     Delete() = default;
     template <typename... Args>
-    cpr::Response Request(Args&&... args) {
+    cpr::Response RequestImpl(Args&&... args) {
         return cpr::Delete(std::forward(args...));
     }
 };
