@@ -1,3 +1,6 @@
 [submodule "cpr"]
 	path = cpr
 	url = https://github.com/libcpr/cpr
+[submodule "oatpp"]
+	path = oatpp
+	url = https://github.com/oatpp/oatpp

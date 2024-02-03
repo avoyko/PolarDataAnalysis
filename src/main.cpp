@@ -1,6 +1,3 @@
-#include "endpoints/resource.hpp"
-
-
 int main(){
-
+    return 0;
 }
