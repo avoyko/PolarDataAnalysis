@@ -25,7 +25,6 @@ public:
         mp_ = other.mp_;
         return *this;
     }
-    
 
     auto operator[](const std::string& key) {
         return mp_[key];
@@ -52,9 +51,9 @@ public:
         return mp_[key].empty();
     }
 
-    cpr::Parameters ConvertToCpr(){
-        cpr::Parameters parameters;   
-        for (auto each: mp_){
+    cpr::Parameters ConvertToCpr() {
+        cpr::Parameters parameters;
+        for (auto each : mp_) {
             parameters.Add({each.first, each.second});
         }
         return parameters;
@@ -81,7 +80,7 @@ public:
     BaseHTTP() = default;
     template <typename... Args>
     cpr::Response Request(Args&&... args) {
-        return static_cast<Method*>(this)->RequestImpl(std::forward(args...));
+        return static_cast<Method*>(this)->RequestImpl(std::forward<Args>(args)...);
     }
     ~BaseHTTP() = default;
 };
@@ -91,7 +90,7 @@ public:
     Get() = default;
     template <typename... Args>
     cpr::Response RequestImpl(Args&&... args) {
-        return cpr::Get(std::forward(args...));
+        return cpr::Get(std::forward<Args>(args)...);
     }
 };
 
@@ -100,7 +99,7 @@ public:
     Post() = default;
     template <typename... Args>
     cpr::Response RequestImpl(Args&&... args) {
-        return cpr::Post(std::forward(args...));
+        return cpr::Post(std::forward<Args>(args)...);
     }
 };
 
@@ -109,7 +108,7 @@ public:
     Put() = default;
     template <typename... Args>
     cpr::Response RequestImpl(Args&&... args) {
-        return cpr::Put(std::forward(args...));
+        return cpr::Put(std::forward<Args>(args)...);
     }
 };
 
@@ -118,6 +117,6 @@ public:
     Delete() = default;
     template <typename... Args>
     cpr::Response RequestImpl(Args&&... args) {
-        return cpr::Delete(std::forward(args...));
+        return cpr::Delete(std::forward<Args>(args)...);
     }
 };
