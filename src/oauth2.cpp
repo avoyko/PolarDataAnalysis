@@ -2,6 +2,8 @@
 #include "cpr/parameters.h"
 #include "utils.hpp"
 
+#include <optional>
+
 /// Problems:
 
 /// 1. QueryArgs wrapper
@@ -65,7 +67,7 @@ std::string OAuth2Client::__build_auth(QueryArgs &kwargs) {
     return kwargs["auth"];
 }
 
-ParsedResponse OAuth2Client::parse_response(Response &response) {
+std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
 
     ParsedResponse answer{std::string()};
 
@@ -77,7 +79,7 @@ ParsedResponse OAuth2Client::parse_response(Response &response) {
     }
 
     if (response.status_code == 204) {
-        return answer;
+        return std::nullopt;
     }
 
     try {
@@ -91,7 +93,7 @@ ParsedResponse OAuth2Client::parse_response(Response &response) {
 };
 
 template <class Method>
-ParsedResponse OAuth2Client::__request(Method method, QueryArgs &kwargs) {
+std::optional<ParsedResponse> OAuth2Client::__request(Method method, QueryArgs &kwargs) {
     kwargs = __build_endpoint(kwargs);
     Headers headers = __build_headers(kwargs);
     std::string auth_string = __build_auth(kwargs);
@@ -100,18 +102,18 @@ ParsedResponse OAuth2Client::__request(Method method, QueryArgs &kwargs) {
     return parse_response(response);  /// so it is still not the final version
 }
 
-ParsedResponse OAuth2Client::get(std::string endpoint, QueryArgs kwargs) {
+std::optional<ParsedResponse> OAuth2Client::get(std::string endpoint, QueryArgs kwargs) {
     return __request(Get(), kwargs.Add({"endpoint", endpoint}));
 }
 
-ParsedResponse OAuth2Client::put(std::string &endpoint, QueryArgs kwargs) {
+std::optional<ParsedResponse> OAuth2Client::put(std::string &endpoint, QueryArgs kwargs) {
     return __request(Put(), kwargs.Add({"endpoint", endpoint}));
 }
 
-ParsedResponse OAuth2Client::post(std::string &endpoint, QueryArgs kwargs) {
+std::optional<ParsedResponse> OAuth2Client::post(std::string &endpoint, QueryArgs kwargs) {
     return __request(Post(), kwargs.Add({"endpoint", endpoint}));
 }
 
-ParsedResponse OAuth2Client::remove(std::string &endpoint, QueryArgs kwargs) {
+std::optional<ParsedResponse> OAuth2Client::remove(std::string &endpoint, QueryArgs kwargs) {
     return __request(Delete(), kwargs.Add({"endpoint", endpoint}));
 }

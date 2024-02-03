@@ -1,6 +1,5 @@
 #pragma once
 
-
 #include "utils.hpp"
 
 using json = nlohmann::json;
@@ -9,7 +8,6 @@ using Response = cpr::Response;
 using Headers = cpr::Header;
 using Body = cpr::Body;
 using ParsedResponse = std::variant<std::string, json>;
-
 
 class OAuth2Client {
 public:
@@ -37,18 +35,18 @@ public:
 
     QueryArgs __build_request(QueryArgs &kwargs);
 
-    ParsedResponse parse_response(Response &response);
+    std::optional<ParsedResponse> parse_response(Response &response);
 
     template <class Method>
-    ParsedResponse __request(Method method, QueryArgs &kwargs);
+    std::optional<ParsedResponse> __request(Method method, QueryArgs &kwargs);
 
-    ParsedResponse get(std::string endpoint, QueryArgs kwargs);
+    std::optional<ParsedResponse> get(std::string endpoint, QueryArgs kwargs);
 
-    ParsedResponse put(std::string &endpoint, QueryArgs kwargs);
+    std::optional<ParsedResponse> put(std::string &endpoint, QueryArgs kwargs);
 
-    ParsedResponse post(std::string &endpoint, QueryArgs kwargs);
+    std::optional<ParsedResponse> post(std::string &endpoint, QueryArgs kwargs);
 
-    ParsedResponse remove(std::string &endpoint, QueryArgs kwargs);
+    std::optional<ParsedResponse> remove(std::string &endpoint, QueryArgs kwargs);
     ~OAuth2Client() = default;
 
 private:
