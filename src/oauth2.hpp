@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utils.hpp"
+#include "utilities.hpp"
 
 using json = nlohmann::json;
 using ParsedResponse = std::variant<std::string, json>;
