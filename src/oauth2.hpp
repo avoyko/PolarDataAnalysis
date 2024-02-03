@@ -3,11 +3,11 @@
 #include "utils.hpp"
 
 using json = nlohmann::json;
+using ParsedResponse = std::variant<std::string, json>;
 using Authentication = cpr::Authentication;
 using Response = cpr::Response;
 using Headers = cpr::Header;
 using Body = cpr::Body;
-using ParsedResponse = std::variant<std::string, json>;
 
 class OAuth2Client {
 public:
