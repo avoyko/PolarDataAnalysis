@@ -8,22 +8,22 @@ public:
     Resource(const OAuth2Client &oauth) : oauth_(oauth){};
 
     template <typename... Args>
-    int _get(Args &&...args) {
+    std::optional<ParsedResponse> _get(Args &&...args) {
         return oauth_.get(std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    int _post(Args &&...args) {
+    std::optional<ParsedResponse> _post(Args &&...args) {
         return oauth_.post(std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    int _put(Args &&...args) {
+    std::optional<ParsedResponse> _put(Args&&...args) {
         return oauth_.put(std::forward<Args>(args)...);
     }
 
     template <typename... Args>
-    int _delete(Args &&...args) {
+    std::optional<ParsedResponse> _delete(Args &&...args) {
         return oauth_.remove(std::forward<Args>(args)...);
     }
 

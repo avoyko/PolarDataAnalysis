@@ -32,7 +32,7 @@ int main() {
     crow::SimpleApp app;
 
     CROW_ROUTE(app, "/")
-    ([](crow::response response) {
+    ([](crow::response &response) {
         CROW_LOG_INFO << "Client is redirected for authorization";
         return response.redirect(Callback::OAUTHPOINT);
     });

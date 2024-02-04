@@ -2,3 +2,4 @@ bld
 .vscode/
 build
 .cache
+cmake-build-debug

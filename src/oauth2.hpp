@@ -33,8 +33,6 @@ public:
 
     std::string __build_auth(QueryArgs &kwargs);
 
-    QueryArgs __build_request(QueryArgs &kwargs);
-
     std::optional<ParsedResponse> parse_response(Response &response);
 
     template <class Method>
@@ -48,6 +46,8 @@ public:
 
     std::optional<ParsedResponse> remove(std::string &endpoint, QueryArgs kwargs);
     ~OAuth2Client() = default;
+
+    ///how about creating wrapper of request args???
 
 private:
     const std::string url_;

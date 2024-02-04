@@ -12,6 +12,11 @@
 #include <boost/uuid/uuid_generators.hpp>  // generators
 #include <boost/uuid/uuid_io.hpp>          // streaming operators etc.
 
+
+namespace Utils{
+std::string EMPTY_ENDPOINT = "";
+}
+
 class QueryArgs {
 
     using KeyValue = std::pair<const std::string, std::string>;
