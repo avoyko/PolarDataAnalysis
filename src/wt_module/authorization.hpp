@@ -17,7 +17,7 @@ namespace Client{
     const std::string REDIRECT_URI = "http://localhost:5002/oauth2_callback";
 };
 
-std::string authorize();
+void authorize();
 
 void shutdown();
 
