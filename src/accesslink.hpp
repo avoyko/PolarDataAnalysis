@@ -33,9 +33,10 @@ public:
 
     std::optional<ParsedResponse> get_recharge(const std::string &access_token);
 
-    std::optional<ParsedResponse> get_userdata(const std::string &access_token, const std::string &user_id);
+    std::optional<ParsedResponse> get_userdata(const std::string &access_token,
+                                               const std::string &user_id);
 
-    int register_user(const std::string &access_token);
+    std::optional<ParsedResponse> register_user(const std::string &access_token);
 
 private:
     OAuth2Client oauth_;

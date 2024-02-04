@@ -1,5 +1,6 @@
 find_package(cpr)
 include(sources.cmake)
 target_include_directories(sources_files PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-add_executable(application wt_module/authorization.cpp)
-target_link_libraries(application cpr libs)
+target_link_libraries(sources_files cpr)
+add_executable(application authorization/authorization.cpp)
+target_link_libraries(application cpr sources_files)

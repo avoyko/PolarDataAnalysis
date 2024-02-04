@@ -1,4 +1,5 @@
 #include "oauth2.hpp"
+
 #include <optional>
 
 /// Problems:
@@ -37,8 +38,7 @@ json OAuth2Client::get_access_token(const std::string &authorization_code) {
     return json::parse(response.text);
 }
 
-
-QueryArgs OAuth2Client::__build_endpoint(QueryArgs &kwargs) {
+QueryArgs OAuth2Client::_build_endpoint(QueryArgs &kwargs) {
     if (kwargs.IsNone("endpoint")) {
         if (!kwargs["endpoint"].empty()) {
             kwargs["url"] = url_ + kwargs["endpoints"];
@@ -48,7 +48,7 @@ QueryArgs OAuth2Client::__build_endpoint(QueryArgs &kwargs) {
     return kwargs;
 }
 
-Headers OAuth2Client::__build_headers(QueryArgs &kwargs) {
+Headers OAuth2Client::_build_headers(QueryArgs &kwargs) {
     Headers headers;
     if (kwargs.Contains("access_token")) {
         headers = get_auth_headers(kwargs["access_token"]);
@@ -57,7 +57,7 @@ Headers OAuth2Client::__build_headers(QueryArgs &kwargs) {
     return headers;
 }
 
-std::string OAuth2Client::__build_auth(QueryArgs &kwargs) {
+std::string OAuth2Client::_build_auth(QueryArgs &kwargs) {
     if (!kwargs.Contains("auth")) {
         Authentication auth = Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC};
         kwargs["auth"] = auth.GetAuthString();
@@ -91,27 +91,27 @@ std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
 };
 
 template <class Method>
-std::optional<ParsedResponse> OAuth2Client::__request(Method method, QueryArgs &kwargs) {
-    kwargs = __build_endpoint(kwargs);
-    Headers headers = __build_headers(kwargs);
-    std::string auth_string = __build_auth(kwargs);
+std::optional<ParsedResponse> OAuth2Client::_request(Method method, QueryArgs &kwargs) {
+    kwargs = _build_endpoint(kwargs);
+    Headers headers = _build_headers(kwargs);
+    std::string auth_string = _build_auth(kwargs);
     Response response = method.Request(
         kwargs.ConvertToCpr());  /// i think the number of args will depend on the type of request
     return parse_response(response);  /// so it is still not the final version
 }
 
 std::optional<ParsedResponse> OAuth2Client::get(std::string endpoint, QueryArgs kwargs) {
-    return __request(Get(), kwargs.Add({"endpoint", endpoint}));
+    return _request(Get(), kwargs.Add({"endpoint", endpoint}));
 }
 
 std::optional<ParsedResponse> OAuth2Client::put(std::string &endpoint, QueryArgs kwargs) {
-    return __request(Put(), kwargs.Add({"endpoint", endpoint}));
+    return _request(Put(), kwargs.Add({"endpoint", endpoint}));
 }
 
 std::optional<ParsedResponse> OAuth2Client::post(std::string &endpoint, QueryArgs kwargs) {
-    return __request(Post(), kwargs.Add({"endpoint", endpoint}));
+    return _request(Post(), kwargs.Add({"endpoint", endpoint}));
 }
 
 std::optional<ParsedResponse> OAuth2Client::remove(std::string &endpoint, QueryArgs kwargs) {
-    return __request(Delete(), kwargs.Add({"endpoint", endpoint}));
+    return _request(Delete(), kwargs.Add({"endpoint", endpoint}));
 }

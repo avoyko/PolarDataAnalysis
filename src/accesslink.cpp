@@ -25,6 +25,6 @@ std::optional<ParsedResponse> AccessLink::get_userdata(const std::string &access
     return oauth_.get("/users/" + user_id, {{"access_token", access_token}});
 }
 
-int AccessLink::register_user(const std::string &access_token) {
+std::optional<ParsedResponse> AccessLink::register_user(const std::string &access_token) {
     return users_.record(access_token);
 }

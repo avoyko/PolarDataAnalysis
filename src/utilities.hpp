@@ -1,6 +1,6 @@
 #pragma once
 
-#include <cpr/cpr.h>
+#include "cpr/cpr.h"
 #include <cstddef>
 #include <initializer_list>
 #include <nlohmann/json.hpp>
@@ -12,29 +12,23 @@
 #include <boost/uuid/uuid_generators.hpp>  // generators
 #include <boost/uuid/uuid_io.hpp>          // streaming operators etc.
 
-namespace Utils {
-std::string EMPTY_ENDPOINT = "";
-}
-
 class QueryArgs {
-
     using KeyValue = std::pair<const std::string, std::string>;
 
 public:
     QueryArgs() = default;
 
+    ~QueryArgs() = default;
+
     QueryArgs(const std::initializer_list<KeyValue>& lst) : mp_(lst){};
 
-    auto operator=(const QueryArgs& other) {
-        mp_ = other.mp_;
-        return *this;
-    }
+    QueryArgs& operator=(const QueryArgs& other) = default;
 
     auto operator[](const std::string& key) {
         return mp_[key];
     }
 
-    QueryArgs& Add(KeyValue field) {
+    QueryArgs& Add(const KeyValue& field) {
         mp_.insert(field);
         return *this;
     }
@@ -57,7 +51,7 @@ public:
 
     cpr::Parameters ConvertToCpr() {
         cpr::Parameters parameters;
-        for (auto each : mp_) {
+        for (const auto& each : mp_) {
             parameters.Add({each.first, each.second});
         }
         return parameters;
@@ -65,14 +59,12 @@ public:
 
     std::string UrlEncode() {
         std::string urlcode;
-        for (auto each : mp_) {
+        for (const auto& each : mp_) {
             urlcode += each.first + "=" + each.second + "&";
         }
         urlcode.pop_back();
         return urlcode;
     }
-
-    ~QueryArgs() = default;
 
 private:
     std::unordered_map<std::string, std::string> mp_;
@@ -89,7 +81,7 @@ public:
     ~BaseHTTP() = default;
 };
 
-class Get : public BaseHTTP<Get> {
+class Get {
 public:
     Get() = default;
     template <typename... Args>
@@ -98,7 +90,7 @@ public:
     }
 };
 
-class Post : public BaseHTTP<Get> {
+class Post {
 public:
     Post() = default;
     template <typename... Args>
@@ -107,7 +99,7 @@ public:
     }
 };
 
-class Put : public BaseHTTP<Get> {
+class Put {
 public:
     Put() = default;
     template <typename... Args>
@@ -116,7 +108,7 @@ public:
     }
 };
 
-class Delete : public BaseHTTP<Get> {
+class Delete {
 public:
     Delete() = default;
     template <typename... Args>
