@@ -25,7 +25,7 @@ public:
 
     std::string get_auth_url();
 
-    std::string get_access_token(const std::string &authorization_code);
+    json get_access_token(const std::string &authorization_code);
 
     std::optional<ParsedResponse> get_exercises(const std::string &access_token);
 
@@ -34,6 +34,8 @@ public:
     std::optional<ParsedResponse> get_recharge(const std::string &access_token);
 
     std::optional<ParsedResponse> get_userdata(const std::string &access_token, const std::string &user_id);
+
+    int register_user(const std::string &access_token);
 
 private:
     OAuth2Client oauth_;
