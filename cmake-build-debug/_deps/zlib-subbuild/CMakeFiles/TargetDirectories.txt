@@ -1,0 +1,3 @@
+/Users/nikitaglebskij/GarminApp/cmake-build-debug/_deps/zlib-subbuild/CMakeFiles/zlib-populate.dir
+/Users/nikitaglebskij/GarminApp/cmake-build-debug/_deps/zlib-subbuild/CMakeFiles/edit_cache.dir
+/Users/nikitaglebskij/GarminApp/cmake-build-debug/_deps/zlib-subbuild/CMakeFiles/rebuild_cache.dir

@@ -1,6 +1,4 @@
 find_package(cpr)
-find_package(oatpp)
-add_executable(build main.cpp)
+add_executable(app wt_module/authorization.cpp)
+target_link_libraries(app cpr)
 
-target_link_libraries(build cpr)
-target_link_libraries(build oatpp)

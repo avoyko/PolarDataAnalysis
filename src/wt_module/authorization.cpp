@@ -5,9 +5,10 @@
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
-void shutdown(crow::SimpleApp &app) {
+int shutdown(crow::SimpleApp &app) {
     CROW_LOG_INFO << "Server is shutting down";
     app.stop();
+    return 0;
 }
 
 void authorize() {
