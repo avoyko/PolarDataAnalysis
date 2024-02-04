@@ -5,7 +5,7 @@ class Users : public Resource {
 public:
     Users(OAuth2Client &oauth);
 
-    int record(std::string& access_token,
+    int record(const std::string& access_token,
                boost::uuids::uuid member_id = boost::uuids::random_generator()()) {
 
         return _post("/users", access_token,

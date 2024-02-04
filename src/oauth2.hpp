@@ -25,7 +25,7 @@ public:
 
     std::string get_authorization_url(const std::string response_type = "code");
 
-    std::string get_access_token(const std::string &authorization_code);
+    json get_access_token(const std::string &authorization_code);
 
     QueryArgs __build_endpoint(QueryArgs &kwargs);
 

@@ -23,7 +23,7 @@ std::string OAuth2Client::get_authorization_url(const std::string response_type)
     return fmt.str();
 }
 
-std::string OAuth2Client::get_access_token(const std::string &authorization_code) {
+json OAuth2Client::get_access_token(const std::string &authorization_code) {
     Headers headers = {{"Content-Type", "application/x-www-form-urlencoded"},
                        {"Accept", "application/json;charset=UTF-8"}};
 
@@ -34,8 +34,9 @@ std::string OAuth2Client::get_access_token(const std::string &authorization_code
     Body data = {fmt.str()};
 
     Response response = cpr::Post(cpr::Url(access_token_url_), data, headers);
-    return response.text;
+    return json::parse(response.text);
 }
+
 
 QueryArgs OAuth2Client::__build_endpoint(QueryArgs &kwargs) {
     if (kwargs.IsNone("endpoint")) {
