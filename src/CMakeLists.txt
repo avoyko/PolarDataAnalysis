@@ -1,12 +1,5 @@
 find_package(cpr)
-find_package(oatpp)
-add_executable(build main.cpp
-        utilities.hpp
-        oauth2.hpp
-        oauth2.cpp
-        accesslink.hpp
-        accesslink.cpp
-        wt_module/authorization.cpp)
-
-target_link_libraries(build cpr)
-target_link_libraries(build oatpp)
+include(sources.cmake)
+target_include_directories(sources_files PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+add_executable(application wt_module/authorization.cpp)
+target_link_libraries(application cpr libs)

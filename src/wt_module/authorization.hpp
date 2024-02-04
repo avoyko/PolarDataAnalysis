@@ -19,6 +19,6 @@ const std::string REDIRECT_URI = "http://localhost:5002/oauth2_callback";
 
 void authorize();
 
-void shutdown(crow::SimpleApp &app);
+int shutdown(crow::SimpleApp &app);
 
 

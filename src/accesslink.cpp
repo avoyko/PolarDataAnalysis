@@ -1,4 +1,3 @@
-
 #include "accesslink.hpp"
 
 std::string AccessLink::get_auth_url() {

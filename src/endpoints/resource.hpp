@@ -4,8 +4,7 @@
 
 class Resource {
 public:
-    
-    Resource(const OAuth2Client &oauth) : oauth_(oauth){};
+    explicit Resource(const OAuth2Client &oauth) : oauth_(oauth){};
 
     template <typename... Args>
     std::optional<ParsedResponse> _get(Args &&...args) {
@@ -18,7 +17,7 @@ public:
     }
 
     template <typename... Args>
-    std::optional<ParsedResponse> _put(Args&&...args) {
+    std::optional<ParsedResponse> _put(Args &&...args) {
         return oauth_.put(std::forward<Args>(args)...);
     }
 
