@@ -3,3 +3,5 @@ bld
 build
 .cache
 cmake-build-debug
+.idea
+.DS_Store
