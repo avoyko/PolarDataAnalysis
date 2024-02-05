@@ -1,8 +1,25 @@
-//
-// Created by a on 05.02.24.
-//
+#pragma once
 
-#ifndef COURSEWORK_REQUEST_H
-#define COURSEWORK_REQUEST_H
+#include "utilities.hpp"
 
-#endif  // COURSEWORK_REQUEST_H
+class Request {
+public:
+    Request() = default;
+    Request(std::string_view endpoint, QueryArgs& query_args, Headers& headers)
+        : endpoint_(endpoint), parameters_(query_args), headers_(headers){};
+
+    ~Request() = default;
+
+    void AddHeader(const std::string& header, const std::string& value) {
+        headers_[header] = value;
+    }
+
+    std::string& GetHeaderValue(const std::string& header) {
+        return headers_[header];
+    }
+
+private:
+    std::string endpoint_;
+    QueryArgs parameters_;
+    Headers headers_;
+};
