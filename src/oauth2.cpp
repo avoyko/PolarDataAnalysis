@@ -8,13 +8,14 @@
 
 Headers OAuth2Client::get_auth_headers(const std::string &access_token) {
     Headers headers{{"Authorization", "Bearer " + access_token},
-                    {"Content-Type", "application/json"},
-                    {"Accept", "application/json"}};
+                    {"Content-Type",  "application/json"},
+                    {"Accept",        "application/json"}};
     return headers;
 }
 
 std::string OAuth2Client::get_authorization_url(const std::string response_type) {
-    QueryArgs params{{"client_id", client_id_}, {"response_type", response_type}};
+    QueryArgs params{{"client_id",     client_id_},
+                     {"response_type", response_type}};
     if (!redirect_url_.empty()) {
         params.Add({"redirect_uri", redirect_url_});
     }
@@ -25,7 +26,7 @@ std::string OAuth2Client::get_authorization_url(const std::string response_type)
 
 json OAuth2Client::get_access_token(const std::string &authorization_code) {
     Headers headers = {{"Content-Type", "application/x-www-form-urlencoded"},
-                       {"Accept", "application/json;charset=UTF-8"}};
+                       {"Accept",       "application/json;charset=UTF-8"}};
 
     boost::format fmt = boost::format(R"(
             {"grant_type" : "authorization_code",
@@ -37,13 +38,11 @@ json OAuth2Client::get_access_token(const std::string &authorization_code) {
     return json::parse(response.text);
 }
 
-QueryArgs OAuth2Client::_build_endpoint(QueryArgs &kwargs) {
-    if (kwargs.IsNone("endpoint")) {
-        if (!kwargs["endpoint"].empty()) {
-            kwargs["url"] = url_ + kwargs["endpoints"];
-        }
-        kwargs.Erase("endpoint");
+QueryArgs OAuth2Client::_build_endpoint(std::string &endpoint, QueryArgs &kwargs) {
+    if (!endpoint.empty()) {
+        kwargs["url"] = url_ + endpoint;
     }
+    endpoint = Utils::EMPTY_ENDPOINT;
     return kwargs;
 }
 
@@ -71,7 +70,7 @@ std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
     if (response.status_code >= 400) {
 
         boost::format fmt =
-            boost::format("%1% %2%: %3%") % response.status_code % response.reason % response.text;
+                boost::format("%1% %2%: %3%") % response.status_code % response.reason % response.text;
         std::string message = fmt.str();
         throw cpr::Error(response.status_code, std::move(message));
     }
@@ -90,28 +89,29 @@ std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
     }
 };
 
-template <class Method>
-std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Request& kwargs) {
-    kwargs = _build_endpoint(kwargs);
+template<class Method>
+std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Request &request_body) {
+    QueryArgs &kwargs = request_body.GetParameters();
+    kwargs = _build_endpoint(request_body.GetEndpoint(), kwargs);
     Headers headers = _build_headers(kwargs);
     std::string auth_string = _build_auth(kwargs);
-    Response response = method.Request(
-        kwargs.ConvertToCpr());  /// i think the number of args will depend on the type of request
+    Response response = method.MakeRequest(
+            kwargs.ConvertToCpr());          /// i think the number of args will depend on the type of request
     return parse_response(response);  /// so it is still not the final version
 }
 
-std::optional<ParsedResponse> OAuth2Client::get(const Request &kwargs) {
-    return _request(Get(), kwargs);
+std::optional<ParsedResponse> OAuth2Client::get(const Request &request_body) {
+    return _request(Get(), request_body);
 }
 
-std::optional<ParsedResponse> OAuth2Client::put(const Request &kwargs) {
-    return _request(Put(), kwargs);
+std::optional<ParsedResponse> OAuth2Client::put(const Request &request_body) {
+    return _request(Put(), request_body);
 }
 
-std::optional<ParsedResponse> OAuth2Client::post(const Request &kwargs) {
-    return _request(Post(), kwargs);
+std::optional<ParsedResponse> OAuth2Client::post(const Request &request_body) {
+    return _request(Post(), request_body);
 }
 
-std::optional<ParsedResponse> OAuth2Client::remove(const Request &kwargs) {
-    return _request(Delete(), kwargs);
+std::optional<ParsedResponse> OAuth2Client::remove(const Request &request_body) {
+    return _request(Delete(), request_body);
 }

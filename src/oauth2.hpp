@@ -22,7 +22,7 @@ public:
 
     json get_access_token(const std::string &authorization_code);
 
-    QueryArgs _build_endpoint(QueryArgs &kwargs);
+    QueryArgs _build_endpoint(std::string& endpoint, QueryArgs &kwargs);
 
     Headers _build_headers(QueryArgs &kwargs);
 
@@ -31,15 +31,15 @@ public:
     std::optional<ParsedResponse> parse_response(Response &response);
 
     template <class Method>
-    std::optional<ParsedResponse> _request(Method method, const Request &kwargs);
+    std::optional<ParsedResponse> _request(Method method, const Request &request_body);
 
-    std::optional<ParsedResponse> get(const Request &kwargs);
+    std::optional<ParsedResponse> get(const Request &request_body);
 
-    std::optional<ParsedResponse> put(const Request &kwargs);
+    std::optional<ParsedResponse> put(const Request &request_body);
 
-    std::optional<ParsedResponse> post(const Request &kwargs);
+    std::optional<ParsedResponse> post(const Request &request_body);
 
-    std::optional<ParsedResponse> remove(const Request &kwargs);
+    std::optional<ParsedResponse> remove(const Request &request_body);
     ~OAuth2Client() = default;
 
     /// how about creating wrapper of request args???

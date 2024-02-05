@@ -35,7 +35,7 @@ public:
 
     QueryArgs& operator=(const QueryArgs& other) = default;
 
-    auto operator[](const std::string& key) {
+    auto& operator[](const std::string& key) {
         return mp_[key];
     }
 
@@ -85,7 +85,7 @@ class Get {
 public:
     Get() = default;
     template <typename... Args>
-    cpr::Response Request(Args&&... args) {
+    cpr::Response MakeRequest(Args&&... args) {
         return cpr::Get(std::forward<Args>(args)...);
     }
 };
@@ -94,7 +94,7 @@ class Post {
 public:
     Post() = default;
     template <typename... Args>
-    cpr::Response Request(Args&&... args) {
+    cpr::Response MakeRequest(Args&&... args) {
         return cpr::Post(std::forward<Args>(args)...);
     }
 };
@@ -103,7 +103,7 @@ class Put {
 public:
     Put() = default;
     template <typename... Args>
-    cpr::Response Request(Args&&... args) {
+    cpr::Response MakeRequest(Args&&... args) {
         return cpr::Put(std::forward<Args>(args)...);
     }
 };
@@ -112,7 +112,7 @@ class Delete {
 public:
     Delete() = default;
     template <typename... Args>
-    cpr::Response Request(Args&&... args) {
+    cpr::Response MakeRequest(Args&&... args) {
         return cpr::Delete(std::forward<Args>(args)...);
     }
 };
