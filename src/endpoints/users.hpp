@@ -4,7 +4,7 @@
 
 class Users : public Resource {
 public:
-    Users(OAuth2Client &oauth);
+    Users(OAuth2Client &oauth) : Resource(oauth) {};
 
     std::optional<ParsedResponse> record(
             const std::string &access_token,

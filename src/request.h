@@ -22,11 +22,11 @@ public:
         //return headers_[header];
     }
 
-    QueryArgs &GetParameters() {   ///need to check if it is not empty i guess
+    const QueryArgs &GetParameters() const {   ///need to check if it is not empty i guess
         return parameters_.value();
     }
 
-    const std::string& GetEndpoint() const {
+    const std::string &GetEndpoint() const {
         return endpoint_;
     }
 

@@ -19,10 +19,6 @@ using Response = cpr::Response;
 using Headers = cpr::Header;
 using Body = cpr::Body;
 
-namespace Utils {
-std::string EMPTY_ENDPOINT;
-}
-
 class QueryArgs {
     using KeyValue = std::pair<const std::string, std::string>;
 

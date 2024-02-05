@@ -22,7 +22,7 @@ public:
 
     json get_access_token(const std::string &authorization_code);
 
-    QueryArgs _build_endpoint(std::string& endpoint, QueryArgs &kwargs);
+    QueryArgs _build_endpoint(const std::string& endpoint, QueryArgs &kwargs);
 
     Headers _build_headers(QueryArgs &kwargs);
 

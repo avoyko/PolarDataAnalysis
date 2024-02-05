@@ -4,6 +4,10 @@
 
 #include "resource.hpp"
 
+namespace Utils {
+    const std::string EMPTY_ENDPOINT;
+}
+
 class Transaction : public Resource {
 public:
     Transaction(const OAuth2Client &oauth, std::string transaction_url, const int user_id,

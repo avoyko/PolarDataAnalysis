@@ -38,11 +38,11 @@ json OAuth2Client::get_access_token(const std::string &authorization_code) {
     return json::parse(response.text);
 }
 
-QueryArgs OAuth2Client::_build_endpoint(std::string &endpoint, QueryArgs &kwargs) {
+QueryArgs OAuth2Client::_build_endpoint(const std::string &endpoint, QueryArgs &kwargs) {
     if (!endpoint.empty()) {
         kwargs["url"] = url_ + endpoint;
     }
-    endpoint = Utils::EMPTY_ENDPOINT;
+//    endpoint = Utils::EMPTY_ENDPOINT;
     return kwargs;
 }
 
@@ -91,7 +91,7 @@ std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
 
 template<class Method>
 std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Request &request_body) {
-    QueryArgs &kwargs = request_body.GetParameters();
+    QueryArgs kwargs = request_body.GetParameters();
     kwargs = _build_endpoint(request_body.GetEndpoint(), kwargs);
     Headers headers = _build_headers(kwargs);
     std::string auth_string = _build_auth(kwargs);
