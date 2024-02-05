@@ -1,7 +1,7 @@
 #pragma once
 
 #include "utilities.hpp"
-
+#include "request.h"
 
 
 class OAuth2Client {
@@ -31,7 +31,7 @@ public:
     std::optional<ParsedResponse> parse_response(Response &response);
 
     template <class Method>
-    std::optional<ParsedResponse> _request(Method method, QueryArgs &kwargs);
+    std::optional<ParsedResponse> _request(Method method, const Request &kwargs);
 
     std::optional<ParsedResponse> get(const Request &kwargs);
 
@@ -39,7 +39,7 @@ public:
 
     std::optional<ParsedResponse> post(const Request &kwargs);
 
-    std::optional<ParsedResponse> remove(Request &kwargs);
+    std::optional<ParsedResponse> remove(const Request &kwargs);
     ~OAuth2Client() = default;
 
     /// how about creating wrapper of request args???

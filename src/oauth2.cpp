@@ -91,7 +91,7 @@ std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
 };
 
 template <class Method>
-std::optional<ParsedResponse> OAuth2Client::_request(Method method, Request& kwargs) {
+std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Request& kwargs) {
     kwargs = _build_endpoint(kwargs);
     Headers headers = _build_headers(kwargs);
     std::string auth_string = _build_auth(kwargs);
@@ -100,18 +100,18 @@ std::optional<ParsedResponse> OAuth2Client::_request(Method method, Request& kwa
     return parse_response(response);  /// so it is still not the final version
 }
 
-std::optional<ParsedResponse> OAuth2Client::get(Request &kwargs) {
+std::optional<ParsedResponse> OAuth2Client::get(const Request &kwargs) {
     return _request(Get(), kwargs);
 }
 
-std::optional<ParsedResponse> OAuth2Client::put(Request &kwargs) {
+std::optional<ParsedResponse> OAuth2Client::put(const Request &kwargs) {
     return _request(Put(), kwargs);
 }
 
-std::optional<ParsedResponse> OAuth2Client::post(Request &kwargs) {
+std::optional<ParsedResponse> OAuth2Client::post(const Request &kwargs) {
     return _request(Post(), kwargs);
 }
 
-std::optional<ParsedResponse> OAuth2Client::remove(Request &kwargs) {
+std::optional<ParsedResponse> OAuth2Client::remove(const Request &kwargs) {
     return _request(Delete(), kwargs);
 }
