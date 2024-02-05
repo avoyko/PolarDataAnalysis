@@ -7,21 +7,21 @@ public:
     explicit Resource(const OAuth2Client &oauth) : oauth_(oauth){};
 
 
-    std::optional<ParsedResponse> _get(Request &request) {
+    std::optional<ParsedResponse> _get(const Request &request) {
         return oauth_.get(request);
     }
 
 
-    std::optional<ParsedResponse> _post(Request &request) {
+    std::optional<ParsedResponse> _post(const Request &request) {
         return oauth_.post(request);
     }
 
 
-    std::optional<ParsedResponse> _put(Request &request) {
+    std::optional<ParsedResponse> _put(const Request &request) {
         return oauth_.put(request);
     }
 
-    std::optional<ParsedResponse> _delete(Request &request) {
+    std::optional<ParsedResponse> _delete(const Request &request) {
         return oauth_.remove(request);
     }
 

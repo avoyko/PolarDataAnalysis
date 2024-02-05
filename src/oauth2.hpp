@@ -33,11 +33,11 @@ public:
     template <class Method>
     std::optional<ParsedResponse> _request(Method method, QueryArgs &kwargs);
 
-    std::optional<ParsedResponse> get(Request &kwargs);
+    std::optional<ParsedResponse> get(const Request &kwargs);
 
-    std::optional<ParsedResponse> put(Request &kwargs);
+    std::optional<ParsedResponse> put(const Request &kwargs);
 
-    std::optional<ParsedResponse> post(Request &kwargs);
+    std::optional<ParsedResponse> post(const Request &kwargs);
 
     std::optional<ParsedResponse> remove(Request &kwargs);
     ~OAuth2Client() = default;
