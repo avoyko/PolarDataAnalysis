@@ -1,5 +1,4 @@
 #include "oauth2.hpp"
-
 #include <optional>
 
 /// Problems:
@@ -70,6 +69,7 @@ std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
     ParsedResponse answer{std::string()};
 
     if (response.status_code >= 400) {
+
         boost::format fmt =
             boost::format("%1% %2%: %3%") % response.status_code % response.reason % response.text;
         std::string message = fmt.str();
@@ -91,7 +91,7 @@ std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
 };
 
 template <class Method>
-std::optional<ParsedResponse> OAuth2Client::_request(Method method, QueryArgs &kwargs) {
+std::optional<ParsedResponse> OAuth2Client::_request(Method method, Request& kwargs) {
     kwargs = _build_endpoint(kwargs);
     Headers headers = _build_headers(kwargs);
     std::string auth_string = _build_auth(kwargs);
@@ -100,18 +100,18 @@ std::optional<ParsedResponse> OAuth2Client::_request(Method method, QueryArgs &k
     return parse_response(response);  /// so it is still not the final version
 }
 
-std::optional<ParsedResponse> OAuth2Client::get(std::string endpoint, QueryArgs kwargs) {
-    return _request(Get(), kwargs.Add({"endpoint", endpoint}));
+std::optional<ParsedResponse> OAuth2Client::get(Request &kwargs) {
+    return _request(Get(), kwargs);
 }
 
-std::optional<ParsedResponse> OAuth2Client::put(std::string &endpoint, QueryArgs kwargs) {
-    return _request(Put(), kwargs.Add({"endpoint", endpoint}));
+std::optional<ParsedResponse> OAuth2Client::put(Request &kwargs) {
+    return _request(Put(), kwargs);
 }
 
-std::optional<ParsedResponse> OAuth2Client::post(std::string &endpoint, QueryArgs kwargs) {
-    return _request(Post(), kwargs.Add({"endpoint", endpoint}));
+std::optional<ParsedResponse> OAuth2Client::post(Request &kwargs) {
+    return _request(Post(), kwargs);
 }
 
-std::optional<ParsedResponse> OAuth2Client::remove(std::string &endpoint, QueryArgs kwargs) {
-    return _request(Delete(), kwargs.Add({"endpoint", endpoint}));
+std::optional<ParsedResponse> OAuth2Client::remove(Request &kwargs) {
+    return _request(Delete(), kwargs);
 }

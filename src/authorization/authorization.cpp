@@ -18,15 +18,15 @@ void authorize() {
     Response response = cpr::Get(cpr::Url(Client::REDIRECT_URI));
     std::string authorization_code = json::parse(response.text)["code"];
     json token_response = accesslink.get_access_token(authorization_code);
-    //
-    //    std::string user_id = token_response["x_user_id"];
-    //    std::string access_token = token_response["access_token"];
-    //
-    //    try {
-    //        accesslink.register_user(access_token);
-    //    } catch (...) {  /// it should be smth like exceptions.HTTPError
-    //        throw;
-    //    }
+    
+       std::string user_id = token_response["x_user_id"];
+       std::string access_token = token_response["access_token"];
+    
+       try {
+           accesslink.register_user(access_token);
+       } catch (...) {  /// it should be smth like exceptions.HTTPError
+           throw;
+       }
 
     CROW_LOG_INFO << "Client authorized! You can now close this page.";
 }

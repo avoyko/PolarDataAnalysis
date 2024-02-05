@@ -12,6 +12,18 @@
 #include <boost/uuid/uuid_generators.hpp>  // generators
 #include <boost/uuid/uuid_io.hpp>          // streaming operators etc.
 
+using json = nlohmann::json;
+using ParsedResponse = std::variant<std::string, json>;
+using Authentication = cpr::Authentication;
+using Response = cpr::Response;
+using Headers = cpr::Header;
+using Body = cpr::Body;
+
+namespace Utils {
+std::string EMPTY_ENDPOINT;
+}
+
+
 class QueryArgs {
     using KeyValue = std::pair<const std::string, std::string>;
 
@@ -70,22 +82,26 @@ private:
     std::unordered_map<std::string, std::string> mp_;
 };
 
-template <class Method>
-class BaseHTTP {
+class Request {
 public:
-    BaseHTTP() = default;
-    template <typename... Args>
-    cpr::Response Request(Args&&... args) {
-        return static_cast<Method*>(this)->RequestImpl(std::forward<Args>(args)...);
-    }
-    ~BaseHTTP() = default;
+    Request() = default;
+    Request(std::string_view endpoint, QueryArgs& query_args, Headers& headers)
+        : endpoint_(endpoint), parameters_(query_args), headers_(headers){};
+
+    ~Request() = default;
+
+private:
+    std::string endpoint_;
+    QueryArgs parameters_;
+    Headers headers_;
+    Body body_;
 };
 
 class Get {
 public:
     Get() = default;
     template <typename... Args>
-    cpr::Response RequestImpl(Args&&... args) {
+    cpr::Response Request(Args&&... args) {
         return cpr::Get(std::forward<Args>(args)...);
     }
 };
@@ -94,7 +110,7 @@ class Post {
 public:
     Post() = default;
     template <typename... Args>
-    cpr::Response RequestImpl(Args&&... args) {
+    cpr::Response Request(Args&&... args) {
         return cpr::Post(std::forward<Args>(args)...);
     }
 };
@@ -103,7 +119,7 @@ class Put {
 public:
     Put() = default;
     template <typename... Args>
-    cpr::Response RequestImpl(Args&&... args) {
+    cpr::Response Request(Args&&... args) {
         return cpr::Put(std::forward<Args>(args)...);
     }
 };
@@ -112,7 +128,7 @@ class Delete {
 public:
     Delete() = default;
     template <typename... Args>
-    cpr::Response RequestImpl(Args&&... args) {
+    cpr::Response Request(Args&&... args) {
         return cpr::Delete(std::forward<Args>(args)...);
     }
 };

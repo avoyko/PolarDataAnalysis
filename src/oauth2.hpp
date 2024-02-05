@@ -2,12 +2,7 @@
 
 #include "utilities.hpp"
 
-using json = nlohmann::json;
-using ParsedResponse = std::variant<std::string, json>;
-using Authentication = cpr::Authentication;
-using Response = cpr::Response;
-using Headers = cpr::Header;
-using Body = cpr::Body;
+
 
 class OAuth2Client {
 public:
@@ -38,13 +33,13 @@ public:
     template <class Method>
     std::optional<ParsedResponse> _request(Method method, QueryArgs &kwargs);
 
-    std::optional<ParsedResponse> get(std::string &endpoint, QueryArgs kwargs);
+    std::optional<ParsedResponse> get(Request &kwargs);
 
-    std::optional<ParsedResponse> put(std::string &endpoint, QueryArgs kwargs);
+    std::optional<ParsedResponse> put(Request &kwargs);
 
-    std::optional<ParsedResponse> post(std::string &endpoint, QueryArgs kwargs);
+    std::optional<ParsedResponse> post(Request &kwargs);
 
-    std::optional<ParsedResponse> remove(std::string &endpoint, QueryArgs kwargs);
+    std::optional<ParsedResponse> remove(Request &kwargs);
     ~OAuth2Client() = default;
 
     /// how about creating wrapper of request args???

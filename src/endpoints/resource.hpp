@@ -6,24 +6,23 @@ class Resource {
 public:
     explicit Resource(const OAuth2Client &oauth) : oauth_(oauth){};
 
-    template <typename... Args>
-    std::optional<ParsedResponse> _get(Args &&...args) {
-        return oauth_.get(std::forward<Args>(args)...);
+
+    std::optional<ParsedResponse> _get(Request &request) {
+        return oauth_.get(request);
     }
 
-    template <typename... Args>
-    std::optional<ParsedResponse> _post(Args &&...args) {
-        return oauth_.post(std::forward<Args>(args)...);
+
+    std::optional<ParsedResponse> _post(Request &request) {
+        return oauth_.post(request);
     }
 
-    template <typename... Args>
-    std::optional<ParsedResponse> _put(Args &&...args) {
-        return oauth_.put(std::forward<Args>(args)...);
+
+    std::optional<ParsedResponse> _put(Request &request) {
+        return oauth_.put(request);
     }
 
-    template <typename... Args>
-    std::optional<ParsedResponse> _delete(Args &&...args) {
-        return oauth_.remove(std::forward<Args>(args)...);
+    std::optional<ParsedResponse> _delete(Request &request) {
+        return oauth_.remove(request);
     }
 
     ~Resource() = default;

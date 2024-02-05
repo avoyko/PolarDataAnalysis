@@ -14,8 +14,8 @@ const std::string ACCESSLINK_URL = "https://www.polaraccesslink.com/v3";
 
 class AccessLink {
 public:
-    AccessLink(const std::string &client_id, const std::string &client_secret,
-               const std::string redirect_url = "")
+    AccessLink(std::string_view client_id, std::string_view client_secret,
+               std::string_view redirect_url = "")
         : oauth_(Links::ACCESSLINK_URL, Links::AUTHORIZATION_URL, Links::ACCESS_TOKEN_URL,
                  redirect_url, client_id, client_secret),
           phys_info_(oauth_),
