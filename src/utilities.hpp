@@ -23,7 +23,6 @@ namespace Utils {
 std::string EMPTY_ENDPOINT;
 }
 
-
 class QueryArgs {
     using KeyValue = std::pair<const std::string, std::string>;
 
@@ -32,7 +31,7 @@ public:
 
     ~QueryArgs() = default;
 
-    QueryArgs(const std::initializer_list<KeyValue>& lst) : mp_(lst){};
+    QueryArgs(std::initializer_list<KeyValue> lst) : mp_(lst){};
 
     QueryArgs& operator=(const QueryArgs& other) = default;
 
@@ -80,21 +79,6 @@ public:
 
 private:
     std::unordered_map<std::string, std::string> mp_;
-};
-
-class Request {
-public:
-    Request() = default;
-    Request(std::string_view endpoint, QueryArgs& query_args, Headers& headers)
-        : endpoint_(endpoint), parameters_(query_args), headers_(headers){};
-
-    ~Request() = default;
-
-private:
-    std::string endpoint_;
-    QueryArgs parameters_;
-    Headers headers_;
-    Body body_;
 };
 
 class Get {
