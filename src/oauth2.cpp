@@ -32,7 +32,7 @@ json OAuth2Client::get_access_token(const std::string &authorization_code) {
                         authorization_code;
     Body data = {fmt.str()};
 
-    auto response = post({Utils::EMPTY_ENDPOINT, {{"url", access_token_url_}}, headers, data});
+    auto response = post({Utils::EMPTY_ENDPOINT, {{"url", access_token_url_}}, headers, data, authorization_code});
     return json::parse("");
 }
 
@@ -95,10 +95,11 @@ std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Reques
     // Headers headers = _build_headers(kwargs);
     std::string auth_string = _build_auth(kwargs);
     Headers headers = request_body.CprHeader();
-    headers.emplace("Authorization", auth_string);
     Response response = method.MakeRequest(request_body.CprUrl(),
-                                           request_body.CprBody(),
-                                           headers);
+                                           cpr::Payload{{"grant_type", "authorization_code"},
+                                                        {"code",       request_body.auto_code_}},
+                                           headers,
+                                           cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
     return parse_response(response);
 }
 
