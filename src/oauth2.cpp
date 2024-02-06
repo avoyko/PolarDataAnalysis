@@ -28,11 +28,10 @@ json OAuth2Client::get_access_token(const std::string &authorization_code) {
     Headers headers = {{"Content-Type", "application/x-www-form-urlencoded"},
                        {"Accept",       "application/json;charset=UTF-8"}};
 
-    boost::format fmt = boost::format(R"("grant_type" : "authorization_code", "code" : %1%)") %
-                        authorization_code;
-    Body data = {fmt.str()};
+    Payload payload{{"grant_type", "authorization_code"},
+                    {"code",       authorization_code}};
 
-    auto response = post({Utils::EMPTY_ENDPOINT, {{"url", access_token_url_}}, headers, data, authorization_code});
+    auto response = post({Utils::EMPTY_ENDPOINT, {{"url", access_token_url_}}, headers, payload, authorization_code});
     return json::parse("");
 }
 
@@ -80,7 +79,7 @@ ParsedResponse OAuth2Client::parse_response(Response &response) {
     try {
         json response_json = json::parse(response.text);
         return response_json;
-    } catch (const json::exception &error) {  /// actually in python they catch value-error, i didnt find it:-)
+    } catch (const json::exception &error) {
         return {{"error", error.id}};
     }
 };
@@ -109,6 +108,7 @@ ParsedResponse OAuth2Client::put(const Request &request_body) {
 }
 
 ParsedResponse OAuth2Client::post(const Request &request_body) {
+    std::map<std::string, std::any> ;
     return _request(Post(), request_body);
 }
 

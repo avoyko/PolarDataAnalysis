@@ -19,6 +19,7 @@ using Authentication = cpr::Authentication;
 using Response = cpr::Response;
 using Headers = cpr::Header;
 using Body = cpr::Body;
+using Payload = cpr::Payload;
 
 namespace Utils {
     const std::string EMPTY_ENDPOINT;

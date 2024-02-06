@@ -6,17 +6,17 @@ class Request {
 public:
     Request() = default;
 
-    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers, const Body &body = {},
+    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers,
             const std::string &auto_code = "")
-            : endpoint_(endpoint), parameters_(query_args), headers_(headers), body_(body), auto_code_(auto_code) {};
+            : endpoint_(endpoint), parameters_(query_args), headers_(headers), auto_code_(auto_code) {};
 
     Request(std::string_view endpoint, const QueryArgs &query_args)
-            : endpoint_(endpoint), parameters_(query_args), headers_(std::nullopt) {};
+            : endpoint_(endpoint), parameters_(query_args), headers_({}) {};
 
     ~Request() = default;
 
     void AddHeader(const std::string &header, const std::string &value) {
-        headers_.value()[header] = value;
+        headers_[header] = value;
     }
 
 //    std::string &GetHeaderValue(const std::string &header) {
@@ -24,7 +24,7 @@ public:
 //    }
 
     const QueryArgs &GetParameters() const {   ///need to check if it is not empty i guess
-        return parameters_.value();
+        return parameters_;
     }
 
     const std::string &GetEndpoint() const {
@@ -32,20 +32,16 @@ public:
     }
 
     cpr::Parameters CprParameters() const {   ///need to check if it is not empty i guess
-        return parameters_.value().ConvertToCpr();
-    }
-
-    cpr::Body CprBody() const {
-        return body_.value();
+        return parameters_.ConvertToCpr();
     }
 
     cpr::Header CprHeader() const {
-        return headers_.value();
+        return headers_;
     }
 
 
     cpr::Url CprUrl() const {
-        std::string url = parameters_.value()["url"];
+        std::string url = parameters_["url"];
         return {url};
     }
 
@@ -56,9 +52,8 @@ public:
 
 private:
     std::string endpoint_;
-    std::optional<QueryArgs> parameters_;
-    std::optional<Headers> headers_;
-    std::optional<Body> body_;
+    QueryArgs parameters_;
+    Headers headers_;
 public:
     std::string auto_code_;
 };
