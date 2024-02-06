@@ -94,8 +94,8 @@ std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Reques
     Headers headers = _build_headers(kwargs);
     std::string auth_string = _build_auth(kwargs);
     Response response = method.MakeRequest(request_body.CprUrl(), request_body.CprParameters(), request_body.CprBody(),
-                                           request_body.CprHeader());          /// i think the number of args will depend on the type of request
-    return parse_response(response);  /// so it is still not the final version
+                                           request_body.CprHeader());
+    return parse_response(response);
 }
 
 std::optional<ParsedResponse> OAuth2Client::get(const Request &request_body) {
