@@ -14,7 +14,7 @@
 #include <boost/beast/core/detail/base64.hpp>
 
 using json = nlohmann::json;
-using ParsedResponse = std::variant<std::string, json>;
+using ParsedResponse = json;
 using Authentication = cpr::Authentication;
 using Response = cpr::Response;
 using Headers = cpr::Header;

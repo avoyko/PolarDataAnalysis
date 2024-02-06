@@ -29,18 +29,18 @@ public:
 
     std::string _build_auth(QueryArgs &kwargs);
 
-    std::optional<ParsedResponse> parse_response(Response &response);
+    ParsedResponse parse_response(Response &response);
 
     template <class Method>
-    std::optional<ParsedResponse> _request(Method method, const Request &request_body);
+    ParsedResponse _request(Method method, const Request &request_body);
 
-    std::optional<ParsedResponse> get(const Request &request_body);
+    ParsedResponse get(const Request &request_body);
 
-    std::optional<ParsedResponse> put(const Request &request_body);
+    ParsedResponse put(const Request &request_body);
 
-    std::optional<ParsedResponse> post(const Request &request_body);
+    ParsedResponse post(const Request &request_body);
 
-    std::optional<ParsedResponse> remove(const Request &request_body);
+    ParsedResponse remove(const Request &request_body);
     ~OAuth2Client() = default;
 
     /// how about creating wrapper of request args???

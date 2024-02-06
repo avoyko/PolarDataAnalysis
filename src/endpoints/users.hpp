@@ -6,7 +6,7 @@ class Users : public Resource {
 public:
     Users(OAuth2Client &oauth) : Resource(oauth) {};
 
-    std::optional<ParsedResponse> record(
+    ParsedResponse record(
             const std::string &access_token,
             boost::uuids::uuid member_id = boost::uuids::random_generator()()) {
 
@@ -14,12 +14,12 @@ public:
                       Headers{{"member-id", boost::uuids::to_string(member_id)}}});
     }
 
-    std::optional<ParsedResponse> remove(const int &user_id, std::string &access_token) {
+    ParsedResponse remove(const int &user_id, std::string &access_token) {
         return _delete({"/users/" + std::to_string(user_id), {{"access_token", access_token}}});
     }
 
 
-    std::optional<ParsedResponse> get_information(const int &user_id, std::string &access_token) {
+    ParsedResponse get_information(const int &user_id, std::string &access_token) {
         return _get({"/users/" + std::to_string(user_id), {{"access_token", access_token}}});
     }
 };

@@ -27,16 +27,16 @@ public:
 
     json get_access_token(const std::string &authorization_code);
 
-    std::optional<ParsedResponse> get_exercises(const std::string &access_token);
+    ParsedResponse get_exercises(const std::string &access_token);
 
-    std::optional<ParsedResponse> get_sleep(const std::string &access_token);
+    ParsedResponse get_sleep(const std::string &access_token);
 
-    std::optional<ParsedResponse> get_recharge(const std::string &access_token);
+    ParsedResponse get_recharge(const std::string &access_token);
 
-    std::optional<ParsedResponse> get_userdata(const std::string &access_token,
+    ParsedResponse get_userdata(const std::string &access_token,
                                                const std::string &user_id);
 
-    std::optional<ParsedResponse> register_user(const std::string &access_token);
+    ParsedResponse register_user(const std::string &access_token);
 
 private:
     OAuth2Client oauth_;

@@ -14,7 +14,7 @@ public:
               user_id_(user_id),
               access_token_(std::move(access_token)) {};
 
-    std::optional<ParsedResponse> Commit() {
+    ParsedResponse Commit() {
         return _put({Utils::EMPTY_ENDPOINT,
                      QueryArgs{{"url",          transaction_url_},
                                {"access_token", access_token_}},

@@ -62,9 +62,8 @@ std::string OAuth2Client::_build_auth(QueryArgs &kwargs) {
     return kwargs["auth"];
 }
 
-std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
+ParsedResponse OAuth2Client::parse_response(Response &response) {
 
-    ParsedResponse answer{std::string()};
 
     if (response.status_code >= 400) {
 
@@ -75,21 +74,19 @@ std::optional<ParsedResponse> OAuth2Client::parse_response(Response &response) {
     }
 
     if (response.status_code == 204) {
-        return std::nullopt;
+        return {};
     }
 
     try {
         json response_json = json::parse(response.text);
-        answer.emplace<1>(response_json);
-        return answer;
-    } catch (...) {  /// actually in python they catch value-error, i didnt find it:-)
-        answer.emplace<0>(response.text);
-        return answer;
+        return response_json;
+    } catch (const json::exception &error) {  /// actually in python they catch value-error, i didnt find it:-)
+        return {{"error", error.id}};
     }
 };
 
 template<class Method>
-std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Request &request_body) {
+ParsedResponse OAuth2Client::_request(Method method, const Request &request_body) {
     QueryArgs kwargs = request_body.GetParameters();
     kwargs = _build_endpoint(request_body.GetEndpoint(), kwargs);
     // Headers headers = _build_headers(kwargs);
@@ -103,18 +100,18 @@ std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Reques
     return parse_response(response);
 }
 
-std::optional<ParsedResponse> OAuth2Client::get(const Request &request_body) {
+ParsedResponse OAuth2Client::get(const Request &request_body) {
     return _request(Get(), request_body);
 }
 
-std::optional<ParsedResponse> OAuth2Client::put(const Request &request_body) {
+ParsedResponse OAuth2Client::put(const Request &request_body) {
     return _request(Put(), request_body);
 }
 
-std::optional<ParsedResponse> OAuth2Client::post(const Request &request_body) {
+ParsedResponse OAuth2Client::post(const Request &request_body) {
     return _request(Post(), request_body);
 }
 
-std::optional<ParsedResponse> OAuth2Client::remove(const Request &request_body) {
+ParsedResponse OAuth2Client::remove(const Request &request_body) {
     return _request(Delete(), request_body);
 }
