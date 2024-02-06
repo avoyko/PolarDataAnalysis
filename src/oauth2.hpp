@@ -27,8 +27,6 @@ public:
 
     Headers _build_headers(QueryArgs &kwargs);
 
-    std::string _build_auth(QueryArgs &kwargs);
-
     ParsedResponse parse_response(Response &response);
 
     template <class Method>
