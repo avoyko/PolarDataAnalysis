@@ -56,7 +56,8 @@ Headers OAuth2Client::_build_headers(QueryArgs &kwargs) {
 std::string OAuth2Client::_build_auth(QueryArgs &kwargs) {
     if (!kwargs.Contains("auth")) {
         Authentication auth = Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC};
-        kwargs["auth"] = auth.GetAuthString();
+        std::string to_encode = auth.GetAuthString();
+        kwargs["auth"] = "Basic " "YmQzYTc3YTQtMGVkYy00NGU1LTgxYTUtMzA5NjQ0ZjBmYzlhOmI4NTRhMGNhLTJhNzQtNGRkZS05MTk2LTBjMGIxYjYzMTEwZQ==";
     }
     return kwargs["auth"];
 }
@@ -91,10 +92,13 @@ template<class Method>
 std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Request &request_body) {
     QueryArgs kwargs = request_body.GetParameters();
     kwargs = _build_endpoint(request_body.GetEndpoint(), kwargs);
-    Headers headers = _build_headers(kwargs);
+    // Headers headers = _build_headers(kwargs);
     std::string auth_string = _build_auth(kwargs);
-    Response response = method.MakeRequest(request_body.CprUrl(), request_body.CprParameters(), request_body.CprBody(),
-                                           request_body.CprHeader());
+    Headers headers = request_body.CprHeader();
+    headers.emplace("Authorization", auth_string);
+    Response response = method.MakeRequest(request_body.CprUrl(),
+                                           request_body.CprBody(),
+                                           headers);
     return parse_response(response);
 }
 

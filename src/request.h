@@ -15,7 +15,7 @@ public:
     ~Request() = default;
 
     void AddHeader(const std::string &header, const std::string &value) {
-        // headers_[header] = value;
+            headers_.value()[header] = value;
     }
 
     std::string &GetHeaderValue(const std::string &header) {
