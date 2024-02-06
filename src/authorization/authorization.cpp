@@ -46,6 +46,7 @@ int main() {
     CROW_ROUTE(app, Callback::OAUTHPOINT)
             ([&app](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
+//                CROW_LOG_DEBUG << authorization_code;
                 auto token_response = accesslink.get_access_token(authorization_code);
                 CROW_LOG_INFO << "Client authorized! You can now close this page.";
                 return crow::response{200};

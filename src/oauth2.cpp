@@ -28,14 +28,12 @@ json OAuth2Client::get_access_token(const std::string &authorization_code) {
     Headers headers = {{"Content-Type", "application/x-www-form-urlencoded"},
                        {"Accept",       "application/json;charset=UTF-8"}};
 
-    boost::format fmt = boost::format(R"(
-            {"grant_type" : "authorization_code",
-            "code" : %1%})") %
+    boost::format fmt = boost::format(R"("grant_type" : "authorization_code", "code" : %1%)") %
                         authorization_code;
     Body data = {fmt.str()};
 
-    Response response = cpr::Post(cpr::Url(access_token_url_), data, headers);
-    return json::parse(response.text);
+    auto response = post({Utils::EMPTY_ENDPOINT, {{"url", access_token_url_}}, headers, data});
+    return json::parse("");
 }
 
 QueryArgs OAuth2Client::_build_endpoint(const std::string &endpoint, QueryArgs &kwargs) {
@@ -95,8 +93,8 @@ std::optional<ParsedResponse> OAuth2Client::_request(Method method, const Reques
     kwargs = _build_endpoint(request_body.GetEndpoint(), kwargs);
     Headers headers = _build_headers(kwargs);
     std::string auth_string = _build_auth(kwargs);
-    Response response = method.MakeRequest(
-            kwargs.ConvertToCpr());          /// i think the number of args will depend on the type of request
+    Response response = method.MakeRequest(request_body.CprUrl(), request_body.CprParameters(), request_body.CprBody(),
+                                           request_body.CprHeader());          /// i think the number of args will depend on the type of request
     return parse_response(response);  /// so it is still not the final version
 }
 

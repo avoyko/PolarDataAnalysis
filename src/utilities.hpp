@@ -19,6 +19,11 @@ using Response = cpr::Response;
 using Headers = cpr::Header;
 using Body = cpr::Body;
 
+namespace Utils {
+    const std::string EMPTY_ENDPOINT;
+}
+
+
 class QueryArgs {
     using KeyValue = std::pair<const std::string, std::string>;
 
@@ -27,24 +32,28 @@ public:
 
     ~QueryArgs() = default;
 
-    QueryArgs(std::initializer_list<KeyValue> lst) : mp_(lst){};
+    QueryArgs(std::initializer_list<KeyValue> lst) : mp_(lst) {};
 
-    QueryArgs& operator=(const QueryArgs& other) = default;
+    QueryArgs &operator=(const QueryArgs &other) = default;
 
-    auto& operator[](const std::string& key) {
+    std::string &operator[](const std::string &key) {
         return mp_[key];
     }
 
-    QueryArgs& Add(const KeyValue& field) {
+    std::string operator[](const std::string &key) const {
+        return mp_.at(key);
+    }
+
+    QueryArgs &Add(const KeyValue &field) {
         mp_.insert(field);
         return *this;
     }
 
-    bool Contains(const std::string& key) {
+    bool Contains(const std::string &key) {
         return mp_.find(key) != mp_.end();
     }
 
-    bool Erase(const std::string& key) {
+    bool Erase(const std::string &key) {
         if (mp_.find(key) == mp_.end()) {
             return false;
         }
@@ -52,13 +61,16 @@ public:
         return true;
     }
 
-    bool IsNone(const std::string& key) {
+    bool IsNone(const std::string &key) {
         return mp_[key].empty();
     }
 
-    cpr::Parameters ConvertToCpr() {
+    cpr::Parameters ConvertToCpr() const {
         cpr::Parameters parameters;
-        for (const auto& each : mp_) {
+        for (const auto &each: mp_) {
+            if (each.first == "url") {
+                continue;
+            }
             parameters.Add({each.first, each.second});
         }
         return parameters;
@@ -66,7 +78,7 @@ public:
 
     std::string UrlEncode() {
         std::string urlcode;
-        for (const auto& each : mp_) {
+        for (const auto &each: mp_) {
             urlcode += each.first + "=" + each.second + "&";
         }
         urlcode.pop_back();
@@ -80,8 +92,9 @@ private:
 class Get {
 public:
     Get() = default;
-    template <typename... Args>
-    cpr::Response MakeRequest(Args&&... args) {
+
+    template<typename... Args>
+    cpr::Response MakeRequest(Args &&... args) {
         return cpr::Get(std::forward<Args>(args)...);
     }
 };
@@ -89,8 +102,9 @@ public:
 class Post {
 public:
     Post() = default;
-    template <typename... Args>
-    cpr::Response MakeRequest(Args&&... args) {
+
+    template<typename... Args>
+    cpr::Response MakeRequest(Args &&... args) {
         return cpr::Post(std::forward<Args>(args)...);
     }
 };
@@ -98,8 +112,9 @@ public:
 class Put {
 public:
     Put() = default;
-    template <typename... Args>
-    cpr::Response MakeRequest(Args&&... args) {
+
+    template<typename... Args>
+    cpr::Response MakeRequest(Args &&... args) {
         return cpr::Put(std::forward<Args>(args)...);
     }
 };
@@ -107,8 +122,9 @@ public:
 class Delete {
 public:
     Delete() = default;
-    template <typename... Args>
-    cpr::Response MakeRequest(Args&&... args) {
+
+    template<typename... Args>
+    cpr::Response MakeRequest(Args &&... args) {
         return cpr::Delete(std::forward<Args>(args)...);
     }
 };

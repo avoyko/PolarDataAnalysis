@@ -4,9 +4,6 @@
 
 #include "resource.hpp"
 
-namespace Utils {
-    const std::string EMPTY_ENDPOINT;
-}
 
 class Transaction : public Resource {
 public:

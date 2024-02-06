@@ -6,8 +6,8 @@ class Request {
 public:
     Request() = default;
 
-    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers)
-            : endpoint_(endpoint), parameters_(query_args), headers_(headers) {};
+    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers, const Body &body = {})
+            : endpoint_(endpoint), parameters_(query_args), headers_(headers), body_(body) {};
 
     Request(std::string_view endpoint, const QueryArgs &query_args)
             : endpoint_(endpoint), parameters_(query_args), headers_(std::nullopt) {};
@@ -30,6 +30,23 @@ public:
         return endpoint_;
     }
 
+    cpr::Parameters CprParameters() const {   ///need to check if it is not empty i guess
+        return parameters_.value().ConvertToCpr();
+    }
+
+    cpr::Body CprBody() const {
+        return body_.value();
+    }
+
+    cpr::Header CprHeader() const {
+        return headers_.value();
+    }
+
+
+    cpr::Url CprUrl() const {
+        std::string url = parameters_.value()["url"];
+        return {url};
+    }
 
     bool EmptyEndpoint() {
         return endpoint_.empty();
