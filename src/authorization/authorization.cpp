@@ -4,6 +4,7 @@
 #include <crow/logging.h>
 #include <cpr/error.h>
 #include <cpr/cpr.h>
+#include "yaml-cpp/yaml.h"
 #include <cpr/parameters.h>
 #include <iostream>
 
@@ -44,9 +45,8 @@ int main() {
             });
 
     CROW_ROUTE(app, Callback::OAUTHPOINT)
-            ([&app](const crow::request &req) {
+            ([](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
-//                CROW_LOG_DEBUG << authorization_code;
                 auto token_response = accesslink.GetAccessToken(authorization_code);
                 CROW_LOG_INFO << "Client authorized! You can now close this page.";
                 return crow::response{200};
