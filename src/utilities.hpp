@@ -70,9 +70,6 @@ public:
     cpr::Parameters ConvertToCpr() {
         cpr::Parameters parameters;
         for (const auto &each: mp_) {
-            if (each.first == "url") {
-                continue;
-            }
             parameters.Add({each.first, each.second});
         }
         return parameters;
