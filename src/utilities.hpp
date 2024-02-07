@@ -67,7 +67,7 @@ public:
         return mp_[key].empty();
     }
 
-    cpr::Parameters ConvertToCpr() const {
+    cpr::Parameters ConvertToCpr() {
         cpr::Parameters parameters;
         for (const auto &each: mp_) {
             if (each.first == "url") {
@@ -79,12 +79,12 @@ public:
     }
 
     std::string UrlEncode() {
-        std::string urlcode;
+        std::string url_code;
         for (const auto &each: mp_) {
-            urlcode += each.first + "=" + each.second + "&";
+            url_code += each.first + "=" + each.second + "&";
         }
-        urlcode.pop_back();
-        return urlcode;
+        url_code.pop_back();
+        return url_code;
     }
 
 private:

@@ -15,10 +15,10 @@ public:
               access_token_(std::move(access_token)) {};
 
     ParsedResponse Commit() {
-        return _put({Utils::EMPTY_ENDPOINT,
-                     QueryArgs{{"url",          transaction_url_},
-                               {"access_token", access_token_}},
-                    });
+        Request request_body{Utils::EMPTY_ENDPOINT,
+                             QueryArgs{{"url",          transaction_url_},
+                                       {"access_token", access_token_}}};
+        return _put(request_body);
     }
 
 protected:

@@ -13,6 +13,7 @@ public:
     Request(std::string_view endpoint, const QueryArgs &query_args)
             : endpoint_(endpoint), parameters_(query_args), headers_({}) {};
 
+
     ~Request() = default;
 
     void AddHeader(const std::string &header, const std::string &value) {
@@ -23,30 +24,51 @@ public:
 //        //return headers_[header];
 //    }
 
-    const QueryArgs &GetParameters() const {   ///need to check if it is not empty i guess
+    QueryArgs &GetParameters() {   ///need to check if it is not empty i guess
         return parameters_;
     }
 
-    const std::string &GetEndpoint() const {
+    std::string &GetEndpoint() {
         return endpoint_;
     }
 
-    cpr::Parameters CprParameters() const {   ///need to check if it is not empty i guess
+    cpr::Parameters CprParameters() {   ///need to check if it is not empty i guess
         return parameters_.ConvertToCpr();
     }
 
-    cpr::Header CprHeader() const {
+    cpr::Header &CprHeader() {
         return headers_;
     }
 
 
     cpr::Url CprUrl() const {
-        std::string url = parameters_["url"];
-        return {url};
+        return {url_};
     }
 
-    bool EmptyEndpoint() {
-        return endpoint_.empty();
+    void UpdateHeaders(const Headers &other) {
+        for (const auto &each: other) {
+            if (headers_.contains(each.first)) {
+                headers_[each.first] = each.second;
+            } else {
+                headers_.insert(each);
+            }
+        }
+    }
+
+    void UpdateUrl(const std::string &other_url) {
+        url_ = other_url;
+    }
+
+    bool ContainsParameter(const std::string &parameter) {
+        return parameters_.Contains(parameter);
+    }
+
+    std::string GetParameter(const std::string& parameter){
+        return parameters_[parameter];
+    }
+
+    bool RemoveParameter(const std::string &parameter){
+        return parameters_.Erase(parameter);
     }
 
 
@@ -54,6 +76,7 @@ private:
     std::string endpoint_;
     QueryArgs parameters_;
     Headers headers_;
+    std::string url_;
 public:
     std::string auto_code_;
 };
