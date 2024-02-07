@@ -48,6 +48,12 @@ int main() {
             ([](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
                 auto token_response = accesslink.GetAccessToken(authorization_code);
+                YAML::Node config = YAML::LoadFile("../../config.yaml");
+                config["user_id"] = to_string(token_response["x_user_id"]);
+                config["access_token"] = to_string(token_response["access_token"]);
+                std::ofstream file_out("../../config.yaml");
+                file_out << config;
+                file_out.close();
                 CROW_LOG_INFO << "Client authorized! You can now close this page.";
                 return crow::response{200};
             });
