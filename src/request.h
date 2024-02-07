@@ -6,9 +6,8 @@ class Request {
 public:
     Request() = default;
 
-    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers,
-            const std::string &auto_code = "")
-            : endpoint_(endpoint), parameters_(query_args), headers_(headers), auto_code_(auto_code) {};
+    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers, std::string_view url = "")
+            : endpoint_(endpoint), parameters_(query_args), headers_(headers), url_(url) {};
 
     Request(std::string_view endpoint, const QueryArgs &query_args)
             : endpoint_(endpoint), parameters_(query_args), headers_({}) {};
@@ -63,11 +62,11 @@ public:
         return parameters_.Contains(parameter);
     }
 
-    std::string GetParameter(const std::string& parameter){
+    std::string GetParameter(const std::string &parameter) {
         return parameters_[parameter];
     }
 
-    bool RemoveParameter(const std::string &parameter){
+    bool RemoveParameter(const std::string &parameter) {
         return parameters_.Erase(parameter);
     }
 
@@ -77,6 +76,4 @@ private:
     QueryArgs parameters_;
     Headers headers_;
     std::string url_;
-public:
-    std::string auto_code_;
 };

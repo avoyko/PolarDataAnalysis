@@ -24,9 +24,8 @@ ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_cod
                        {"Accept",       "application/json;charset=UTF-8"}};
 
     QueryArgs payload{{"grant_type", "authorization_code"},
-                      {"code",       authorization_code},
-                      {"url",        access_token_url_}};
-    Request request_body{Utils::EMPTY_ENDPOINT, payload, headers, authorization_code};
+                      {"code",       authorization_code}};
+    Request request_body{Utils::EMPTY_ENDPOINT, payload, headers, access_token_url_};
     auto response = Post(request_body);
     return response;
 }
