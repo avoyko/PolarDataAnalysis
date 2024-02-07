@@ -39,7 +39,7 @@ int main() {
             ([](const crow::request &req) {
                 CROW_LOG_INFO << "Client is redirected for authorization";
                 crow::response res{200};
-                res.redirect(accesslink.get_auth_url());
+                res.redirect(accesslink.GetAuthUrl());
                 return res;
             });
 
@@ -47,7 +47,7 @@ int main() {
             ([&app](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
 //                CROW_LOG_DEBUG << authorization_code;
-                auto token_response = accesslink.get_access_token(authorization_code);
+                auto token_response = accesslink.GetAccessToken(authorization_code);
                 CROW_LOG_INFO << "Client authorized! You can now close this page.";
                 return crow::response{200};
             });

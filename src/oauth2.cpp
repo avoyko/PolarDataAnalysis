@@ -1,14 +1,14 @@
 #include "oauth2.hpp"
 
 
-Headers OAuth2Client::get_auth_headers(const std::string &access_token) {
+Headers OAuth2Client::GetAuthHeaders(const std::string &access_token) {
     Headers headers{{"Authorization", "Bearer " + access_token},
                     {"Content-Type",  "application/json"},
                     {"Accept",        "application/json"}};
     return headers;
 }
 
-std::string OAuth2Client::get_authorization_url(const std::string response_type) {
+std::string OAuth2Client::GetAuthorizationUrl(const std::string response_type) {
     QueryArgs params{{"client_id",     client_id_},
                      {"response_type", response_type}};
     if (!redirect_url_.empty()) {
@@ -19,7 +19,7 @@ std::string OAuth2Client::get_authorization_url(const std::string response_type)
     return fmt.str();
 }
 
-ParsedResponse OAuth2Client::get_access_token(const std::string &authorization_code) {
+ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_code) {
     Headers headers = {{"Content-Type", "application/x-www-form-urlencoded"},
                        {"Accept",       "application/json;charset=UTF-8"}};
 
@@ -27,22 +27,22 @@ ParsedResponse OAuth2Client::get_access_token(const std::string &authorization_c
                       {"code",       authorization_code},
                       {"url",        access_token_url_}};
     Request request_body{Utils::EMPTY_ENDPOINT, payload, headers, authorization_code};
-    auto response = post(request_body);
+    auto response = Post(request_body);
     return response;
 }
 
 
-void OAuth2Client::prepare_request(Request &request_body) {
+void OAuth2Client::PrepareRequest(Request &request_body) {
     request_body.UpdateUrl(url_ + request_body.GetEndpoint());
     if (request_body.ContainsParameter("access_token")) {
-        Headers auth_headers = get_auth_headers(request_body.GetParameter("access_token"));
+        Headers auth_headers = GetAuthHeaders(request_body.GetParameter("access_token"));
         request_body.UpdateHeaders(auth_headers);
         request_body.RemoveParameter("access_token");
     }
 }
 
 
-ParsedResponse OAuth2Client::parse_response(Response &response) {
+ParsedResponse OAuth2Client::ParseResponse(Response &response) {
 
     if (response.status_code >= 400) {
         boost::format fmt =
@@ -64,27 +64,27 @@ ParsedResponse OAuth2Client::parse_response(Response &response) {
 };
 
 template<class Method>
-ParsedResponse OAuth2Client::_request(Method method, Request &request_body) {
-    prepare_request(request_body);
+ParsedResponse OAuth2Client::ProcessRequest(Method method, Request &request_body) {
+    PrepareRequest(request_body);
     Response response = method.MakeRequest(request_body.CprUrl(),
                                            request_body.CprParameters(),
                                            request_body.CprHeader(),
                                            cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
-    return parse_response(response);
+    return ParseResponse(response);
 }
 
-ParsedResponse OAuth2Client::get(Request &request_body) {
-    return _request(Get(), request_body);
+ParsedResponse OAuth2Client::Get(Request &request_body) {
+    return ProcessRequest(GetRequest(), request_body);
 }
 
-ParsedResponse OAuth2Client::put(Request &request_body) {
-    return _request(Put(), request_body);
+ParsedResponse OAuth2Client::Put(Request &request_body) {
+    return ProcessRequest(PutRequest(), request_body);
 }
 
-ParsedResponse OAuth2Client::post(Request &request_body) {
-    return _request(Post(), request_body);
+ParsedResponse OAuth2Client::Post(Request &request_body) {
+    return ProcessRequest(PostRequest(), request_body);
 }
 
-ParsedResponse OAuth2Client::remove(Request &request_body) {
-    return _request(Delete(), request_body);
+ParsedResponse OAuth2Client::Delete(Request &request_body) {
+    return ProcessRequest(DeleteRequest(), request_body);
 }

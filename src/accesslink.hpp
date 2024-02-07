@@ -23,20 +23,20 @@ public:
           daily_activity_(oauth_),
           users_(oauth_){};
 
-    std::string get_auth_url();
+    std::string GetAuthUrl();
 
-    json get_access_token(const std::string &authorization_code);
+    json GetAccessToken(const std::string &authorization_code);
 
-    ParsedResponse get_exercises(const std::string &access_token);
+    ParsedResponse GetExercises(const std::string &access_token);
 
-    ParsedResponse get_sleep(const std::string &access_token);
+    ParsedResponse GetSleep(const std::string &access_token);
 
-    ParsedResponse get_recharge(const std::string &access_token);
+    ParsedResponse GetRecharge(const std::string &access_token);
 
-    ParsedResponse get_userdata(const std::string &access_token,
+    ParsedResponse GetUserdata(const std::string &access_token,
                                                const std::string &user_id);
 
-    ParsedResponse register_user(const std::string &access_token);
+    ParsedResponse RegisterUser(const std::string &access_token);
 
 private:
     OAuth2Client oauth_;

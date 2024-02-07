@@ -18,7 +18,7 @@ public:
         Request request_body{Utils::EMPTY_ENDPOINT,
                              QueryArgs{{"url",          transaction_url_},
                                        {"access_token", access_token_}}};
-        return _put(request_body);
+        return PutData(request_body);
     }
 
 protected:

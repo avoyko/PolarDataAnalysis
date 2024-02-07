@@ -7,22 +7,22 @@ public:
     explicit Resource(const OAuth2Client &oauth) : oauth_(oauth){};
 
 
-    ParsedResponse _get(Request &request) {
-        return oauth_.get(request);
+    ParsedResponse GetData(Request &request) {
+        return oauth_.Get(request);
     }
 
 
-    ParsedResponse _post(Request &request) {
-        return oauth_.post(request);
+    ParsedResponse PostData(Request &request) {
+        return oauth_.Post(request);
     }
 
 
-    ParsedResponse _put(Request &request) {
-        return oauth_.put(request);
+    ParsedResponse PutData(Request &request) {
+        return oauth_.Put(request);
     }
 
-    ParsedResponse _delete(Request &request) {
-        return oauth_.remove(request);
+    ParsedResponse DeleteData(Request &request) {
+        return oauth_.Delete(request);
     }
 
     ~Resource() = default;

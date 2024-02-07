@@ -91,9 +91,9 @@ private:
     std::unordered_map<std::string, std::string> mp_;
 };
 
-class Get {
+class GetRequest {
 public:
-    Get() = default;
+    GetRequest() = default;
 
     template<typename... Args>
     cpr::Response MakeRequest(Args &&... args) {
@@ -101,9 +101,9 @@ public:
     }
 };
 
-class Post {
+class PostRequest {
 public:
-    Post() = default;
+    PostRequest() = default;
 
     template<typename... Args>
     cpr::Response MakeRequest(Args &&... args) {
@@ -111,9 +111,9 @@ public:
     }
 };
 
-class Put {
+class PutRequest {
 public:
-    Put() = default;
+    PutRequest() = default;
 
     template<typename... Args>
     cpr::Response MakeRequest(Args &&... args) {
@@ -121,9 +121,9 @@ public:
     }
 };
 
-class Delete {
+class DeleteRequest {
 public:
-    Delete() = default;
+    DeleteRequest() = default;
 
     template<typename... Args>
     cpr::Response MakeRequest(Args &&... args) {

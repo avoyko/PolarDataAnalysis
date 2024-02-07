@@ -10,7 +10,7 @@ class TrainingData : public Resource {
         std::string user_exercise_transactions_path =
                 "/users/" + std::to_string(user_id) + "/exercise-transactions";
         Request request_body{user_exercise_transactions_path, {{"access_token", access_token}}};
-        auto response = _post(request_body);
+        auto response = PostData(request_body);
         ///damn, we might pass json or just string,  i dont know what to do :-(
         return TrainingDataTransaction(oauth_, " response", user_id,
                                        access_token);  /// this must be changed cu

@@ -16,26 +16,26 @@ public:
               client_id_(client_id),
               client_secret_(client_secret) {};
 
-    Headers get_auth_headers(const std::string &access_token);
+    Headers GetAuthHeaders(const std::string &access_token);
 
-    std::string get_authorization_url(std::string response_type = "code");
+    std::string GetAuthorizationUrl(std::string response_type = "code");
 
-    json get_access_token(const std::string &authorization_code);
+    json GetAccessToken(const std::string &authorization_code);
 
-    void prepare_request(Request &request_body);
+    void PrepareRequest(Request &request_body);
 
-    ParsedResponse parse_response(Response &response);
+    ParsedResponse ParseResponse(Response &response);
 
     template<class Method>
-    ParsedResponse _request(Method method, Request &request_body);
+    ParsedResponse ProcessRequest(Method method, Request &request_body);
 
-    ParsedResponse get(Request &request_body);
+    ParsedResponse Get(Request &request_body);
 
-    ParsedResponse put(Request &request_body);
+    ParsedResponse Put(Request &request_body);
 
-    ParsedResponse post(Request &request_body);
+    ParsedResponse Post(Request &request_body);
 
-    ParsedResponse remove(Request &request_body);
+    ParsedResponse Delete(Request &request_body);
 
     ~OAuth2Client() = default;
 
