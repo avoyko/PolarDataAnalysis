@@ -25,18 +25,20 @@ ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_cod
 
     QueryArgs payload{{"grant_type", "authorization_code"},
                       {"code",       authorization_code}};
-    Request request_body{Utils::EMPTY_ENDPOINT, payload, headers, access_token_url_};
+    Request request_body{Utils::EMPTY_ENDPOINT, payload, headers};
     auto response = Post(request_body);
     return response;
 }
 
 
 void OAuth2Client::PrepareRequest(Request &request_body) {
-    request_body.UpdateUrl(url_ + request_body.GetEndpoint());
     if (request_body.ContainsParameter("access_token")) {
         Headers auth_headers = GetAuthHeaders(request_body.GetParameter("access_token"));
         request_body.UpdateHeaders(auth_headers);
         request_body.RemoveParameter("access_token");
+        request_body.UpdateUrl(url_ + request_body.GetEndpoint());
+    } else {
+        request_body.UpdateUrl(access_token_url_);
     }
 }
 
