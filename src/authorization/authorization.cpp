@@ -10,27 +10,10 @@
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
-//int shutdown(crow::SimpleApp &app) {
-//    CROW_LOG_INFO << "Server is shutting down";
-//    app.stop();
-//    return 0;
-//}
-
-void authorize() {
-//    Response response = cpr::Get(cpr::Url(Links::AUTHORIZATION_URL));
-//    std::string authorization_code = json::parse(response.text)["code"];
-//    json token_response = accesslink.get_access_token(authorization_code);
-//
-//    std::string user_id = token_response["x_user_id"];
-//    std::string access_token = token_response["access_token"];
-//
-//    try {
-//        accesslink.register_user(access_token);
-//    } catch (...) {  /// it should be smth like exceptions.HTTPError
-//        throw;
-//    }
-
-
+int shutdown(crow::SimpleApp &app) {
+    CROW_LOG_INFO << "Server is shutting down";
+    app.stop();
+    return 0;
 }
 
 int main() {
@@ -45,15 +28,23 @@ int main() {
             });
 
     CROW_ROUTE(app, Callback::OAUTHPOINT)
-            ([](const crow::request &req) {
+            ([&app](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
                 auto token_response = accesslink.GetAccessToken(authorization_code);
+                std::string string_access_token = to_string(token_response["access_token"]);
+                string_access_token = string_access_token.substr(1, string_access_token.size() - 2);
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
                 config["user_id"] = to_string(token_response["x_user_id"]);
-                config["access_token"] = to_string(token_response["access_token"]);
+                config["access_token"] = string_access_token;
                 std::ofstream file_out("../../config.yaml");
                 file_out << config;
                 file_out.close();
+                try {
+                    accesslink.RegisterUser(config["access_token"].as<std::string>());
+                } catch (...) {
+                    throw;
+                }
+                shutdown(app);
                 CROW_LOG_INFO << "Client authorized! You can now close this page.";
                 return crow::response{200};
             });

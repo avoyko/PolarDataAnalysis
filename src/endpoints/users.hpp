@@ -9,8 +9,9 @@ public:
     ParsedResponse Record(
             const std::string &access_token,
             boost::uuids::uuid member_id = boost::uuids::random_generator()()) {
-        Request request_body{"/users", {{"access_token", access_token}},
-                             Headers{{"member-id", boost::uuids::to_string(member_id)}}};
+        Request request_body{"/users",
+                             {{"access_token", access_token}, {"member-id", boost::uuids::to_string(member_id)}}};
+        request_body.SetAutorized();
         return PostData(request_body);
     }
 

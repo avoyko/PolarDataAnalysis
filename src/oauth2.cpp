@@ -67,10 +67,20 @@ ParsedResponse OAuth2Client::ParseResponse(Response &response) {
 template<class Method>
 ParsedResponse OAuth2Client::ProcessRequest(Method method, Request &request_body) {
     PrepareRequest(request_body);
-    Response response = method.MakeRequest(request_body.CprUrl(),
-                                           request_body.CprParameters(),
-                                           request_body.CprHeader(),
-                                           cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
+    Response response;
+    if (request_body.Autorized()) {
+        json my_json;
+        // Well it seems like we need to add Body in request, because now it's kinda weird way (but it works)
+        my_json["member-id"] = request_body.GetParameter("member-id");
+        response = method.MakeRequest(cpr::Body{my_json.dump()},
+                                      request_body.CprUrl(),
+                                      request_body.CprHeader());
+    } else {
+        response = method.MakeRequest(request_body.CprUrl(),
+                                      request_body.CprParameters(),
+                                      request_body.CprHeader(),
+                                      cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
+    }
     return ParseResponse(response);
 }
 

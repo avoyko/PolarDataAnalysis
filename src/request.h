@@ -7,11 +7,10 @@ public:
     Request() = default;
 
     Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers, std::string_view url = "")
-            : endpoint_(endpoint), parameters_(query_args), headers_(headers), url_(url) {};
+            : endpoint_(endpoint), parameters_(query_args), headers_(headers), url_(url), is_authorized_(false) {};
 
     Request(std::string_view endpoint, const QueryArgs &query_args)
-            : endpoint_(endpoint), parameters_(query_args), headers_({}) {};
-
+            : endpoint_(endpoint), parameters_(query_args) {};
 
     ~Request() = default;
 
@@ -38,7 +37,6 @@ public:
     cpr::Header &CprHeader() {
         return headers_;
     }
-
 
     cpr::Url CprUrl() const {
         return {url_};
@@ -70,10 +68,18 @@ public:
         return parameters_.Erase(parameter);
     }
 
+    bool Autorized() const {
+        return is_authorized_;
+    }
+
+    bool SetAutorized() {
+        is_authorized_ = true;
+    }
 
 private:
     std::string endpoint_;
     QueryArgs parameters_;
     Headers headers_;
     std::string url_;
+    bool is_authorized_;
 };
