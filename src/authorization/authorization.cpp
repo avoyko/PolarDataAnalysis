@@ -28,7 +28,7 @@ int main() {
     CROW_ROUTE(app, Callback::OAUTHPOINT)
             ([&app](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
-                auto token_response = accesslink.GetAccessToken(authorization_code);
+                json token_response = accesslink.GetAccessToken(authorization_code);
                 std::string string_access_token = to_string(token_response["access_token"]);
                 string_access_token = string_access_token.substr(1, string_access_token.size() - 2);
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
@@ -39,6 +39,7 @@ int main() {
                 file_out.close();
                 try {
                     accesslink.RegisterUser(config["access_token"].as<std::string>());
+                    CROW_LOG_INFO << "Successfully logged in";
                 } catch (long exception_code) {
                     if (exception_code == 409) {
                         CROW_LOG_INFO << "User has been already registered";

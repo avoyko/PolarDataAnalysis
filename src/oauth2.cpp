@@ -14,7 +14,6 @@ std::string OAuth2Client::GetAuthorizationUrl(const std::string response_type) {
     if (!redirect_url_.empty()) {
         params.Add({"redirect_uri", redirect_url_});
     }
-
     boost::format fmt = boost::format("%1%?%2%") % authorization_url_ % params.UrlEncode();
     return fmt.str();
 }
@@ -28,7 +27,6 @@ ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_cod
 
     Request request_body{Utils::EMPTY_ENDPOINT, payload, headers};
     PrepareRequest(request_body); // Now we prepare it here
-
     return Post(request_body.CprUrl(), request_body.CprParameters(), request_body.CprHeader(),
                 cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
 }
@@ -66,27 +64,4 @@ ParsedResponse OAuth2Client::ParseResponse(Response &response) {
         return {{"error", error.id}};
     }
 };
-
-
-/// Old version
-
-//template<class Method>
-//ParsedResponse OAuth2Client::ProcessRequest(Method method, Request& request_body) {
-//    PrepareRequest(request_body);
-//    Response response;
-//    if (request_body.Autorized()) {
-//        json my_json;
-//        // Well it seems like we need to add Body in request, because now it's kinda weird way (but it works)
-//        my_json["member-id"] = request_body.GetParameter("member-id");
-//        response = method.MakeRequest(cpr::Body{my_json.dump()},
-//                                      request_body.CprUrl(),
-//                                      request_body.CprHeader());
-//    } else {
-//        response = method.MakeRequest(request_body.CprUrl(),
-//                                      request_body.CprParameters(),
-//                                      request_body.CprHeader(),
-//                                      cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
-//    }
-//    return ParseResponse(response);
-//}
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "cpr/cpr.h"
+#include <cpr/cpr.h>
 #include <cstddef>
 #include <initializer_list>
 #include <nlohmann/json.hpp>
@@ -24,7 +24,6 @@ using Payload = cpr::Payload;
 namespace Utils {
     const std::string EMPTY_ENDPOINT;
 }
-
 
 class QueryArgs {
     using KeyValue = std::pair<const std::string, std::string>;
@@ -86,44 +85,4 @@ public:
 
 private:
     std::unordered_map<std::string, std::string> mp_;
-};
-
-class GetRequest {
-public:
-    GetRequest() = default;
-
-    template<typename... Args>
-    cpr::Response MakeRequest(Args &&... args) {
-        return cpr::Get(std::forward<Args>(args)...);
-    }
-};
-
-class PostRequest {
-public:
-    PostRequest() = default;
-
-    template<typename... Args>
-    cpr::Response MakeRequest(Args &&... args) {
-        return cpr::Post(std::forward<Args>(args)...);
-    }
-};
-
-class PutRequest {
-public:
-    PutRequest() = default;
-
-    template<typename... Args>
-    cpr::Response MakeRequest(Args &&... args) {
-        return cpr::Put(std::forward<Args>(args)...);
-    }
-};
-
-class DeleteRequest {
-public:
-    DeleteRequest() = default;
-
-    template<typename... Args>
-    cpr::Response MakeRequest(Args &&... args) {
-        return cpr::Delete(std::forward<Args>(args)...);
-    }
 };
