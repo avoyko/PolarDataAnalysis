@@ -4,26 +4,25 @@
 
 class Resource {
 public:
-    explicit Resource(const OAuth2Client &oauth) : oauth_(oauth){};
+    explicit Resource(const OAuth2Client &oauth) : oauth_(oauth) {};
 
 
-    ParsedResponse GetData(Request &request) {
-        return oauth_.Get(request);
+//    ParsedResponse GetData(Request &request) {
+//        return oauth_.Get(request);
+//    }
+
+    template<typename ...CprRequestParameters>
+    ParsedResponse PostData(CprRequestParameters &&... parameters) {
+        return oauth_.Post(std::forward<CprRequestParameters>(parameters)...);
     }
 
-
-    ParsedResponse PostData(Request &request) {
-        return oauth_.Post(request);
-    }
-
-
-    ParsedResponse PutData(Request &request) {
-        return oauth_.Put(request);
-    }
-
-    ParsedResponse DeleteData(Request &request) {
-        return oauth_.Delete(request);
-    }
+//    ParsedResponse PutData(Request &request) {
+//        return oauth_.Put(request);
+//    }
+//
+//    ParsedResponse DeleteData(Request &request) {
+//        return oauth_.Delete(request);
+//    }
 
     ~Resource() = default;
 

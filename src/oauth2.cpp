@@ -25,9 +25,12 @@ ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_cod
 
     QueryArgs payload{{"grant_type", "authorization_code"},
                       {"code",       authorization_code}};
+
     Request request_body{Utils::EMPTY_ENDPOINT, payload, headers};
-    auto response = Post(request_body);
-    return response;
+    PrepareRequest(request_body); // Now we prepare it here
+
+    return Post(request_body.CprUrl(), request_body.CprParameters(), request_body.CprHeader(),
+                cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
 }
 
 
@@ -44,12 +47,12 @@ void OAuth2Client::PrepareRequest(Request &request_body) {
 
 
 ParsedResponse OAuth2Client::ParseResponse(Response &response) {
-
     if (response.status_code >= 400) {
-        boost::format fmt =
-                boost::format("%1% %2%: %3%") % response.status_code % response.reason % response.text;
-        std::string message = fmt.str();
-        throw cpr::Error(response.status_code, std::move(message));
+//        boost::format fmt =
+//                boost::format("%1% %2%: %3%") % response.status_code % response.reason % response.text;
+//        std::string message = fmt.str();
+//        throw cpr::Error(response.status_code, std::move(message));
+        throw response.status_code;
     }
 
     if (response.status_code == 204) {
@@ -64,38 +67,26 @@ ParsedResponse OAuth2Client::ParseResponse(Response &response) {
     }
 };
 
-template<class Method>
-ParsedResponse OAuth2Client::ProcessRequest(Method method, Request &request_body) {
-    PrepareRequest(request_body);
-    Response response;
-    if (request_body.Autorized()) {
-        json my_json;
-        // Well it seems like we need to add Body in request, because now it's kinda weird way (but it works)
-        my_json["member-id"] = request_body.GetParameter("member-id");
-        response = method.MakeRequest(cpr::Body{my_json.dump()},
-                                      request_body.CprUrl(),
-                                      request_body.CprHeader());
-    } else {
-        response = method.MakeRequest(request_body.CprUrl(),
-                                      request_body.CprParameters(),
-                                      request_body.CprHeader(),
-                                      cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
-    }
-    return ParseResponse(response);
-}
 
-ParsedResponse OAuth2Client::Get(Request &request_body) {
-    return ProcessRequest(GetRequest(), request_body);
-}
+/// Old version
 
-ParsedResponse OAuth2Client::Put(Request &request_body) {
-    return ProcessRequest(PutRequest(), request_body);
-}
+//template<class Method>
+//ParsedResponse OAuth2Client::ProcessRequest(Method method, Request& request_body) {
+//    PrepareRequest(request_body);
+//    Response response;
+//    if (request_body.Autorized()) {
+//        json my_json;
+//        // Well it seems like we need to add Body in request, because now it's kinda weird way (but it works)
+//        my_json["member-id"] = request_body.GetParameter("member-id");
+//        response = method.MakeRequest(cpr::Body{my_json.dump()},
+//                                      request_body.CprUrl(),
+//                                      request_body.CprHeader());
+//    } else {
+//        response = method.MakeRequest(request_body.CprUrl(),
+//                                      request_body.CprParameters(),
+//                                      request_body.CprHeader(),
+//                                      cpr::Authentication{client_id_, client_secret_, cpr::AuthMode::BASIC});
+//    }
+//    return ParseResponse(response);
+//}
 
-ParsedResponse OAuth2Client::Post(Request &request_body) {
-    return ProcessRequest(PostRequest(), request_body);
-}
-
-ParsedResponse OAuth2Client::Delete(Request &request_body) {
-    return ProcessRequest(DeleteRequest(), request_body);
-}

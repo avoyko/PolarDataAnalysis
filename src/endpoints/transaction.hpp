@@ -14,12 +14,12 @@ public:
               user_id_(user_id),
               access_token_(std::move(access_token)) {};
 
-    ParsedResponse Commit() {
-        Request request_body{Utils::EMPTY_ENDPOINT,
-                             QueryArgs{{"url",          transaction_url_},
-                                       {"access_token", access_token_}}};
-        return PutData(request_body);
-    }
+//    ParsedResponse Commit() {
+//        Request request_body{Utils::EMPTY_ENDPOINT,
+//                             QueryArgs{{"url",          transaction_url_},
+//                                       {"access_token", access_token_}}};
+//        return PutData(request_body);
+//    }
 
 protected:
     std::string transaction_url_;

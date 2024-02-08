@@ -2,11 +2,9 @@
 
 #include <crow/app.h>
 #include <crow/logging.h>
-#include <cpr/error.h>
 #include <cpr/cpr.h>
 #include "yaml-cpp/yaml.h"
 #include <cpr/parameters.h>
-#include <iostream>
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
@@ -41,10 +39,12 @@ int main() {
                 file_out.close();
                 try {
                     accesslink.RegisterUser(config["access_token"].as<std::string>());
-                } catch (...) {
-                    throw;
+                } catch (long exception_code) {
+                    if (exception_code == 409) {
+                        CROW_LOG_INFO << "User has been already registered";
+                    }
                 }
-                shutdown(app);
+//                shutdown(app);
                 CROW_LOG_INFO << "Client authorized! You can now close this page.";
                 return crow::response{200};
             });

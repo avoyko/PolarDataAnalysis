@@ -26,16 +26,19 @@ public:
 
     ParsedResponse ParseResponse(Response &response);
 
-    template<class Method>
-    ParsedResponse ProcessRequest(Method method, Request &request_body);
+    template<class Method, typename ...CprRequestParameters>
+    ParsedResponse ProcessRequest(Method method, CprRequestParameters &&... parameters);
 
-    ParsedResponse Get(Request &request_body);
+    // TODO I changed only Post Functions, other in process
 
-    ParsedResponse Put(Request &request_body);
+//    ParsedResponse Get(Request &request_body);
+//
+//    ParsedResponse Put(Request &request_body);
 
-    ParsedResponse Post(Request &request_body);
+    template<typename ...CprRequestParameters>
+    ParsedResponse Post(CprRequestParameters &&... parameters);
 
-    ParsedResponse Delete(Request &request_body);
+//    ParsedResponse Delete(Request &request_body);
 
     ~OAuth2Client() = default;
 
@@ -49,3 +52,28 @@ private:
     const std::string client_id_;
     const std::string client_secret_;
 };
+
+// TODO I guess we don't need it anymore
+
+template<class Method, typename ...CprRequestParameters>
+ParsedResponse OAuth2Client::ProcessRequest(Method method, CprRequestParameters &&... parameters) {
+    Response response = method.MakeRequest(std::forward<CprRequestParameters>(parameters)...);
+    return ParseResponse(response);
+}
+
+//ParsedResponse OAuth2Client::Get(Request &request_body) {
+//    return ProcessRequest(GetRequest(), request_body);
+//}
+//
+//ParsedResponse OAuth2Client::Put(Request &request_body) {
+//    return ProcessRequest(PutRequest(), request_body);
+//}
+
+template<typename ...CprRequestParameters>
+ParsedResponse OAuth2Client::Post(CprRequestParameters &&... parameters) {
+    return ProcessRequest(PostRequest(), std::forward<CprRequestParameters>(parameters)...);
+}
+
+//ParsedResponse OAuth2Client::Delete(Request &request_body) {
+//    return ProcessRequest(DeleteRequest(), request_body);
+//}
