@@ -11,9 +11,6 @@ Headers OAuth2Client::GetAuthHeaders(const std::string &access_token) {
 std::string OAuth2Client::GetAuthorizationUrl(const std::string response_type) {
     QueryArgs params{{"client_id",     client_id_},
                      {"response_type", response_type}};
-    if (!redirect_url_.empty()) {
-        params.Add({"redirect_uri", redirect_url_});
-    }
     boost::format fmt = boost::format("%1%?%2%") % authorization_url_ % params.UrlEncode();
     return fmt.str();
 }

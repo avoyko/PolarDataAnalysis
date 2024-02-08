@@ -21,9 +21,8 @@ public:
 //        return DeleteData(request_body);
 //    }
 //
-//
 //    ParsedResponse GetInformation(const int &user_id, std::string &access_token) {
 //        Request request_body{"/users/" + std::to_string(user_id), {{"access_token", access_token}}};
-//        return GetData(request_body);
+//        return oauth_.Get(request_body);
 //    }
 };
