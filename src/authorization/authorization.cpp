@@ -26,12 +26,12 @@ int main() {
             });
 
     CROW_ROUTE(app, Callback::OAUTHPOINT)
-            ([&app](const crow::request &req) {
+            ([](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
                 json token_response = accesslink.GetAccessToken(authorization_code);
                 std::string string_access_token = token_response["access_token"].get<std::string>();
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
-                config["user_id"] = to_string(token_response["x_user_id"]);
+                config["user_id"] = std::to_string(token_response["x_user_id"].get<int>());
                 config["access_token"] = string_access_token;
                 std::ofstream file_out("../../config.yaml");
                 file_out << config;
@@ -44,10 +44,22 @@ int main() {
                         CROW_LOG_INFO << "User has been already registered";
                     }
                 }
+                crow::response res{200};
+                res.redirect(Client::DATA_URI);
+                return res;
+            });
+    CROW_ROUTE(app, Callback::DATAPOINT)
+            ([](const crow::request &req) {
+                YAML::Node config = YAML::LoadFile("../../config.yaml");
                 ParsedResponse info_response = accesslink.GetUserdata(config["access_token"].as<std::string>(),
                                                                       config["user_id"].as<std::string>());
-                CROW_LOG_INFO << "Client authorized! You can now close this page.";
-                return crow::response{200};
+                auto first_name = info_response["first-name"].get<std::string>();
+                auto last_name = info_response["last-name"].get<std::string>();
+                crow::mustache::set_base("../../src/templates");
+                auto page = crow::mustache::load("hello.html");
+                crow::mustache::context ctx({{"first_name", first_name},
+                                             {"last_name",  last_name}});
+                return page.render(ctx);
             });
     CROW_LOG_INFO << "₍ᐢ･⚇･ᐢ₎ <---- Andrey Voyko. Navigate to http://localhost:5002/ to register user.";
     app.port(Callback::PORT).run();
