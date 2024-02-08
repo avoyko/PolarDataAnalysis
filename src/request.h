@@ -72,7 +72,7 @@ public:
         return is_authorized_;
     }
 
-    bool SetAutorized() {
+    void SetAutorized() {
         is_authorized_ = true;
     }
 
