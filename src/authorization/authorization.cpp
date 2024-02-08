@@ -55,10 +55,14 @@ int main() {
                                                                       config["user_id"].as<std::string>());
                 auto first_name = info_response["first-name"].get<std::string>();
                 auto last_name = info_response["last-name"].get<std::string>();
+                auto height = info_response["height"].get<float>();
+                auto weight = info_response["weight"].get<float>();
                 crow::mustache::set_base("../../src/templates");
                 auto page = crow::mustache::load("hello.html");
                 crow::mustache::context ctx({{"first_name", first_name},
-                                             {"last_name",  last_name}});
+                                             {"last_name",  last_name},
+                                             {"height",     height},
+                                             {"weight",     weight}});
                 return page.render(ctx);
             });
     CROW_LOG_INFO << "₍ᐢ･⚇･ᐢ₎ <---- Andrey Voyko. Navigate to http://localhost:5002/ to register user.";
