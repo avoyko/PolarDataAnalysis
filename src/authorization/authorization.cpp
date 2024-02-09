@@ -1,4 +1,4 @@
-#include "authorization.hpp"
+#include "authorization.h"
 
 #include <crow/app.h>
 #include <crow/logging.h>
@@ -65,6 +65,6 @@ int main() {
                                              {"weight",     weight}});
                 return page.render(ctx);
             });
-    CROW_LOG_INFO << "₍ᐢ･⚇･ᐢ₎ <---- Andrey Voyko. Navigate to http://localhost:5002/ to register user.";
+    CROW_LOG_INFO << "₍ᐢ･⚇･ᐢ₎ <---- NIKITA GLEBSKIY. Navigate to http://localhost:5002/ to register user.";
     app.port(Callback::PORT).run();
 }

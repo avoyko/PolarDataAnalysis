@@ -51,8 +51,6 @@ public:
         return ParseResponse(response);
     }
 
-    // TODO how about creating wrapper of request args???
-
 private:
     const std::string url_;
     const std::string authorization_url_;

@@ -6,11 +6,12 @@ class Request {
 public:
     Request() = default;
 
-    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers, std::string_view url = "")
+    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers = {}, std::string_view url = "",
+            const Body &body = "")
             : endpoint_(endpoint), parameters_(query_args), headers_(headers), url_(url) {};
 
-    Request(std::string_view endpoint, const QueryArgs &query_args)
-            : endpoint_(endpoint), parameters_(query_args) {};
+//    Request(std::string_view endpoint, const QueryArgs &query_args)
+//            : endpoint_(endpoint), parameters_(query_args) {};
 
     ~Request() = default;
 
