@@ -2,7 +2,7 @@
 
 #include <utility>
 
-#include "resource.hpp"
+#include "resource.h"
 
 
 class Transaction : public Resource {

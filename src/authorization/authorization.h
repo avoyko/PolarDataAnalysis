@@ -3,8 +3,8 @@
 #include <crow/utility.h>
 #include <crow/app.h>
 #include "crow.h"
-#include "../oauth2.hpp"
-#include "../accesslink.hpp"
+#include "../oauth2.h"
+#include "../accesslink.h"
 
 namespace Callback {
     constexpr char OAUTHPOINT[] = "/oauth2_callback";

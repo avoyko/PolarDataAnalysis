@@ -1,8 +1,8 @@
 #pragma once
 
 #include <numeric>
-#include "resource.hpp"
-#include "training_data_transaction.hpp"
+#include "resource.h"
+#include "training_data_transaction.h"
 
 class TrainingData : public Resource {
 

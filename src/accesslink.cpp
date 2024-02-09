@@ -1,4 +1,4 @@
-#include "accesslink.hpp"
+#include "accesslink.h"
 
 std::string AccessLink::GetAuthUrl() {
     return oauth_.GetAuthorizationUrl();

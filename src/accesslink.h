@@ -1,10 +1,10 @@
 #pragma once
-#include "oauth2.hpp"
-#include "endpoints/users.hpp"
-#include "endpoints/pull_notifications.hpp"
-#include "endpoints/training_data.hpp"
-#include "endpoints/physical_info.hpp"
-#include "endpoints/daily_activity.hpp"
+#include "oauth2.h"
+#include "endpoints/users.h"
+#include "endpoints/pull_notifications.h"
+#include "endpoints/training_data.h"
+#include "endpoints/physical_info.h"
+#include "endpoints/daily_activity.h"
 
 namespace Links {
 const std::string AUTHORIZATION_URL = "https://flow.polar.com/oauth2/authorization";

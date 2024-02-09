@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../oauth2.hpp"
+#include "../oauth2.h"
 
 class PullNotifications {
 public:

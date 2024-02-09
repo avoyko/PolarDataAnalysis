@@ -1,6 +1,6 @@
 #pragma once  // streaming operators etc.
 
-#include "resource.hpp"
+#include "resource.h"
 
 class Users : public Resource {
 public:

@@ -1,4 +1,4 @@
-#include "oauth2.hpp"
+#include "oauth2.h"
 
 
 Headers OAuth2Client::GetAuthHeaders(const std::string &access_token) {

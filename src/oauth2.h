@@ -1,6 +1,6 @@
 #pragma once
 
-#include "utilities.hpp"
+#include "utilities.h"
 #include "request.h"
 
 class OAuth2Client {
