@@ -6,9 +6,9 @@ class Request {
 public:
     Request() = default;
 
-    Request(std::string_view endpoint, const QueryArgs &query_args, const Headers &headers = {}, std::string_view url = "",
+    Request(std::string_view endpoint, const Parameters &query_args = {}, const Headers &headers = {},
             const Body &body = "")
-            : endpoint_(endpoint), parameters_(query_args), headers_(headers), url_(url) {};
+            : endpoint_(endpoint), parameters_(query_args), headers_(headers) {};
 
 //    Request(std::string_view endpoint, const QueryArgs &query_args)
 //            : endpoint_(endpoint), parameters_(query_args) {};
@@ -19,16 +19,13 @@ public:
         headers_[header] = value;
     }
 
-    QueryArgs &GetParameters() {   // TODO need to check if it is not empty i guess
-        return parameters_;
-    }
 
     std::string &GetEndpoint() {
         return endpoint_;
     }
 
-    cpr::Parameters CprParameters() {   // TODO need to check if it is not empty i guess
-        return parameters_.ConvertToCpr();
+    cpr::Parameters CprParameters() {
+        return parameters_;
     }
 
     cpr::Header &CprHeader() {
@@ -53,21 +50,9 @@ public:
         url_ = other_url;
     }
 
-    bool ContainsParameter(const std::string &parameter) {
-        return parameters_.Contains(parameter);
-    }
-
-    std::string GetParameter(const std::string &parameter) {
-        return parameters_[parameter];
-    }
-
-    bool RemoveParameter(const std::string &parameter) {
-        return parameters_.Erase(parameter);
-    }
-
 private:
     std::string endpoint_;
-    QueryArgs parameters_;
+    Parameters parameters_;
     Headers headers_;
     std::string url_;
 };

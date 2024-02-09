@@ -24,8 +24,8 @@ json AccessLink::GetAccessToken(const std::string &authorization_code) {
 //}
 
 ParsedResponse AccessLink::GetUserdata(const std::string &access_token, const std::string &user_id) {
-    Request request_body{"/users/" + user_id, {{"access_token", access_token}}};
-    oauth_.PrepareRequest(request_body);
+    Request request_body{"/users/" + user_id, {}};
+    oauth_.PrepareRequest(request_body, access_token);
     return oauth_.Get(request_body.CprUrl(), request_body.CprHeader());
 }
 

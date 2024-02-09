@@ -9,9 +9,9 @@ Headers OAuth2Client::GetAuthHeaders(const std::string &access_token) {
 }
 
 std::string OAuth2Client::GetAuthorizationUrl(const std::string response_type) {
-    QueryArgs params{{"client_id",     client_id_},
-                     {"response_type", response_type}};
-    boost::format fmt = boost::format("%1%?%2%") % authorization_url_ % params.UrlEncode();
+    Parameters params{{"client_id",     client_id_},
+                      {"response_type", response_type}};
+    boost::format fmt = boost::format("%1%?%2%") % authorization_url_ % params.GetContent(cpr::CurlHolder());
     return fmt.str();
 }
 
@@ -19,8 +19,8 @@ ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_cod
     Headers headers = {{"Content-Type", "application/x-www-form-urlencoded"},
                        {"Accept",       "application/json;charset=UTF-8"}};
 
-    QueryArgs payload{{"grant_type", "authorization_code"},
-                      {"code",       authorization_code}};
+    Parameters payload{{"grant_type", "authorization_code"},
+                       {"code",       authorization_code}};
 
     Request request_body{Utils::EMPTY_ENDPOINT, payload, headers};
     PrepareRequest(request_body); // Now we prepare it here
@@ -29,14 +29,13 @@ ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_cod
 }
 
 
-void OAuth2Client::PrepareRequest(Request &request_body) {
-    if (request_body.ContainsParameter("access_token")) {
-        Headers auth_headers = GetAuthHeaders(request_body.GetParameter("access_token"));
-        request_body.UpdateHeaders(auth_headers);
-        request_body.RemoveParameter("access_token");
-        request_body.UpdateUrl(url_ + request_body.GetEndpoint());
-    } else {
+void OAuth2Client::PrepareRequest(Request &request_body, const std::string &access_token) {
+    if (access_token.empty()) {
         request_body.UpdateUrl(access_token_url_);
+    } else {
+        Headers auth_headers = GetAuthHeaders(access_token);
+        request_body.UpdateHeaders(auth_headers);
+        request_body.UpdateUrl(url_ + request_body.GetEndpoint());
     }
 }
 

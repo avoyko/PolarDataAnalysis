@@ -23,7 +23,7 @@ public:
 
     json GetAccessToken(const std::string &authorization_code);
 
-    void PrepareRequest(Request &request_body);
+    void PrepareRequest(Request &request_body, const std::string& access_token = "");
 
     static ParsedResponse ParseResponse(Response &response);
 
