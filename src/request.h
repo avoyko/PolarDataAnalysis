@@ -10,15 +10,11 @@ public:
             const Body &body = "")
             : endpoint_(endpoint), parameters_(query_args), headers_(headers) {};
 
-//    Request(std::string_view endpoint, const QueryArgs &query_args)
-//            : endpoint_(endpoint), parameters_(query_args) {};
-
     ~Request() = default;
 
     void AddHeader(const std::string &header, const std::string &value) {
         headers_[header] = value;
     }
-
 
     std::string &GetEndpoint() {
         return endpoint_;
