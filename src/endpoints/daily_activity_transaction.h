@@ -1,25 +1,37 @@
-//#pragma once
-//
-//#include "transaction.h"
-//
-//
-//class DailyActivityTransaction : public Transaction {
-//
-//    int list_activities() {
-//        return this->_get(transaction_url_, access_token_);
-//    }
-//
-//    int get_activity_summary(const std::string &url) {
-//
-//        return this->_get(url, access_token_);
-//    }
-//    int get_step_samples(const std::string &url) {
-//
-//        return this->_get(url + "/step-samples", access_token_);
-//    }
-//
-//    int get_zone_samples(const std::string &url) {
-//
-//        return this->_get(url + "/zone-samples", access_token_);
-//    }
-//};
+#pragma once
+
+#include "transaction.h"
+
+
+class DailyActivityTransaction : public Transaction {
+public:
+    DailyActivityTransaction(const OAuth2Client &oauth, std::string transactionUrl, const int userId,
+                             std::string accessToken)
+            : Transaction(oauth, std::move(transactionUrl), userId, std::move(accessToken)) {};
+
+
+    ParsedResponse ListActivities() {
+        Request request_body{Utils::EMPTY_ENDPOINT,
+                             {{"url", transaction_url_}}};
+        oauth_.PrepareRequest(request_body, access_token_);
+        return GetData(request_body.CprUrl(), request_body.CprHeader());
+    }
+
+    ParsedResponse GetActivity_summary(const std::string &url) {
+        Request request_body{url};
+        oauth_.PrepareRequest(request_body, access_token_);
+        return GetData(request_body.CprUrl(), request_body.CprHeader());
+    }
+
+    ParsedResponse GetStepSamples(const std::string &url) {
+        Request request_body{url + "/step-samples"};
+        oauth_.PrepareRequest(request_body, access_token_);
+        return GetData(request_body.CprUrl(), request_body.CprHeader());
+    }
+
+    int GetZoneSamples(const std::string &url) {
+        Request request_body{url + "/zone-samples"};
+        oauth_.PrepareRequest(request_body, access_token_);
+        return GetData(request_body.CprUrl(), request_body.CprHeader());
+    }
+};

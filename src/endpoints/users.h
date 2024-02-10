@@ -4,7 +4,7 @@
 
 class Users : public Resource {
 public:
-    Users(OAuth2Client &oauth) : Resource(oauth) {};
+    explicit Users(OAuth2Client &oauth) : Resource(oauth) {};
 
     ParsedResponse Record(const std::string &access_token,
                           boost::uuids::uuid member_id = boost::uuids::random_generator()()) {
