@@ -59,10 +59,13 @@ int main() {
                 auto weight = info_response["weight"].get<float>();
                 crow::mustache::set_base("../../src/templates");
                 auto page = crow::mustache::load("hello.html");
-                crow::mustache::context ctx({{"first_name", first_name},
-                                             {"last_name",  last_name},
-                                             {"height",     height},
-                                             {"weight",     weight}});
+                crow::mustache::context ctx;
+                ctx["body_parameters"] = {
+                        {"first_name", first_name},
+                        {"last_name",  last_name},
+                        {"height",     height},
+                        {"weight",     weight}
+                };
                 return page.render(ctx);
             });
     CROW_LOG_INFO << "₍ᐢ･⚇･ᐢ₎ <---- NIKITA GLEBSKIY. Navigate to http://localhost:5002/ to register user.";
