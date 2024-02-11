@@ -12,7 +12,7 @@ public:
         Request request_body{user_exercise_transactions_path};
         oauth_.PrepareRequest(request_body, access_token);
         auto response = PostData(request_body.CprUrl(), request_body.CprHeader());
-        return {oauth_, response["resource-uri"], user_id,
+        return {oauth_, response["resource-uri"].s(), user_id,
                 access_token};
     }
 };

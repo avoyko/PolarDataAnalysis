@@ -1,5 +1,5 @@
 #include "oauth2.h"
-
+#include "utilities.h"
 
 Headers OAuth2Client::GetAuthHeaders(const std::string &access_token) {
     Headers headers{{"Authorization", "Bearer " + access_token},
@@ -42,22 +42,11 @@ void OAuth2Client::PrepareRequest(Request &request_body, const std::string &acce
 
 ParsedResponse OAuth2Client::ParseResponse(Response &response) {
     if (response.status_code >= 400) {
-//        boost::format fmt =
-//                boost::format("%1% %2%: %3%") % response.status_code % response.reason % response.text;
-//        std::string message = fmt.str();
-//        throw cpr::Error(response.status_code, std::move(message));
         throw response.status_code;
     }
-
     if (response.status_code == 204) {
         return {};
     }
-
-    try {
-        json response_json = json::parse(response.text);
-        return response_json;
-    } catch (const json::exception &error) {
-        return {{"error", error.id}};
-    }
+    return crow::json::load(response.text);
 };
 

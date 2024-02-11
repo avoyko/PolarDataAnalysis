@@ -8,7 +8,7 @@ public:
 
     ParsedResponse Record(const std::string &access_token,
                           boost::uuids::uuid member_id = boost::uuids::random_generator()()) {
-        json my_json;
+        wjson my_json;
         my_json["member-id"] = boost::uuids::to_string(member_id);
         Request request_body{"/users", {}};
         oauth_.PrepareRequest(request_body, access_token);

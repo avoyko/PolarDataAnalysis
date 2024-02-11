@@ -3,7 +3,6 @@
 #include <cpr/cpr.h>
 #include <cstddef>
 #include <initializer_list>
-#include <nlohmann/json.hpp>
 #include <boost/format.hpp>
 #include <utility>
 #include <cpr/parameters.h>
@@ -12,8 +11,10 @@
 #include <boost/uuid/uuid_generators.hpp>  // generators
 #include <boost/uuid/uuid_io.hpp>          // streaming operators etc.
 #include <boost/beast/core/detail/base64.hpp>
+#include <crow.h>
 
-using json = nlohmann::json;
+using json = crow::json::rvalue;
+using wjson = crow::json::wvalue;
 using ParsedResponse = json;
 using Authentication = cpr::Authentication;
 using Response = cpr::Response;

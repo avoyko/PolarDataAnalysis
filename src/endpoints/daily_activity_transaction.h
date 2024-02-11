@@ -29,7 +29,7 @@ public:
         return GetData(request_body.CprUrl(), request_body.CprHeader());
     }
 
-    int GetZoneSamples(const std::string &url) {
+    ParsedResponse GetZoneSamples(const std::string &url) {
         Request request_body{url + "/zone-samples"};
         oauth_.PrepareRequest(request_body, access_token_);
         return GetData(request_body.CprUrl(), request_body.CprHeader());

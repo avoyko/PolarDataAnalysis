@@ -29,9 +29,9 @@ int main() {
             ([](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
                 json token_response = accesslink.GetAccessToken(authorization_code);
-                std::string string_access_token = token_response["access_token"].get<std::string>();
+                std::string string_access_token = token_response["access_token"].s();
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
-                config["user_id"] = std::to_string(token_response["x_user_id"].get<int>());
+                config["user_id"] = std::to_string(token_response["x_user_id"].i());
                 config["access_token"] = string_access_token;
                 std::ofstream file_out("../../config.yaml");
                 file_out << config;
@@ -53,20 +53,9 @@ int main() {
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
                 ParsedResponse info_response = accesslink.GetUserdata(config["access_token"].as<std::string>(),
                                                                       config["user_id"].as<std::string>());
-                auto first_name = info_response["first-name"].get<std::string>();
-                auto last_name = info_response["last-name"].get<std::string>();
-                auto height = info_response["height"].get<float>();
-                auto weight = info_response["weight"].get<float>();
                 crow::mustache::set_base("../../src/templates");
                 auto page = crow::mustache::load("hello.html");
-                crow::mustache::context ctx;
-                ctx["body_parameters"] = {
-                        {"first_name", first_name},
-                        {"last_name",  last_name},
-                        {"height",     height},
-                        {"weight",     weight}
-                };
-                return page.render(ctx);
+                return page.render(info_response);
             });
     CROW_LOG_INFO << "₍ᐢ･⚇･ᐢ₎ <---- NIKITA GLEBSKIY. Navigate to http://localhost:5002/ to register user.";
     app.port(Callback::PORT).run();
