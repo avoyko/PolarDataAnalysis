@@ -2,4 +2,13 @@ add_library(sources_files
         oauth2.cpp
         accesslink.cpp
         request.cpp
+        endpoints/training_data.cpp
+        endpoints/daily_activity.cpp
+        endpoints/daily_activity_transaction.cpp
+        endpoints/physical_info.cpp
+        endpoints/physical_info_transaction.cpp
+        endpoints/pull_notifications.cpp
+        endpoints/training_data_transaction.cpp
+        endpoints/transaction.cpp
+        endpoints/users.cpp
 )

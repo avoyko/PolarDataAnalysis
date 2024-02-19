@@ -6,7 +6,7 @@ ParsedResponse Users::Record(const std::string &access_token, boost::uuids::uuid
     Request request_body{"/users", {}};
     oauth_.PrepareRequest(request_body, access_token);
     ParsedResponse reg_info =
-        PostData(Body{my_json.dump()}, request_body.CprUrl(), request_body.CprHeader());
+            PostData(Body{my_json.dump()}, request_body.CprUrl(), request_body.CprHeader());
     return reg_info;
 }
 
