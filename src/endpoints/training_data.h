@@ -17,6 +17,8 @@ public:
 //                access_token};
 //    }
 
+   ///there is smth wrong with ParsedResponse object (I cannot access string)
+
 
     ~TrainingData() = default;
 };

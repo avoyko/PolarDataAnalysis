@@ -14,11 +14,7 @@ public:
               user_id_(user_id),
               access_token_(std::move(access_token)) {};
 
-    ParsedResponse Commit() {
-        Request request_body{transaction_url_};
-        oauth_.PrepareRequest(request_body, access_token_);
-        return PutData(request_body.CprUrl(), request_body.CprHeader());  ///what?
-    }
+    ParsedResponse Commit();
 
 protected:
     std::string transaction_url_;

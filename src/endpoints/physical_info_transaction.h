@@ -7,17 +7,8 @@ public:
             : Transaction(oauth, std::move(transactionUrl), userId, std::move(accessToken)) {};
 
 
-    ParsedResponse ListPhysicalInfos() {
-        Request request_body{Utils::EMPTY_ENDPOINT,
-                             {{"url", transaction_url_}}};
-        oauth_.PrepareRequest(request_body, access_token_);
-        return GetData(request_body.CprUrl(), request_body.CprHeader());
-    }
+    ParsedResponse ListPhysicalInfos();
 
-    ParsedResponse GetPhysicalInfo(const std::string &url) {
-        Request request_body{url};
-        oauth_.PrepareRequest(request_body, access_token_);
-        return GetData(request_body.CprUrl(), request_body.CprHeader());
-    }
+    ParsedResponse GetPhysicalInfo(const std::string &url);
 
 };

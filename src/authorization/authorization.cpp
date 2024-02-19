@@ -8,11 +8,6 @@
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
-int shutdown(crow::SimpleApp &app) {
-    CROW_LOG_INFO << "Server is shutting down";
-    app.stop();
-    return 0;
-}
 
 int main() {
     crow::SimpleApp app;
@@ -57,6 +52,6 @@ int main() {
                 auto page = crow::mustache::load("hello.html");
                 return page.render(info_response);
             });
-    CROW_LOG_INFO << "₍ᐢ･⚇･ᐢ₎ <---- NIKITA GLEBSKIY. Navigate to http://localhost:5002/ to register user.";
+    CROW_LOG_INFO << "₍Navigate to http://localhost:5002/ to register user.";
     app.port(Callback::PORT).run();
 }
