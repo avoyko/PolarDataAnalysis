@@ -11,4 +11,5 @@ add_library(sources_files
         endpoints/training_data_transaction.cpp
         endpoints/transaction.cpp
         endpoints/users.cpp
+        database/db.cpp
 )

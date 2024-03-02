@@ -1,4 +1,4 @@
-#include "authorization.h"
+#include "driver.h"
 
 #include <crow/app.h>
 #include <crow/logging.h>
@@ -43,6 +43,8 @@ int main() {
                 res.redirect(Client::DATA_URI);
                 return res;
             });
+
+    
     CROW_ROUTE(app, Callback::DATAPOINT)
             ([](const crow::request &req) {
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
