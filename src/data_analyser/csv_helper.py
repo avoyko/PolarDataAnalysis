@@ -26,10 +26,10 @@ class CSVhelper(object):
                     users_data[user_id] = dict()
                 if date not in users_data[user_id]:
                     users_data[user_id][date] = [heartrate, heartrate]
-                    users_data[user_id][date][0] = min(
-                        users_data[user_id][date][0], heartrate)
-                    users_data[user_id][date][1] = max(
-                        users_data[user_id][date][1], heartrate)
+                users_data[user_id][date][0] = min(
+                    users_data[user_id][date][0], heartrate)
+                users_data[user_id][date][1] = max(
+                    users_data[user_id][date][1], heartrate)
         return users_data
 
     def retrieve_sleep_data(self, read_file_path: str) -> list:
