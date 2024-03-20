@@ -20,7 +20,7 @@ if(NOT cpr_POPULATED)
 endif()
 
 FetchContent_Declare(sql
-        GIT_REPOSITORY https://github.com/mysql/mysql-connector-cpp
+        GIT_REPOSITORY https://github.com/mysql/mysql-connector-cpp.git
         GIT_TAG 8.3.0)
 FetchContent_GetProperties(sql)
 if(NOT sql_POPULATED)
@@ -31,6 +31,6 @@ endif()
 
 include(sources.cmake)
 target_include_directories(sources_files PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(sources_files cpr::cpr yaml-cpp::yaml-cpp)
+target_link_libraries(sources_files cpr yaml-cpp sql)
 add_executable(application web/driver.cpp)
 target_link_libraries(application sources_files)
