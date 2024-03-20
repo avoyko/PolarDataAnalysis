@@ -19,6 +19,16 @@ if(NOT cpr_POPULATED)
     add_subdirectory(${cpr_SOURCE_DIR} ${cpr_BINARY_DIR})
 endif()
 
+FetchContent_Declare(sql
+        GIT_REPOSITORY https://github.com/mysql/mysql-connector-cpp
+        GIT_TAG 8.3.0)
+FetchContent_GetProperties(sql)
+if(NOT sql_POPULATED)
+    message(STATUS "Fetching sql...")
+    FetchContent_Populate(sql)
+    add_subdirectory(${sql_SOURCE_DIR} ${sql_BINARY_DIR})
+endif()
+
 include(sources.cmake)
 target_include_directories(sources_files PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(sources_files cpr::cpr yaml-cpp::yaml-cpp)
