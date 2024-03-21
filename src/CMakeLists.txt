@@ -28,6 +28,6 @@ endif (mysql-concpp_FOUND)
 
 include(sources.cmake)
 target_include_directories(sources_files PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(sources_files cpr::cpr yaml-cpp::yaml-cpp libmysqlcppconn8.2.8.3.0.dylib)
+target_link_libraries(sources_files cpr::cpr yaml-cpp::yaml-cpp mysql::concpp)
 add_executable(application web/driver.cpp)
 target_link_libraries(application sources_files)

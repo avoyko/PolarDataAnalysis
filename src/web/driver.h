@@ -5,6 +5,7 @@
 #include "crow.h"
 #include "../oauth2.h"
 #include "../accesslink.h"
+#include <mysqlx/xdevapi.h>
 
 namespace Callback {
     constexpr char OAUTHPOINT[] = "/oauth2_callback";
