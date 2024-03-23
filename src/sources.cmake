@@ -12,5 +12,9 @@ add_library(sources_files
         endpoints/transaction.cpp
         endpoints/users.cpp
         database/db.cpp
-        json_helpers/execises.cpp
+        json_helpers/exercises.cpp
+        database/table_exercises.h
+        database/table_exercises.cpp
+        database/table_base.h
+        database/table_base.cpp
 )

@@ -1,4 +1,4 @@
-#include "execises.h"
+#include "exercises.h"
 
 std::string JsonExerciseInfo::UploadTime() {
     return NormalizedString(exercise_["upload-time"].dump());

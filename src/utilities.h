@@ -24,5 +24,12 @@ using Payload = cpr::Payload;
 using Parameters = cpr::Parameters;
 
 namespace Utils {
+    std::string Join(const std::vector<std::string> &strings, const std::string &delim = ",") {
+        return std::accumulate(strings.begin(), strings.end(), std::string(),
+                               [&delim](const std::string &x, const std::string &y) {
+                                   return x.empty() ? y : x + delim + y;
+                               });
+    }
+
     const std::string EMPTY_ENDPOINT;
 }
