@@ -21,7 +21,7 @@ public:
 
     std::string GetAuthorizationUrl(std::string response_type = "code");
 
-    json GetAccessToken(const std::string &authorization_code);
+    rjson GetAccessToken(const std::string &authorization_code);
 
     void PrepareRequest(Request &request_body, const std::string& access_token = "");
 

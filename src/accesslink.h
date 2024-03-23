@@ -27,7 +27,7 @@ public:
 
     std::string GetAuthUrl();
 
-    json GetAccessToken(const std::string &authorization_code);
+    rjson GetAccessToken(const std::string &authorization_code);
 
     ParsedResponse GetExercises(const std::string &access_token);
 

@@ -23,7 +23,7 @@ find_package(mysql-concpp REQUIRED)
 if (mysql-concpp_FOUND)
     message(STATUS "Successfully found mysql...")
     include_directories(${mysql-concpp_DIR}/include)
-    link_directories(${mysql-concpp_DIR}/lib)
+  #  link_directories(${mysql-concpp_DIR}/lib)
 endif (mysql-concpp_FOUND)
 
 include(sources.cmake)

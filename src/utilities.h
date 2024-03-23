@@ -13,9 +13,9 @@
 #include <boost/beast/core/detail/base64.hpp>
 #include <crow.h>
 
-using json = crow::json::rvalue;
+using rjson = crow::json::rvalue;
 using wjson = crow::json::wvalue;
-using ParsedResponse = json;
+using ParsedResponse = rjson;
 using Authentication = cpr::Authentication;
 using Response = cpr::Response;
 using Headers = cpr::Header;

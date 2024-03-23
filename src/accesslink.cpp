@@ -4,7 +4,7 @@ std::string AccessLink::GetAuthUrl() {
     return oauth_.GetAuthorizationUrl();
 }
 
-json AccessLink::GetAccessToken(const std::string &authorization_code) {
+rjson AccessLink::GetAccessToken(const std::string &authorization_code) {
     return oauth_.GetAccessToken(authorization_code);
 }
 

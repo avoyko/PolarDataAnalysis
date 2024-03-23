@@ -5,6 +5,7 @@
 #include <cpr/cpr.h>
 #include <yaml-cpp/yaml.h>
 #include <cpr/parameters.h>
+#include "../database/db.h"
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
@@ -23,7 +24,7 @@ int main() {
     CROW_ROUTE(app, Callback::OAUTHPOINT)
             ([](const crow::request &req) {
                 std::string authorization_code = req.url_params.get("code");
-                json token_response = accesslink.GetAccessToken(authorization_code);
+                rjson token_response = accesslink.GetAccessToken(authorization_code);
                 std::string string_access_token = token_response["access_token"].s();
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
                 config["user_id"] = std::to_string(token_response["x_user_id"].i());
@@ -50,6 +51,9 @@ int main() {
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
                 ParsedResponse info_response = accesslink.GetUserdata(config["access_token"].as<std::string>(),
                                                                       config["user_id"].as<std::string>());
+                ParsedResponse sport_info = accesslink.GetExercises(config["access_token"].as<std::string>());
+                DBWorker db_worker("localhost", 33060, "voyko", "2004");
+                db_worker.UpdateDayActivity(static_cast<wjson>(sport_info));
                 crow::mustache::set_base("../../src/templates");
                 auto page = crow::mustache::load("hello.html");
                 return page.render(info_response);
