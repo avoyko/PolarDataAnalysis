@@ -49,14 +49,14 @@ int main() {
     CROW_ROUTE(app, Callback::DATAPOINT)
             ([](const crow::request &req) {
                 YAML::Node config = YAML::LoadFile("../../config.yaml");
-                ParsedResponse info_response = accesslink.GetUserdata(config["access_token"].as<std::string>(),
+                ParsedResponse user_info = accesslink.GetUserdata(config["access_token"].as<std::string>(),
                                                                       config["user_id"].as<std::string>());
                 ParsedResponse sport_info = accesslink.GetExercises(config["access_token"].as<std::string>());
                 DBWorker db_worker("localhost", 33060, "voyko", "2004");
                 db_worker.UpdateDayActivity(static_cast<wjson>(sport_info));
                 crow::mustache::set_base("../../src/templates");
                 auto page = crow::mustache::load("hello.html");
-                return page.render(info_response);
+                return page.render(user_info);
             });
     CROW_LOG_INFO << "₍Navigate to http://localhost:5002/ to register user.";
     app.port(Callback::PORT).run();
