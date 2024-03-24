@@ -1,5 +1,9 @@
 #include "exercises.h"
 
+int JsonExerciseInfo::ExerciseID() {
+    return std::stoi(NormalizedString(exercise_["id"].dump()));
+}
+
 std::string JsonExerciseInfo::UploadTime() {
     return NormalizedString(exercise_["upload-time"].dump());
 }
@@ -140,10 +144,5 @@ std::string JsonExerciseInfo::UserRpe() {
     } catch (...) {
         return "UNKNOWN";
     }
-}
-
-
-std::string JsonExerciseInfo::NormalizedString(const std::string &s) {
-    return s.substr(1, s.size() - 2);
 }
 

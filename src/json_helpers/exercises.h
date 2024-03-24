@@ -4,16 +4,19 @@
 
 #include "utilities.h"
 
+using namespace Utils;
 
 class JsonExerciseInfo {
 public:
     explicit JsonExerciseInfo(wjson exercise) : exercise_(std::move(exercise)) {};
 
+    int ExerciseID();
+
     std::string UploadTime();
 
     std::string PolarUser();
 
-    int TransactionId();
+    int  TransactionId();
 
     std::string Device();
 
@@ -62,7 +65,6 @@ public:
 
 private:
 
-    static std::string NormalizedString(const std::string &s);
 
     const wjson exercise_;
 };

@@ -1,9 +1,7 @@
 #pragma once
 
 #include <mysqlx/xdevapi.h>
-
 #include "utilities.h"
-#include <ctime>
 #include "../json_helpers/exercises.h"
 
 
@@ -12,7 +10,7 @@ public:
 
 
     DBWorker() : session_(server_name_, port_, user_name_, pass_) {
-        session_.sql("USE polar_user");
+        session_.sql("USE polar_user").execute();
     };
 
     static DBWorker &GetInstance() {
@@ -21,9 +19,8 @@ public:
     }
 
 
-    bool UpdateDayActivity(const wjson &exercises_info);
+    static bool UpdateDB(const std::string &table_name, const wjson &info);
 
-    bool UpdateHealthData(const wjson &user_info);
 
     mysqlx::SqlResult SQL(const std::string &query);
 

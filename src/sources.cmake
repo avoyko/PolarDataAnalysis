@@ -17,4 +17,10 @@ add_library(sources_files
         database/table_exercises.cpp
         database/table_base.h
         database/table_base.cpp
+        database/table_health.h
+        database/table_health.cpp
+        json_helpers/activity.h
+        json_helpers/activity.cpp
+        json_helpers/sleep.h
+        json_helpers/sleep.cpp
 )

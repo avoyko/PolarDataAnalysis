@@ -1,4 +1,12 @@
 #include "table_base.h"
+#include "db.h"
+
+std::string Join(const std::vector<std::string> &strings, const std::string &delim = ",") {
+    return std::accumulate(strings.begin(), strings.end(), std::string(),
+                           [&delim](const std::string &x, const std::string &y) {
+                               return x.empty() ? y : x + delim + y;
+                           });
+}
 
 
 std::string BaseTable::LastRecordDate(const std::string &table_name) {
@@ -17,8 +25,8 @@ bool BaseTable::InsertIntoTable(const std::string &table_name, const std::vector
         column_names.pop_back();
     }
     boost::format fmt =
-            boost::format("INSERT INTO %1%(%2%) VALUES(%3%);") % table_name % Utils::Join(column_names) %
-            Utils::Join(values);
+            boost::format("INSERT INTO %1%(%2%) VALUES(%3%);") % table_name % Join(column_names) %
+            Join(values);
     db_worker.SQL(fmt.str());
     return true;
 }

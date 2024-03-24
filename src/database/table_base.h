@@ -1,6 +1,6 @@
 #pragma once
 
-#include "db.h"
+#include "../utilities.h"
 
 class BaseTable {
 public:
