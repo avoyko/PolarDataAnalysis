@@ -52,6 +52,6 @@ int main() {
                 auto page = crow::mustache::load("hello.html");
                 return page.render(user_info);
             });
-    CROW_LOG_INFO << "₍Navigate to http://localhost:5002/ to register user.";
+    CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
     app.port(Callback::PORT).run();
 }

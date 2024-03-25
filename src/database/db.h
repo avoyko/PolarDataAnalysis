@@ -2,7 +2,6 @@
 
 #include <mysqlx/xdevapi.h>
 #include "utilities.h"
-#include "../json_helpers/exercises.h"
 
 
 class DBWorker {

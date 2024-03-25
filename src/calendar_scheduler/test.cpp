@@ -5,7 +5,7 @@ int main() {
     PyConfig config;
     PyConfig_InitIsolatedConfig(&config);
 
-    const wchar_t *venv_executable = L"../../venv/bin/python";
+    const wchar_t *venv_executable = L"../../venv/bin/python3.11";
     PyConfig_SetString(&config, &config.executable, venv_executable);
     auto status = Py_InitializeFromConfig(&config);
     PyConfig_Clear(&config);

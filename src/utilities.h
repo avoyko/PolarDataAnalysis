@@ -25,10 +25,24 @@ using Parameters = cpr::Parameters;
 
 namespace Utils {
 
-    std::string NormalizedString(const std::string &s) {
-        return s.substr(1, s.size() - 2);
-    }
-
-    const std::string EMPTY_ENDPOINT;
+const std::string EMPTY_ENDPOINT;
 }
 
+namespace JsonHelper {
+static std::string NormalizedString(const std::string &s) {
+    return s.substr(1, s.size() - 2);
+}
+
+static std::string StringValue(const wjson &json, const std::string &field) {
+    std::cout << json[field].dump()<<'\n';
+    return NormalizedString(json[field].dump());
+}
+
+static std::string IntValue(const wjson &json, const std::string &field) {
+    return NormalizedString(json[field].dump());
+}
+
+static wjson JsonValue(const wjson &json, const std::string &field) {
+    return json[field];
+}
+}  // namespace JsonHelper

@@ -1,8 +1,6 @@
 #pragma once
 
-
 #include "table_base.h"
-#include "../json_helpers/exercises.h"
 
 
 class DayExercisesTable : public BaseTable {

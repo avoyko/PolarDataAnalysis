@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.27)
 project(test)
 set(CMAKE_CXX_STANDARD 17)
 
-find_package(Python 3.12 COMPONENTS Development REQUIRED)
+find_package(Python COMPONENTS Development REQUIRED)
 include_directories(${Python_INCLUDE_DIRS})
 
 add_executable(CALENDAR_TEST test.cpp)

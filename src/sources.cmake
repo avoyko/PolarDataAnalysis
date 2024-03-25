@@ -12,15 +12,14 @@ add_library(sources_files
         endpoints/transaction.cpp
         endpoints/users.cpp
         database/db.cpp
-        json_helpers/exercises.cpp
         database/table_exercises.h
         database/table_exercises.cpp
         database/table_base.h
         database/table_base.cpp
-        database/table_health.h
-        database/table_health.cpp
-        json_helpers/activity.h
-        json_helpers/activity.cpp
-        json_helpers/sleep.h
-        json_helpers/sleep.cpp
+        database/table_activity.h
+        database/table_activity.cpp
+        database/table_sleep.h
+        database/table_sleep.cpp
+        database/table_phys_info.h
+        database/table_phys_info.cpp
 )
