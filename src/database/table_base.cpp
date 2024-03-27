@@ -8,15 +8,12 @@ std::string Join(const std::vector<std::string> &strings, const std::string &del
                            });
 }
 
-
 std::string BaseTable::LastRecordDate() {
     DBWorker &db_worker = DBWorker::GetInstance();
-   // boost::format fmt = boost::format("") % table_name_;
-    mysqlx::SqlResult records = db_worker.SQL("SELECT * FROM day_exercises;");
-    mysqlx::Row last_row = records.fetchOne();
-    std::cout << last_row[0];
-    std::cout<<last_row<<'\n';
-    return last_row[0].get<std::string>();
+    boost::format fmt =
+        boost::format("SELECT * FROM %1% ORDER BY date DESC LIMIT 1;") % table_name_;
+    mysqlx::SqlResult records = db_worker.SQL(fmt.str());
+    return mysqlx::get_string_date(records.fetchOne());
 }
 
 bool BaseTable::InsertIntoTable(const std::vector<std::string> &values,
@@ -26,10 +23,8 @@ bool BaseTable::InsertIntoTable(const std::vector<std::string> &values,
     while (column_names.size() > values.size()) {
         column_names.pop_back();
     }
-    boost::format fmt =
-            boost::format("INSERT INTO %1%(%2%) VALUES(%3%);") % table_name_ % Join(column_names) %
-            Join(values);
+    boost::format fmt = boost::format("INSERT INTO %1%(%2%) VALUES(%3%);") % table_name_ %
+                        Join(column_names) % Join(values);
     db_worker.SQL(fmt.str());
     return true;
 }
-

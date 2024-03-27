@@ -1,14 +1,12 @@
 #include "table_exercises.h"
 
-
-
-
 void DayExercisesTable::Update(const wjson &exercises) {
     std::string last_date = LastRecordDate();
+    std::cout<<last_date;
     std::vector<std::string> day_activities;
 
     for (size_t i = 0; i < exercises.size(); ++i) {
-        std::string start_time = JsonHelper::StringValue(exercises[i], "start-time");
+        std::string start_time = JsonHelper::DateValue(exercises[i], "start-time");
         std::string sport_name = JsonHelper::StringValue(exercises[i], "detailed-sport-info");
         if (last_date > start_time) {
             /// we dont't want old records

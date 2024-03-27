@@ -11,7 +11,7 @@ public:
 
     std::string LastRecordDate();
 
-    bool InsertIntoTable(const std::vector<std::string> &values,
+    bool InsertIntoTable(const std::vector<std::string>& values,
                          std::vector<std::string> column_names);
 
 private:
