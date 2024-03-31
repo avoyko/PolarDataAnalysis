@@ -12,6 +12,19 @@ void DaySleepTable::Update(const wjson& sleep) {
         std::string deep_sleep = JsonHelper::IntValue(sleep[i], "deep_sleep");
         std::string sleep_score = JsonHelper::IntValue(sleep[i], "sleep_score");
         day_sleep = {date, sleep_start_time, sleep_end_time, light_sleep, deep_sleep, sleep_score};
-        InsertIntoTable( day_sleep, columns_);
+        InsertIntoTable(day_sleep);
     }
+}
+std::string DaySleepTable::GenerateTable() {
+    boost::format fmt = boost::format(
+                            "CREATE TABLE %1%("
+                            "date DATE,"
+                            "sleep_start VARCHAR(50),"
+                            "sleep_end VARCHAR(50),"
+                            "light_sleep INT,"
+                            "deep_sleep INT,"
+                            "sleep_score INT"
+                            ");") %
+                        table_name_;
+    return fmt.str();
 }

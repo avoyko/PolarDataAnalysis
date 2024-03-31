@@ -1,23 +1,19 @@
 #pragma once
 #include "table_base.h"
 
-class DayPhysTable : public BaseTable {
+class PhysTable : public BaseTable<8> {
 public:
-    DayPhysTable() = default;
+    explicit PhysTable() : BaseTable<8>(table_name_, columns_) {
+        if (!CheckExistence()) {
+            Create(GenerateTable());
+        }
+    };
 
-    explicit DayPhysTable(std::string table_name)
-        : BaseTable(std::move(table_name)), table_name_(std::move(table_name)){};
-
+    static std::string GenerateTable();
     void Update(const wjson &heart_samples);
 
 private:
-    std::string table_name_;
-    const std::vector<std::string> columns_ = {"date",
-                                               "weight",
-                                               "height",
-                                               "max_heart_rate",
-                                               "resting_heart_rate",
-                                               "aerobic-threshold",
-                                               "anaerobic-threshold",
-                                               "vo2-max"};
+    static constexpr std::string table_name_ = "phys_info";
+    static constexpr std::array<std::string, 8> columns_ = {
+        "date", "weight", "height", "max_hr", "resting_hr", "ae_t", "an_t", "vo2_max"};
 };

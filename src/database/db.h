@@ -2,19 +2,21 @@
 
 #include <mysqlx/xdevapi.h>
 #include "utilities.h"
+#include "accesslink.h"
 
 class DBWorker {
-public:
+private:
     DBWorker() : session_(server_name_, port_, user_name_, pass_) {
         session_.sql("USE polar_user").execute();
     };
 
+public:
     static DBWorker &GetInstance() {
         static DBWorker db_worker;
         return db_worker;
     }
 
-    static bool UpdateDB(const std::string &table_name, const wjson &info);
+    static void UpdateDB(const PolarUser& polar_user);
 
     mysqlx::SqlResult SQL(const std::string &query);
 
@@ -25,4 +27,3 @@ private:
     const std::string pass_ = "2004";
     mysqlx::Session session_;
 };
-

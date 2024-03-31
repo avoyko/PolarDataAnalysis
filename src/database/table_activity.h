@@ -1,23 +1,23 @@
 #pragma once
 
-
 #include "table_base.h"
 
-
-
-class DayActivityTable : public BaseTable {
+class ActivityTable : public BaseTable<4> {
 public:
-    DayActivityTable() = default;
+    ActivityTable() : BaseTable<4>(table_name_, columns_) {
+        if (!CheckExistence()) {
+            Create(GenerateTable());
+        }
+    };
 
-    explicit DayActivityTable(std::string table_name) : BaseTable(std::move(table_name)),
-                                                       table_name_(std::move(table_name)) {};
+    static std::string GenerateTable();
 
     void Update(const wjson &activities);
 
+    mysqlx::Row Read();
+
 private:
-
-    std::string table_name_;
-    const std::vector<std::string> columns_ = {"date", "steps", "total_calories",
-                                              "active_calories"};
-
+    static constexpr std::string table_name_ = "activity";
+    static constexpr std::array<std::string, 4> columns_ = {"date", "steps", "total_calories",
+                                                            "active_calories"};
 };

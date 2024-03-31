@@ -1,6 +1,6 @@
 #include "table_phys_info.h"
 
-void DayPhysTable::Update(const wjson& phys) {
+void PhysTable::Update(const wjson& phys) {
     std::string last_date = LastRecordDate();
     std::vector<std::string> day_phys_info;
 
@@ -21,6 +21,21 @@ void DayPhysTable::Update(const wjson& phys) {
                          aerobic_threshold,
                          anaerobic_threshold,
                          vo2_max};
-        InsertIntoTable(day_phys_info, columns_);
+        InsertIntoTable(day_phys_info);
     }
+}
+std::string PhysTable::GenerateTable() {
+    boost::format fmt = boost::format(
+                            "CREATE TABLE %1%("
+                            "date DATE,"
+                            "weight INT,"
+                            "height INT,"
+                            "max_hr INT,"
+                            "resting_hr INT,"
+                            "ae_t INT,"
+                            "an_t INT,"
+                            "vo2_max INT"
+                            ");") %
+                        table_name_;
+    return fmt.str();
 }

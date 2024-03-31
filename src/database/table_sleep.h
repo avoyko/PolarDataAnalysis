@@ -1,17 +1,19 @@
 #pragma once
 #include "table_base.h"
 
-class DaySleepTable : public BaseTable {
+class DaySleepTable : public BaseTable<6> {
 public:
-    DaySleepTable() = default;
+    DaySleepTable() : BaseTable<6>(table_name_, columns_) {
+        if (!CheckExistence()) {
+            Create(GenerateTable());
+        }
+    };
 
-    explicit DaySleepTable(std::string table_name)
-        : BaseTable(std::move(table_name)), table_name_(std::move(table_name)){};
-
+    static std::string GenerateTable();
     void Update(const wjson &sleep);
 
 private:
-    std::string table_name_;
-    const std::vector<std::string> columns_ = {"date",        "sleep_start_time", "sleep_end_time",
-                                               "light_sleep", "deep_sleep",       "sleep_score"};
+    static constexpr std::string table_name_ = "sleep";
+    static constexpr std::array<std::string, 6> columns_ = {
+        "date", "sleep_start", "sleep_end", "light_sleep", "deep_sleep", "sleep_score"};
 };

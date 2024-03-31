@@ -1,6 +1,6 @@
 #include "table_activity.h"
 
-void DayActivityTable::Update(const wjson &activities) {
+void ActivityTable::Update(const wjson& activities) {
     std::string last_date = LastRecordDate();
     std::vector<std::string> day_activity;
 
@@ -10,6 +10,18 @@ void DayActivityTable::Update(const wjson &activities) {
         std::string total_calories = JsonHelper::IntValue(activities[i], "calories");
         std::string active_calories = JsonHelper::IntValue(activities[i], "active-calories");
         day_activity = {date, steps, total_calories, active_calories};
-        InsertIntoTable(day_activity, columns_);
+        InsertIntoTable(day_activity);
     }
+}
+std::string ActivityTable::GenerateTable() {
+
+    boost::format fmt = boost::format(
+                            "CREATE TABLE %1%("
+                            "date DATE,"
+                            "steps INT,"
+                            "total_calories INT,"
+                            "active_calories INT"
+                            ");") %
+                        table_name_;
+    return fmt.str();
 }

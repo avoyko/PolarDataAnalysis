@@ -2,22 +2,26 @@
 
 #include "table_base.h"
 
+static constexpr size_t col_num = 11;
 
-class DayExercisesTable : public BaseTable {
+class ExercisesTable : public BaseTable<col_num> {
 public:
+    ExercisesTable() : BaseTable(table_name_, columns_) {
+        if (!CheckExistence()) {
+            Create(GenerateTable());
+        }
+    };
 
-    DayExercisesTable() = default;
-
-    explicit DayExercisesTable(std::string table_name) : BaseTable(table_name),
-                                                         table_name_(std::move(table_name)) {};
+    static std::string GenerateTable();
 
     void Update(const wjson &exercises);
 
+    mysqlx::Row Read();
+
 private:
-
-    std::string table_name_;
-    const std::vector<std::string> columns = {"date", "exercise1", "exercise2", "exercise3", "exercise4",
-                                              "exercise5", "exercise6", "exercise7", "exercise8", "exercise9",
-                                              "exercise10"};
-
+    static constexpr std::string table_name_ = "exercises";
+    static constexpr std::array<std::string, col_num> columns_ = {
+        "date",      "exercise1", "exercise2", "exercise3", "exercise4", "exercise5",
+        "exercise6", "exercise7", "exercise8", "exercise9", "exercise10"};
+    ;
 };
