@@ -1,9 +1,7 @@
 #include "daily_activity_transaction.h"
 
-
 ParsedResponse DailyActivityTransaction::ListActivities() {
-    Request request_body{Utils::EMPTY_ENDPOINT,
-                         {{"url", transaction_url_}}};
+    Request request_body{"", {{"url", transaction_url_}}};
     oauth_.PrepareRequest(request_body, access_token_);
     return GetData(request_body.CprUrl(), request_body.CprHeader());
 }

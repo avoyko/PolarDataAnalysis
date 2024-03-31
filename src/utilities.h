@@ -13,7 +13,6 @@
 #include <boost/beast/core/detail/base64.hpp>
 #include <crow.h>
 #include <mysqlx/xdevapi.h>
-#include "date/date.h"
 #include "istream"
 
 using rjson = crow::json::rvalue;
@@ -26,10 +25,17 @@ using Body = cpr::Body;
 using Payload = cpr::Payload;
 using Parameters = cpr::Parameters;
 
-namespace Utils {
 
-const std::string EMPTY_ENDPOINT;
+namespace StringHelper {
+
+template <class Container>
+static std::string Join(const Container &strings, const std::string &delim = ",") {
+    return std::accumulate(strings.begin(), strings.end(), std::string(),
+                           [&delim](const std::string &x, const std::string &y) {
+                               return x.empty() ? y : x + delim + y;
+                           });
 }
+}  // namespace StringHelper
 
 namespace JsonHelper {
 static inline std::string NormalizedString(const std::string &s) {

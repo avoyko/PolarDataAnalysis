@@ -1,11 +1,11 @@
 #include "training_data_transaction.h"
 
 ParsedResponse TrainingDataTransaction::ListExercises() {
-    Request request_body{Utils::EMPTY_ENDPOINT, {{"url", transaction_url_}}};
+    Request request_body{"", {{"url", transaction_url_}}};
     oauth_.PrepareRequest(request_body, access_token_);
     return GetData(request_body.CprUrl(), request_body.CprHeader());
 }
-/// TODO: i still dont know what type of url we get (full/partial maybe?)
+
 ParsedResponse TrainingDataTransaction::GetExerciseSummary(const std::string &url) {
     Request request_body{url};
     oauth_.PrepareRequest(request_body, access_token_);

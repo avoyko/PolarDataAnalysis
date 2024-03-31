@@ -1,16 +1,17 @@
 #pragma once
 
+#include <utility>
+
 #include "utilities.h"
 
 class Request {
 public:
     Request() = default;
 
-    Request(std::string_view endpoint, const Parameters &query_args = {},
-            const Headers &headers = {}, const Body &body = "")
-        : endpoint_(endpoint), parameters_(query_args), headers_(headers){};
+    Request(std::string_view endpoint, Parameters query_args = {},
+            Headers headers = {}, const Body &body = "")
+        : endpoint_(endpoint), parameters_(std::move(query_args)), headers_(std::move(headers)){};
 
-    ~Request() = default;
 
     std::string &GetEndpoint();
 
