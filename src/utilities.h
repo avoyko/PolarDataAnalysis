@@ -13,7 +13,7 @@
 #include <boost/beast/core/detail/base64.hpp>
 #include <crow.h>
 #include <mysqlx/xdevapi.h>
-#include "istream"
+#include <istream>
 
 using rjson = crow::json::rvalue;
 using wjson = crow::json::wvalue;

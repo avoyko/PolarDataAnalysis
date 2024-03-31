@@ -48,8 +48,13 @@ int main() {
         ParsedResponse activity_info;
         ParsedResponse phys_info;
         ParsedResponse sleep_info;
-        DBWorker::UpdateDB({static_cast<wjson>(exercises_info), static_cast<wjson>(activity_info),
-                            static_cast<wjson>(phys_info), static_cast<wjson>(sleep_info)});
+        //        DBWorker::UpdateDB({static_cast<wjson>(exercises_info),
+        //        static_cast<wjson>(activity_info),
+        //                            static_cast<wjson>(phys_info),
+        //                            static_cast<wjson>(sleep_info)});
+        DBWorker::UpdateDB({static_cast<wjson>(exercises_info), static_cast<wjson>(exercises_info),
+                            static_cast<wjson>(exercises_info),
+                            static_cast<wjson>(exercises_info)});
         crow::mustache::set_base("../../src/templates");
         auto page = crow::mustache::load("hello.html");
         return page.render(user_info);
