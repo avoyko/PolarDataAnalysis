@@ -1,0 +1,8 @@
+//
+// Created by Никита Глебский on 01.04.2024.
+//
+
+#ifndef COURSEWORK_CALENDAR_EXCEPTION_H
+#define COURSEWORK_CALENDAR_EXCEPTION_H
+
+#endif //COURSEWORK_CALENDAR_EXCEPTION_H

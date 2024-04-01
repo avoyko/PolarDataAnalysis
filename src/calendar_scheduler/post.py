@@ -11,17 +11,9 @@ SCOPES = ["https://www.googleapis.com/auth/calendar"]
 
 
 def main():
-    """Shows basic usage of the Google Calendar API.
-    Prints the start and name of the next 10 events on the user's calendar.
-    """
     creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-
     if os.path.exists("token.json"):
         creds = Credentials.from_authorized_user_file("token.json", SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
     if not creds or not creds.valid:
         if creds and creds.expired and creds.refresh_token:
             creds.refresh(Request())
@@ -30,19 +22,13 @@ def main():
                 "credentials.json", SCOPES
             )
             creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
         with open("token.json", "w") as token:
             token.write(creds.to_json())
 
     try:
         service = build("calendar", "v3", credentials=creds)
 
-        event = {
-            'summary': 'Nikitosik\'s birthday',
-            'location': 'Balashikha, Russia',
-            'start': {'dateTime': '2024-04-11T09:00:00+03:00'},
-            'end': {'dateTime': '2024-04-11T10:00:00+03:00'}
-        }
+        event = {}
 
         event = service.events().insert(calendarId='primary', body=event).execute()
         print(f"Event created: {event.get('htmlLink')}")
