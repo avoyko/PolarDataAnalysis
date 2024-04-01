@@ -1,4 +1,4 @@
-add_library(sources_files
+add_library(db_sources_files
         ../accesslink.cpp
         ../utilities.h
         db.cpp

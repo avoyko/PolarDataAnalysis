@@ -34,3 +34,4 @@ target_link_libraries(application sources_files)
 
 # собирает таргет для теста календаря
 add_subdirectory(calendar_scheduler)
+add_subdirectory(database)
