@@ -1,5 +1,5 @@
 add_library(db_sources_files
-        ../accesslink.cpp
+        ../accesslink.h
         ../utilities.h
         db.cpp
         table_exercises.h

@@ -4,6 +4,17 @@
 #include "table_phys_info.h"
 #include "table_sleep.h"
 
+DBWorker::DBWorker() : session(server_name_.data(), port_, user_name_.data(), pass_.data()) {
+    if (!FindDB()) {
+        SetupDB();
+    }
+};
+
+DBWorker &DBWorker::GetInstance() {
+    static DBWorker db_worker;
+    return db_worker;
+}
+
 void DBWorker::UpdateDB(const PolarUser &polar_user) {
 
     ExercisesTable exercises_table;

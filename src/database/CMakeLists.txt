@@ -13,6 +13,25 @@ if (NOT gtest_POPULATED)
     add_subdirectory(${gtest_SOURCE_DIR} ${gtest_BINARY_DIR})
 endif ()
 
+FetchContent_Declare(cpr
+        GIT_REPOSITORY https://github.com/libcpr/cpr.git
+        GIT_TAG master)
+FetchContent_GetProperties(cpr)
+if (NOT cpr_POPULATED)
+    message(STATUS "Fetching cpr...")
+    FetchContent_Populate(cpr)
+    add_subdirectory(${cpr_SOURCE_DIR} ${cpr_BINARY_DIR})
+endif ()
+
+
+find_package(mysql-concpp REQUIRED)
+if (mysql-concpp_FOUND)
+    message(STATUS "Successfully found mysql...")
+    include_directories(${mysql-concpp_DIR}/include)
+    link_directories(${mysql-concpp_DIR}/lib)
+endif (mysql-concpp_FOUND)
+
+
 FetchContent_Declare(frozen
         GIT_REPOSITORY https://github.com/serge-sans-paille/frozen
         GIT_TAG master)
