@@ -14,6 +14,7 @@
 #include <crow.h>
 #include <mysqlx/xdevapi.h>
 #include <istream>
+#include <frozen/string.h>
 
 using rjson = crow::json::rvalue;
 using wjson = crow::json::wvalue;
@@ -115,5 +116,9 @@ static inline std::string get_string_date(const mysqlx::Row &row) {
         sprintf(text, "%i-0%i-%i", year, month, day);
     }
     return text;
+}
+static inline mysqlx::Row prepare_row(const std::vector<std::string> &v){
+
+
 }
 }  // namespace mysqlx

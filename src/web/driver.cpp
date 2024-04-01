@@ -55,6 +55,7 @@ int main() {
         DBWorker::UpdateDB({static_cast<wjson>(exercises_info), static_cast<wjson>(exercises_info),
                             static_cast<wjson>(exercises_info),
                             static_cast<wjson>(exercises_info)});
+        model.work();
         crow::mustache::set_base("../../src/templates");
         auto page = crow::mustache::load("hello.html");
         return page.render(user_info);

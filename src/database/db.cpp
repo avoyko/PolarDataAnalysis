@@ -5,9 +5,7 @@
 #include "table_sleep.h"
 
 void DBWorker::UpdateDB(const PolarUser& polar_user) {
-    mysqlx::Client client(mysqlx::SessionOption::USER, user_name_, mysqlx::SessionOption::PWD,
-                          pass_, mysqlx::SessionOption::HOST, server_name_,
-                          mysqlx::SessionOption::PORT, port_);
+
     ExercisesTable exercises_table;
     ActivityTable activity_table;
     PhysTable phys_table;
@@ -19,20 +17,31 @@ void DBWorker::UpdateDB(const PolarUser& polar_user) {
     sleep_table.Update(polar_user.sleep_info);
 }
 
+
 mysqlx::SqlResult DBWorker::SQL(const std::string& query) {
-    return session_.sql(query).execute();
+    return session.sql(query).execute();
 }
 
 void DBWorker::SetupDB() {
-    session_.createSchema(db_name_);
+    session.createSchema(db_name_);
     boost::format fmt =
         boost::format("GRANT ALL ON %1%.* TO '%2%'@'%3%';") % db_name_ % user_name_ % server_name_;
-    session_.sql(fmt.str()).execute();
+    session.sql(fmt.str()).execute();
     fmt = boost::format("USE %1%") % db_name_;
-    session_.sql(fmt.str()).execute();
+    session.sql(fmt.str()).execute();
 }
 
-bool DBWorker::DBExists() {
-    mysqlx::Schema schema = session_.getSchema(db_name_, true);
+bool DBWorker::FindDB() {
+    mysqlx::Schema schema = session.getSchema(db_name_, true);
     return schema.existsInDatabase();
+}
+bool DBWorker::FindTable(const std::string& table_name) {
+    mysqlx::Schema schema = session.getSchema(db_name_, true);
+    return schema.getTable(table_name, true).existsInDatabase();
+}
+mysqlx::Schema DBWorker::GetDB() {
+    return session.getSchema(db_name_);
+}
+mysqlx::Table DBWorker::GetTable(const std::string& table_name) {
+    return GetDB().getTable(table_name);
 }

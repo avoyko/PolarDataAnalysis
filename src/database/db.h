@@ -6,13 +6,6 @@
 
 class DBWorker {
 public:
-    DBWorker() : session_(server_name_, port_, user_name_, pass_) {
-        if (!DBExists()) {
-            SetupDB();
-        }
-    };
-
-public:
     static DBWorker &GetInstance() {
         static DBWorker db_worker;
         return db_worker;
@@ -24,13 +17,28 @@ public:
 
     void SetupDB();
 
-    bool DBExists();
+    bool FindDB();
+
+    mysqlx::Schema GetDB();
+
+    mysqlx::Table GetTable(const std::string &table_name);
+
+    bool FindTable(const std::string &table_name);
 
 private:
-    static constexpr std::string server_name_ = "localhost";
+    DBWorker() : session(server_name_.data(), port_, user_name_.data(), pass_.data()) {
+        if (!FindDB()) {
+            SetupDB();
+        }
+    };
+
+public:
+    mysqlx::Session session;
+
+private:
+    static constexpr frozen::string server_name_ = "localhost";
     static constexpr int port_ = 33060;
-    static constexpr std::string user_name_ = "polar_user";
-    static constexpr std::string pass_ = "2004";
-    static constexpr std::string db_name_ = "POLAR_DATA";
-    mysqlx::Session session_;
+    static constexpr frozen::string user_name_ = "polar_user";
+    static constexpr frozen::string pass_ = "2004";
+    static constexpr frozen::string db_name_ = "POLAR_DATA";
 };

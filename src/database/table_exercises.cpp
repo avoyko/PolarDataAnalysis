@@ -1,6 +1,11 @@
 #include "table_exercises.h"
 #include "db.h"
 
+static std::vector<std::string> GetDefaultValues() {
+    return {"00-00-00", "NULL", "NULL", "NULL", "NULL", "NULL",
+            "NULL",     "NULL", "NULL", "NULL", "NULL"};
+}
+
 /// im so sorry for being stupid...
 std::string ExercisesTable::GenerateTable() {
     boost::format fmt = boost::format(
@@ -23,8 +28,8 @@ std::string ExercisesTable::GenerateTable() {
 
 void ExercisesTable::Update(const wjson& exercises) {
     std::string last_date = LastRecordDate();
-    std::cout << last_date;
-    std::vector<std::string> day_activities;
+    std::vector<std::string> day_exercises = GetDefaultValues();
+    size_t index = 0;
 
     for (size_t i = 0; i < exercises.size(); ++i) {
         std::string start_time = JsonHelper::DateValue(exercises[i], "start-time");
@@ -33,12 +38,32 @@ void ExercisesTable::Update(const wjson& exercises) {
             continue;
         }
         if (last_date != start_time) {
-            InsertIntoTable(day_activities);
+            InsertIntoTable(day_exercises[0], day_exercises[1], day_exercises[2], day_exercises[3],
+                            day_exercises[4], day_exercises[5], day_exercises[6], day_exercises[7],
+                            day_exercises[8], day_exercises[9], day_exercises[10]);
             last_date = start_time;
-            day_activities.clear();
-            day_activities.push_back(start_time);
+            day_exercises = GetDefaultValues();
+            index = 0;
+            day_exercises[index++] = start_time;
         } else {
-            day_activities.push_back(sport_name);
+            day_exercises[index++] = sport_name;
         }
     }
 }
+
+
+
+// this is a possible implementation for unpacking vector
+
+//
+//template <std::size_t... S>
+//void unpack_vector(const std::vector<std::string>& vec, std::index_sequence<S...>) {
+//    InsertIntoTable(vec[S]...);
+//}
+//
+//template <std::size_t size>
+//void unpack_vector(const std::vector<std::string>& vec) {
+//    if (vec.size() != size)
+//        throw /* choose your error */;
+//    unpack_vector(vec, std::make_index_sequence<size>());
+//}

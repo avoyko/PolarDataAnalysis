@@ -2,7 +2,6 @@
 
 void DaySleepTable::Update(const wjson& sleep) {
     std::string last_date = LastRecordDate();
-    std::vector<std::string> day_sleep;
 
     for (size_t i = 0; i < sleep.size(); ++i) {
         std::string date = JsonHelper::StringValue(sleep[i], "date");
@@ -11,8 +10,10 @@ void DaySleepTable::Update(const wjson& sleep) {
         std::string light_sleep = JsonHelper::IntValue(sleep[i], "light_sleep");
         std::string deep_sleep = JsonHelper::IntValue(sleep[i], "deep_sleep");
         std::string sleep_score = JsonHelper::IntValue(sleep[i], "sleep_score");
-        day_sleep = {date, sleep_start_time, sleep_end_time, light_sleep, deep_sleep, sleep_score};
-        InsertIntoTable(day_sleep);
+        if (date > last_date) {
+            InsertIntoTable(date, sleep_start_time, sleep_end_time, light_sleep, deep_sleep,
+                            sleep_score);
+        }
     }
 }
 std::string DaySleepTable::GenerateTable() {
