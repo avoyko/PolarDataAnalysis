@@ -26,9 +26,19 @@ if (mysql-concpp_FOUND)
     link_directories(${mysql-concpp_DIR}/lib)
 endif (mysql-concpp_FOUND)
 
+FetchContent_Declare(frozen
+        GIT_REPOSITORY https://github.com/serge-sans-paille/frozen
+        GIT_TAG master)
+FetchContent_GetProperties(frozen)
+if (NOT frozen_POPULATED)
+    message(STATUS "Fetching frozen...")
+    FetchContent_Populate(frozen)
+    add_subdirectory(${frozen_SOURCE_DIR} ${frozen_BINARY_DIR})
+endif ()
+
 include(sources.cmake)
 target_include_directories(sources_files PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
-target_link_libraries(sources_files cpr::cpr yaml-cpp::yaml-cpp mysql::concpp)
+target_link_libraries(sources_files cpr::cpr yaml-cpp::yaml-cpp mysql::concpp frozen)
 add_executable(application web/driver.cpp)
 target_link_libraries(application sources_files)
 

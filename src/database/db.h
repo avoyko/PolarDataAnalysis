@@ -6,10 +6,10 @@
 
 class DBWorker {
 public:
-    static DBWorker &GetInstance() {
-        static DBWorker db_worker;
-        return db_worker;
-    }
+
+    explicit DBWorker();
+
+    static DBWorker &GetInstance();
 
     static void UpdateDB(const PolarUser &polar_user);
 
@@ -25,12 +25,6 @@ public:
 
     bool FindTable(const std::string &table_name);
 
-private:
-    DBWorker() : session(server_name_.data(), port_, user_name_.data(), pass_.data()) {
-        if (!FindDB()) {
-            SetupDB();
-        }
-    };
 
 public:
     mysqlx::Session session;

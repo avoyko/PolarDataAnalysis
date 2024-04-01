@@ -17,32 +17,31 @@ void DBWorker::UpdateDB(const PolarUser &polar_user) {
     sleep_table.Update(polar_user.sleep_info);
 }
 
-
 mysqlx::SqlResult DBWorker::SQL(const std::string &query) {
     return session.sql(query).execute();
 }
 
 void DBWorker::SetupDB() {
-    session.createSchema(db_name_);
-    boost::format fmt =
-            boost::format("GRANT ALL ON %1%.* TO '%2%'@'%3%';") % db_name_ % user_name_ % server_name_;
+    session.createSchema(db_name_.data());
+    boost::format fmt = boost::format("GRANT ALL ON %1%.* TO '%2%'@'%3%';") % db_name_.data() %
+                        user_name_.data() % server_name_.data();
     session.sql(fmt.str()).execute();
-    fmt = boost::format("USE %1%") % db_name_;
+    fmt = boost::format("USE %1%") % db_name_.data();
     session.sql(fmt.str()).execute();
 }
 
 bool DBWorker::FindDB() {
-    mysqlx::Schema schema = session.getSchema(db_name_, true);
+    mysqlx::Schema schema = session.getSchema(db_name_.data(), true);
     return schema.existsInDatabase();
 }
 
 bool DBWorker::FindTable(const std::string &table_name) {
-    mysqlx::Schema schema = session.getSchema(db_name_, true);
+    mysqlx::Schema schema = session.getSchema(db_name_.data(), true);
     return schema.getTable(table_name, true).existsInDatabase();
 }
 
 mysqlx::Schema DBWorker::GetDB() {
-    return session.getSchema(db_name_);
+    return session.getSchema(db_name_.data());
 }
 
 mysqlx::Table DBWorker::GetTable(const std::string &table_name) {

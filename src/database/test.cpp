@@ -11,6 +11,7 @@ TEST(TEST_CREATE_DB, db_first){
         session.sql("DROP DATABASE polar_user;").execute();
         session.sql("DROP USER 'voyko'@'localhost';").execute();
     } catch(...){};
+
     ASSERT_NO_THROW(DBWorker::GetInstance());
 }
 
