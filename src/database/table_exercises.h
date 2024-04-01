@@ -12,8 +12,6 @@ public:
 
     std::string GenerateTable();
 
-
-
     void Update(const wjson& exercises);
 
     mysqlx::Row Read();

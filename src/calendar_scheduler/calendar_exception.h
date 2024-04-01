@@ -1,8 +1,17 @@
-//
-// Created by Никита Глебский on 01.04.2024.
-//
+#pragma once
 
-#ifndef COURSEWORK_CALENDAR_EXCEPTION_H
-#define COURSEWORK_CALENDAR_EXCEPTION_H
+#include <iostream>
+#include <string>
+#include <utility>
 
-#endif //COURSEWORK_CALENDAR_EXCEPTION_H
+class CalendarException : public std::exception {
+public:
+    explicit CalendarException(std::string message) : message_{std::move(message)} {};
+
+    [[nodiscard]] const char *what() const noexcept override {
+        return message_.c_str();
+    }
+
+private:
+    std::string message_;
+};
