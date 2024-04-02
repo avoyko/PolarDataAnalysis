@@ -6,10 +6,8 @@
 
 static bool db_can_be_used = false;
 
-DBWorker::DBWorker() : session(server_name_.data(), port_, user_name_.data(), pass_.data()) {
-    boost::format fmt = boost::format("USE %1%") % db_name_.data();
-    session.sql(fmt.str()).execute();
-};
+DBWorker::DBWorker()
+    : session(server_name_.data(), port_, user_name_.data(), pass_.data(), db_name_.data()){};
 
 DBWorker &DBWorker::GetInstance() {
     if (!db_can_be_used) {
