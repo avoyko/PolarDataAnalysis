@@ -5,13 +5,12 @@
 #include "table_sleep.h"
 #include <gtest/gtest.h>
 
-TEST(TEST_CREATE_DB, db_first){
-    mysqlx::Session session("localhost", 33060, "voyko", "2004");
-    try {
-        session.sql("DROP DATABASE polar_user;").execute();
-        session.sql("DROP USER 'voyko'@'localhost';").execute();
-    } catch(...){};
+TEST(TEST_CREATE_DB, db_first) {
 
+   //  mysqlx::Session session("localhost", 33060, "polar_usr", "2004");
+//    try{
+//        session.sql("DROP").execute();
+//    } catch(...){};
     ASSERT_NO_THROW(DBWorker::GetInstance());
 }
 

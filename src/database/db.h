@@ -6,7 +6,6 @@
 
 class DBWorker {
 public:
-
     explicit DBWorker();
 
     static DBWorker &GetInstance();
@@ -15,21 +14,26 @@ public:
 
     mysqlx::SqlResult SQL(const std::string &query);
 
-    void SetupDB();
-
-    bool FindDB();
-
     mysqlx::Schema GetDB();
 
     mysqlx::Table GetTable(const std::string &table_name);
 
     bool FindTable(const std::string &table_name);
 
-
 public:
     mysqlx::Session session;
 
 private:
+    static void RunSetup();
+
+    static void SetupUser(mysqlx::Session &temp_session);
+
+    static void SetupDB(mysqlx::Session &temp_session);
+
+    static bool FindUser(mysqlx::Session &temp_session);
+
+    static bool FindDB(mysqlx::Session &temp_session);
+
     static constexpr frozen::string server_name_ = "localhost";
     static constexpr int port_ = 33060;
     static constexpr frozen::string user_name_ = "polar_user";
