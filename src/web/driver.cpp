@@ -5,7 +5,6 @@ static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::R
 int main() {
     crow::SimpleApp app;
     app.loglevel(crow::LogLevel::Info);
-    ;
     CROW_ROUTE(app, "/")
     ([](const crow::request &req) {
         CROW_LOG_INFO << "Client is redirected for authorization";

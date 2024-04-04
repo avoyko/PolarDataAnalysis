@@ -1,12 +1,11 @@
 #pragma once
 
-#include <mysqlx/xdevapi.h>
-#include "../utilities.h"
+#include "db_utilities.h"
 #include "../polar_api/accesslink.h"
 
 class DBWorker {
 public:
-    explicit DBWorker();
+    DBWorker();
 
     static DBWorker &GetInstance();
 

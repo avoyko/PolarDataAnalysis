@@ -1,3 +1,5 @@
+#pragma once
+
 #include "transaction.h"
 
 class PhysicalInfoTransaction : public Transaction {

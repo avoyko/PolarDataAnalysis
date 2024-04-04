@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../oauth2.h"
-#include "resource.h"
 #include "daily_activity_transaction.h"
 
 class DailyActivity : public Resource {

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../utilities.h"
 #include "db.h"
 
 class BaseTable {
@@ -9,22 +8,11 @@ public:
 
     explicit BaseTable(std::string table_name) : table_name_(std::move(table_name)){};
 
-    void Create(const std::string &sql_query) {
-        DBWorker &db_worker = DBWorker::GetInstance();
-        db_worker.SQL(sql_query);
-    }
+    void Create(const std::string &sql_query);
 
-    bool CheckExistence() {
-        DBWorker &db_worker = DBWorker::GetInstance();
-        return db_worker.FindTable(table_name_);
-    };
+    bool CheckExistence();
 
-    std::string LastRecordDate() {
-        DBWorker &db_worker = DBWorker::GetInstance();
-        mysqlx::Table table = db_worker.GetTable(table_name_);
-        mysqlx::RowResult rowResult = table.select("*").orderBy("date DESC").limit(1).execute();
-        return mysqlx::get_string_date(rowResult.fetchOne());
-    };
+    std::string LastRecordDate();
 
     template <typename... Args>
     void InsertIntoTable(Args &&...args) {
@@ -33,11 +21,7 @@ public:
         table.insert().values(args...);
     };
 
-    void Delete() {
-        DBWorker &db_worker = DBWorker::GetInstance();
-        boost::format fmt = boost::format("DROP TABLE %1%;") % table_name_;
-        db_worker.SQL(fmt.str());
-    }
+    void Delete();
 
 private:
     const std::string table_name_;

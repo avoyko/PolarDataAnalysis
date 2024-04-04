@@ -1,6 +1,5 @@
 add_library(db_sources_files
         ../polar_api/accesslink.h
-        ../utilities.h
         db.cpp
         table_exercises.h
         table_exercises.cpp

@@ -1,6 +1,5 @@
 #pragma once
 
-#include "oauth2.h"
 #include "endpoints/users.h"
 #include "endpoints/pull_notifications.h"
 #include "endpoints/training_data.h"

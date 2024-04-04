@@ -1,5 +1,4 @@
 #include "table_exercises.h"
-#include "db.h"
 
 static std::vector<std::string> GetDefaultValues() {
     return {"00-00-00", "NULL", "NULL", "NULL", "NULL", "NULL",
@@ -51,18 +50,16 @@ void ExercisesTable::Update(const wjson& exercises) {
     }
 }
 
-
-
 // this is a possible implementation for unpacking vector
 
 //
-//template <std::size_t... S>
-//void unpack_vector(const std::vector<std::string>& vec, std::index_sequence<S...>) {
+// template <std::size_t... S>
+// void unpack_vector(const std::vector<std::string>& vec, std::index_sequence<S...>) {
 //    InsertIntoTable(vec[S]...);
 //}
 //
-//template <std::size_t size>
-//void unpack_vector(const std::vector<std::string>& vec) {
+// template <std::size_t size>
+// void unpack_vector(const std::vector<std::string>& vec) {
 //    if (vec.size() != size)
 //        throw /* choose your error */;
 //    unpack_vector(vec, std::make_index_sequence<size>());

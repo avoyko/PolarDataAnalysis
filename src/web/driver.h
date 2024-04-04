@@ -1,13 +1,8 @@
 #pragma once
 
-#include <crow/utility.h>
 #include <crow/app.h>
-#include <crow.h>
-#include <crow/logging.h>
-#include <cpr/cpr.h>
 #include <yaml-cpp/yaml.h>
 #include "../database/db.h"
-#include "polar_api/oauth2.h"
 #include "polar_api/accesslink.h"
 
 namespace Callback {

@@ -2,7 +2,7 @@
 #include <mysqlx/xdevapi.h>
 #include <istream>
 #include <frozen/string.h>
-#include <crow.h>
+#include <crow/json.h>
 
 using rjson = crow::json::rvalue;
 using wjson = crow::json::wvalue;

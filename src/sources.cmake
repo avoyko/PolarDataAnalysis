@@ -1,7 +1,7 @@
 add_library(sources_files
         polar_api/oauth2.cpp
         polar_api/accesslink.cpp
-        polar_api/request.cpp
+        polar_api/request_wrap.cpp
         polar_api/endpoints/training_data.cpp
         polar_api/endpoints/daily_activity.cpp
         polar_api/endpoints/daily_activity_transaction.cpp

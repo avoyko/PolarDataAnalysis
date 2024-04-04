@@ -1,25 +1,27 @@
-#include "calendar_exception.h"
-#include "scheduler.h"
-
 #include <boost/format.hpp>
 #include <Python.h>
 #include <algorithm>
 #include <array>
 
+#include "calendar_exception.h"
+#include "scheduler.h"
+
 const std::wstring venv_executable = L"../../venv/bin/python3.11";
 
 std::wstring DateStamp::Serialize() const {
-    boost::wformat fmt = boost::wformat(L"%1%-%2%-%3%T%4%:%5%:%6%+03:00")
-                         % std::to_wstring(year) % std::to_wstring(month) % std::to_wstring(day) %
-                         std::to_wstring(hour) % std::to_wstring(minutes) % std::to_wstring(seconds);
+    boost::wformat fmt = boost::wformat(L"%1%-%2%-%3%T%4%:%5%:%6%+03:00") % std::to_wstring(year) %
+                         std::to_wstring(month) % std::to_wstring(day) % std::to_wstring(hour) %
+                         std::to_wstring(minutes) % std::to_wstring(seconds);
     return fmt.str();
 }
 
-void CalendarClient::PostEvent(const std::wstring &event_name, DateStamp start_datestamp, DateStamp end_datestamp) {
+void CalendarClient::PostEvent(const std::wstring &event_name, DateStamp start_datestamp,
+                               DateStamp end_datestamp) {
     PyConfig config;
     PyConfig_InitIsolatedConfig(&config);
     PyConfig_SetString(&config, &config.executable, venv_executable.data());
-    auto argv = InitializeEventArgv(event_name, start_datestamp.Serialize(), end_datestamp.Serialize());
+    auto argv =
+        InitializeEventArgv(event_name, start_datestamp.Serialize(), end_datestamp.Serialize());
     PyConfig_SetArgv(&config, 4, argv);
     auto status = Py_InitializeFromConfig(&config);
     PyConfig_Clear(&config);
@@ -42,7 +44,8 @@ wchar_t *CalendarClient::CopyWcharArgument(const std::wstring &wstr) {
     return buf;
 }
 
-wchar_t **CalendarClient::InitializeEventArgv(const std::wstring &event_name, const std::wstring &start_date_string,
+wchar_t **CalendarClient::InitializeEventArgv(const std::wstring &event_name,
+                                              const std::wstring &start_date_string,
                                               const std::wstring &end_date_string) {
     std::array<std::wstring, 4> wstring_args;
     wstring_args[0] = L"post.py";

@@ -1,4 +1,5 @@
 #pragma once
+
 #include "table_base.h"
 
 class PhysTable : public BaseTable {

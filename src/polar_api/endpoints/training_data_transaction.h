@@ -2,7 +2,6 @@
 
 #include "transaction.h"
 
-#include <utility>
 
 class TrainingDataTransaction : public Transaction {
 public:
@@ -12,7 +11,7 @@ public:
     }
 
     ParsedResponse ListExercises();
-    /// TODO: i still dont know what type of url we get (full/partial maybe?)
+
     ParsedResponse GetExerciseSummary(const std::string &url);
 
     ParsedResponse GetGpx(const std::string &url);

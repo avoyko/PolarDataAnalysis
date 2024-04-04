@@ -1,15 +1,14 @@
 #pragma once
 
 #include <utility>
+#include "cpr/cpr.h"
 
-#include "utilities.h"
-
-class Request {
+class RequestWrapper {
 public:
-    Request() = default;
+    RequestWrapper() = default;
 
-    Request(std::string_view endpoint, Parameters query_args = {},
-            Headers headers = {}, const Body &body = "")
+    RequestWrapper(std::string_view endpoint, cpr::Parameters query_args = {},
+            cpr::Header headers = {})
         : endpoint_(endpoint), parameters_(std::move(query_args)), headers_(std::move(headers)){};
 
 
@@ -21,13 +20,13 @@ public:
 
     cpr::Url CprUrl();
 
-    void UpdateHeaders(const Headers &other);
+    void UpdateHeaders(const cpr::Header &other);
 
     void UpdateUrl(const std::string &other_url);
 
 private:
     std::string endpoint_;
-    Parameters parameters_;
-    Headers headers_;
+    cpr::Parameters parameters_;
+    cpr::Header headers_;
     std::string url_;
 };

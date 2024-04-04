@@ -1,6 +1,5 @@
 #pragma once
 
-#include "../oauth2.h"
 #include "physical_info_transaction.h"
 
 class PhysicalInfo : public Resource {
