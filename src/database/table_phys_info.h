@@ -3,7 +3,7 @@
 
 class PhysTable : public BaseTable {
 public:
-    explicit PhysTable() : table_name_("phys_info"), BaseTable(table_name_) {
+    explicit PhysTable() : BaseTable(table_name_) {
         if (!CheckExistence()) {
             Create(GenerateTable());
         }
@@ -13,5 +13,5 @@ public:
     void Update(const wjson &heart_samples);
 
 private:
-    const std::string table_name_;
+    static constexpr std::string table_name_ = "phys_info";
 };

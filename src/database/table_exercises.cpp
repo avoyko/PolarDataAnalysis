@@ -22,7 +22,7 @@ std::string ExercisesTable::GenerateTable() {
                             "exercise9 VARCHAR(50),"
                             "exercise10 VARCHAR(50)"
                             ");") %
-                        table_name_;
+                        table_name_.data();
     return fmt.str();
 }
 

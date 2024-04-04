@@ -44,7 +44,7 @@ mysqlx::Table DBWorker::GetTable(const std::string &table_name) {
 
 bool DBWorker::FindTable(const std::string &table_name) {
     mysqlx::Schema schema = session.getSchema(db_name_.data(), true);
-    return schema.getTable(table_name, true).existsInDatabase();
+    return schema.getTable(table_name).existsInDatabase();
 }
 
 /// THIS IS THE PLACE WHERE DIRTY STUFF HAPPENS

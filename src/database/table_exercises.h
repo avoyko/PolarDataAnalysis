@@ -4,7 +4,7 @@
 
 class ExercisesTable : public BaseTable {
 public:
-    ExercisesTable() : table_name_("exercises"), BaseTable(table_name_) {
+    ExercisesTable() : BaseTable(table_name_.data()) {
         if (!CheckExistence()) {
             Create(GenerateTable());
         }
@@ -17,8 +17,5 @@ public:
     mysqlx::Row Read();
 
 private:
-    const std::string table_name_;
+    static constexpr frozen::string table_name_ = "exercise";
 };
-
-
-

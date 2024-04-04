@@ -7,8 +7,8 @@
 #include <cpr/cpr.h>
 #include <yaml-cpp/yaml.h>
 #include "../database/db.h"
-#include "../oauth2.h"
-#include "../accesslink.h"
+#include "polar_api/oauth2.h"
+#include "polar_api/accesslink.h"
 
 namespace Callback {
     constexpr char OAUTHPOINT[] = "/oauth2_callback";

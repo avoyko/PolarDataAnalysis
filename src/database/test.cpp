@@ -5,12 +5,7 @@
 #include "table_sleep.h"
 #include <gtest/gtest.h>
 
-TEST(TEST_CREATE_DB, db_first) {
-
-   //  mysqlx::Session session("localhost", 33060, "polar_usr", "2004");
-//    try{
-//        session.sql("DROP").execute();
-//    } catch(...){};
+TEST(TEST_CREATE_DB, get_instance_method_nothrow) {
     ASSERT_NO_THROW(DBWorker::GetInstance());
 }
 

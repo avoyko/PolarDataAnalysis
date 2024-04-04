@@ -4,7 +4,7 @@
 
 class ActivityTable : public BaseTable {
 public:
-    ActivityTable() : table_name_("activity"), BaseTable(table_name_) {
+    ActivityTable() : BaseTable(table_name_) {
         if (!CheckExistence()) {
             Create(GenerateTable());
         }
@@ -17,5 +17,5 @@ public:
     mysqlx::Row Read();
 
 private:
-    const std::string table_name_ ;
+    static constexpr std::string table_name_ = "activity";
 };

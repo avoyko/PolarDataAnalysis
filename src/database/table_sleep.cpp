@@ -26,6 +26,6 @@ std::string DaySleepTable::GenerateTable() {
                             "deep_sleep INT,"
                             "sleep_score INT"
                             ");") %
-                        table_name_;
+                        table_name_.data();
     return fmt.str();
 }

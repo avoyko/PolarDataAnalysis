@@ -2,7 +2,7 @@
 
 #include <mysqlx/xdevapi.h>
 #include "../utilities.h"
-#include "../accesslink.h"
+#include "../polar_api/accesslink.h"
 
 class DBWorker {
 public:

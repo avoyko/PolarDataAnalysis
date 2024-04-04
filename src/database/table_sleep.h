@@ -3,7 +3,7 @@
 
 class DaySleepTable : public BaseTable {
 public:
-    DaySleepTable() : table_name_("sleep"), BaseTable(table_name_) {
+    DaySleepTable() : BaseTable(table_name_) {
         if (!CheckExistence()) {
             Create(GenerateTable());
         }
@@ -13,5 +13,5 @@ public:
     void Update(const wjson &sleep);
 
 private:
-    const std::string table_name_;
+    static constexpr std::string table_name_ = "sleep";
 };

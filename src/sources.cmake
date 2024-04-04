@@ -1,16 +1,16 @@
 add_library(sources_files
-        oauth2.cpp
-        accesslink.cpp
-        request.cpp
-        endpoints/training_data.cpp
-        endpoints/daily_activity.cpp
-        endpoints/daily_activity_transaction.cpp
-        endpoints/physical_info.cpp
-        endpoints/physical_info_transaction.cpp
-        endpoints/pull_notifications.cpp
-        endpoints/training_data_transaction.cpp
-        endpoints/transaction.cpp
-        endpoints/users.cpp
+        polar_api/oauth2.cpp
+        polar_api/accesslink.cpp
+        polar_api/request.cpp
+        polar_api/endpoints/training_data.cpp
+        polar_api/endpoints/daily_activity.cpp
+        polar_api/endpoints/daily_activity_transaction.cpp
+        polar_api/endpoints/physical_info.cpp
+        polar_api/endpoints/physical_info_transaction.cpp
+        polar_api/endpoints/pull_notifications.cpp
+        polar_api/endpoints/training_data_transaction.cpp
+        polar_api/endpoints/transaction.cpp
+        polar_api/endpoints/users.cpp
         database/db.cpp
         database/table_exercises.h
         database/table_exercises.cpp

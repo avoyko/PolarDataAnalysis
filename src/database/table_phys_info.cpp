@@ -30,6 +30,6 @@ std::string PhysTable::GenerateTable() {
                             "an_t INT,"
                             "vo2_max INT"
                             ");") %
-                        table_name_;
+                        table_name_.data();
     return fmt.str();
 }
