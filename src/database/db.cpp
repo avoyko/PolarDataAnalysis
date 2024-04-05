@@ -22,7 +22,7 @@ void DBWorker::UpdateDB(const PolarUser &polar_user) {
     ExercisesTable exercises_table;
     ActivityTable activity_table;
     PhysTable phys_table;
-    DaySleepTable sleep_table;
+    SleepTable sleep_table;
 
     exercises_table.Update(polar_user.exercises_info);
     activity_table.Update(polar_user.activity_info);
@@ -93,4 +93,15 @@ bool DBWorker::FindUser(mysqlx::Session &temp_session) {
     boost::format fmt = boost::format("user == \'%1%\'") % user_name_.data();
     auto result = table.select("1").where(fmt.str()).execute();
     return result.fetchOne() == 1;
+}
+mysqlx::SqlResult DBWorker::JoinAllTables() {
+    auto table_list = session.getDefaultSchema().getTableNames();
+    boost::format fmt = boost::format(
+                            "SELECT * FROM %1%"
+                            "NATURAL LEFT JOIN %2%"
+                            "NATURAL LEFT JOIN %3%"
+                            "NATURAL LEFT JOIN %4%;") %
+                        ActivityTable::GetName() % ExercisesTable::GetName() %
+                        PhysTable::GetName() % SleepTable::GetName();
+    return SQL(fmt.str());
 }

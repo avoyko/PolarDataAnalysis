@@ -19,6 +19,8 @@ public:
 
     bool FindTable(const std::string &table_name);
 
+    mysqlx::SqlResult JoinAllTables();
+
 public:
     mysqlx::Session session;
 
