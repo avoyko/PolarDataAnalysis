@@ -12,14 +12,9 @@ add_library(sources_files
         polar_api/endpoints/transaction.cpp
         polar_api/endpoints/users.cpp
         database/db.cpp
-        database/table_exercises.h
         database/table_exercises.cpp
-        database/table_base.h
         database/table_base.cpp
-        database/table_activity.h
         database/table_activity.cpp
-        database/table_sleep.h
         database/table_sleep.cpp
-        database/table_phys_info.h
         database/table_phys_info.cpp
 )
