@@ -9,7 +9,19 @@ TEST(TEST_CREATE_DB, get_instance_method_nothrow) {
     ASSERT_NO_THROW(DBWorker::GetInstance());
 }
 
-int main(int argc, char **argv) {
+TEST(TEST_CREATE_DB, simple_insertion) {
+    DBWorker& db_worker = DBWorker::GetInstance();
+    auto activity_table = db_worker.GetTable("exercise");
+    auto r = activity_table.insert()
+                 .values("2024-04-05", "swim", "swim", "swim", "swim", "swim", "swim", "swim",
+                         "swim", "swim", "swim")
+                 .execute();
+    ASSERT_NO_THROW(activity_table.select("*").execute());
+    mysqlx::Row row = activity_table.select("*").execute().fetchOne();
+    std::string date = mysqlx::get_string_date(row);
+}
+
+int main(int argc, char** argv) {
     testing::InitGoogleTest(&argc, argv);
     return RUN_ALL_TESTS();
 }
