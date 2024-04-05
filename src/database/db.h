@@ -17,6 +17,8 @@ public:
 
     mysqlx::Table GetTable(const std::string &table_name);
 
+    mysqlx::SqlResult GetTableColumns(const std::string &table_name);
+
     bool FindTable(const std::string &table_name);
 
     mysqlx::SqlResult JoinAllTables();

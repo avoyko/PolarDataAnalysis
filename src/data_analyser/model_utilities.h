@@ -12,12 +12,13 @@ static constexpr size_t BATCH_SIZE = 10;
 static inline std::string get_column_names() {
     DBWorker& db_worker = DBWorker::GetInstance();
     std::string activity_cols =
-        db_worker.GetTableColumns<ActivityTable>().fetchOne()[0].get<std::string>();
+        db_worker.GetTableColumns(ActivityTable::GetName()).fetchOne()[0].get<std::string>();
     std::string exercise_cols =
-        db_worker.GetTableColumns<ExercisesTable>().fetchOne()[0].get<std::string>();
-    std::string phys_cols = db_worker.GetTableColumns<PhysTable>().fetchOne()[0].get<std::string>();
+        db_worker.GetTableColumns(ExercisesTable::GetName()).fetchOne()[0].get<std::string>();
+    std::string phys_cols =
+        db_worker.GetTableColumns(PhysTable::GetName()).fetchOne()[0].get<std::string>();
     std::string sleep_cols =
-        db_worker.GetTableColumns<SleepTable>().fetchOne()[0].get<std::string>();
+        db_worker.GetTableColumns(SleepTable::GetName()).fetchOne()[0].get<std::string>();
     return "date," + activity_cols + "," + exercise_cols + "," + phys_cols + "," + sleep_cols;
 }
 

@@ -47,6 +47,28 @@ bool DBWorker::FindTable(const std::string &table_name) {
     return schema.getTable(table_name).existsInDatabase();
 }
 
+mysqlx::SqlResult DBWorker::JoinAllTables() {
+    auto table_list = session.getDefaultSchema().getTableNames();
+    boost::format fmt = boost::format(
+                            "SELECT * FROM %1% "
+                            "NATURAL LEFT JOIN %2% "
+                            "NATURAL LEFT JOIN %3% "
+                            "NATURAL LEFT JOIN %4%;") %
+                        ActivityTable::GetName() % ExercisesTable::GetName() %
+                        PhysTable::GetName() % SleepTable::GetName();
+    return SQL(fmt.str());
+}
+
+mysqlx::SqlResult DBWorker::GetTableColumns(const std::string &table_name) {
+    boost::format fmt =
+        boost::format(
+            "SELECT GROUP_CONCAT(COLUMN_NAME) FROM INFORMATION_SCHEMA.COLUMNS WHERE "
+            "TABLE_NAME = \'%1%\' "
+            "AND COLUMN_NAME!='date';") %
+        table_name;
+    return SQL(fmt.str());
+}
+
 /// THIS IS THE PLACE WHERE DIRTY STUFF HAPPENS
 
 void DBWorker::RunSetup() {
@@ -93,15 +115,4 @@ bool DBWorker::FindUser(mysqlx::Session &temp_session) {
     boost::format fmt = boost::format("user == \'%1%\'") % user_name_.data();
     auto result = table.select("1").where(fmt.str()).execute();
     return result.fetchOne() == 1;
-}
-mysqlx::SqlResult DBWorker::JoinAllTables() {
-    auto table_list = session.getDefaultSchema().getTableNames();
-    boost::format fmt = boost::format(
-                            "SELECT * FROM %1%"
-                            "NATURAL LEFT JOIN %2%"
-                            "NATURAL LEFT JOIN %3%"
-                            "NATURAL LEFT JOIN %4%;") %
-                        ActivityTable::GetName() % ExercisesTable::GetName() %
-                        PhysTable::GetName() % SleepTable::GetName();
-    return SQL(fmt.str());
 }
