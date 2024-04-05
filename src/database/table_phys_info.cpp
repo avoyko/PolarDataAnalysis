@@ -33,3 +33,6 @@ std::string PhysTable::GenerateTable() {
                         table_name_.data();
     return fmt.str();
 }
+std::string PhysTable::GetName() {
+    return table_name_.data();
+}
