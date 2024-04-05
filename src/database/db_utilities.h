@@ -32,44 +32,6 @@ static inline wjson JsonValue(const wjson &json, const std::string &field) {
 
 namespace mysqlx {
 
-static inline std::vector<uint64_t> mysqlx_raw_as_u64_vector(const mysqlx::Value &in_value) {
-    std::vector<uint64_t> out;
-
-    const auto bytes = in_value.getRawBytes();
-    auto ptr = reinterpret_cast<const std::byte *>(bytes.first);
-    auto end = reinterpret_cast<const std::byte *>(bytes.first) + bytes.second;
-
-    while (ptr != end) {
-        static constexpr std::byte carry_flag{0b1000'0000};
-        static constexpr std::byte value_mask{0b0111'1111};
-
-        uint64_t v = 0;
-        uint64_t shift = 0;
-        bool is_carry;
-        do {
-            auto byte = *ptr;
-            is_carry = (byte & carry_flag) == carry_flag;
-            v |= std::to_integer<uint64_t>(byte & value_mask) << shift;
-
-            ++ptr;
-            shift += 7;
-        } while (is_carry && ptr != end && shift <= 63);
-
-        out.push_back(v);
-    }
-
-    return out;
-}
-
-static inline std::chrono::year_month_day read_date(const mysqlx::Value &value) {
-    const auto vector = mysqlx_raw_as_u64_vector(value);
-    if (vector.size() < 3)
-        throw std::out_of_range{"Value is not a valid DATE"};
-
-    return std::chrono::year{static_cast<int>(vector.at(0))} / static_cast<int>(vector.at(1)) /
-           static_cast<int>(vector.at(2));
-}
-
 static inline std::string get_string_date(const mysqlx::Row &row) {
     mysqlx::bytes data = row[0].getRawBytes();
     const mysqlx::byte *first = data.begin();
@@ -79,10 +41,14 @@ static inline std::string get_string_date(const mysqlx::Row &row) {
     int day = first[3];
 
     char text[20];
-    if (month > 9) {
+    if (month > 9 && day > 9) {
         sprintf(text, "%i-%i-%i", year, month, day);
-    } else {
+    } else if (month > 9){
         sprintf(text, "%i-0%i-%i", year, month, day);
+    } else if (day > 9){
+        sprintf(text, "%i-%i-0%i", year, month, day);
+    } else {
+        sprintf(text, "%i-0%i-0%i", year, month, day);
     }
     return text;
 }
