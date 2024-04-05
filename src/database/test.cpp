@@ -4,6 +4,7 @@
 #include "table_phys_info.h"
 #include "table_sleep.h"
 #include <gtest/gtest.h>
+#include "../data_analyser/model_utilities.h"
 
 TEST(TEST_CREATE_DB, get_instance_method_nothrow) {
     ASSERT_NO_THROW(DBWorker::GetInstance());
@@ -19,6 +20,15 @@ TEST(TEST_CREATE_DB, simple_insertion) {
     ASSERT_NO_THROW(activity_table.select("*").execute());
     mysqlx::Row row = activity_table.select("*").execute().fetchOne();
     std::string date = mysqlx::get_string_date(row);
+}
+
+TEST(TEST_CREATE_DB, convert_to_csv) {
+    DBWorker& db_worker = DBWorker::GetInstance();
+    ASSERT_NO_THROW(CSVHelpers::ConvertToCSV());
+}
+
+TEST(TEST_CREATE_DB, delete_csv) {
+    ASSERT_NO_THROW(CSVHelpers::DeleteCSV());
 }
 
 int main(int argc, char** argv) {

@@ -9,6 +9,18 @@ static constexpr size_t DEFAULT_COLUMN_VALUE = 0;
 static const std::string FILENAME = "polar_user_data.csv";
 static constexpr size_t BATCH_SIZE = 10;
 
+static inline std::string get_column_names() {
+    DBWorker& db_worker = DBWorker::GetInstance();
+    std::string activity_cols =
+        db_worker.GetTableColumns<ActivityTable>().fetchOne()[0].get<std::string>();
+    std::string exercise_cols =
+        db_worker.GetTableColumns<ExercisesTable>().fetchOne()[0].get<std::string>();
+    std::string phys_cols = db_worker.GetTableColumns<PhysTable>().fetchOne()[0].get<std::string>();
+    std::string sleep_cols =
+        db_worker.GetTableColumns<SleepTable>().fetchOne()[0].get<std::string>();
+    return "date," + activity_cols + "," + exercise_cols + "," + phys_cols + "," + sleep_cols;
+}
+
 static inline void write_to_csv(std::vector<std::string>& csv_rows_batch) {
     static std::ofstream os(FILENAME);
 
@@ -21,9 +33,10 @@ static inline void ConvertToCSV() {
     DBWorker& db_worker = DBWorker::GetInstance();
     mysqlx::SqlResult records = db_worker.JoinAllTables();
     std::vector<std::string> csv_rows_batch;
+    csv_rows_batch.push_back(get_column_names());
 
     while (auto row = records.fetchOne()) {
-        std::string csv_row = mysqlx::get_string_date(row);
+        std::string csv_row = mysqlx::get_string_date(row) + ",";
         for (size_t i = 1; i < row.colCount(); ++i) {
             if (row[i].getType() == mysqlx::Value::Type::INT64) {
                 csv_row += std::to_string(row[i].get<int64_t>());
