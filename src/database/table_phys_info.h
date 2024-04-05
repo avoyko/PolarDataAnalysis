@@ -4,15 +4,16 @@
 
 class PhysTable : public BaseTable {
 public:
-    explicit PhysTable() : BaseTable(table_name_) {
+    explicit PhysTable() : BaseTable(table_name_.data()) {
         if (!CheckExistence()) {
             Create(GenerateTable());
         }
     };
 
     std::string GenerateTable();
+    static std::string GetName();
     void Update(const wjson &heart_samples);
 
 private:
-    static constexpr std::string table_name_ = "phys_info";
+    static constexpr frozen::string table_name_ = "phys_info";
 };

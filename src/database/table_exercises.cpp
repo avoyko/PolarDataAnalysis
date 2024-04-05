@@ -49,6 +49,9 @@ void ExercisesTable::Update(const wjson& exercises) {
         }
     }
 }
+std::string ExercisesTable::GetName() {
+    return table_name_.data();
+}
 
 // this is a possible implementation for unpacking vector
 

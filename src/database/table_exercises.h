@@ -11,7 +11,7 @@ public:
     };
 
     std::string GenerateTable();
-
+    static std::string GetName();
     void Update(const wjson& exercises);
 
     mysqlx::Row Read();

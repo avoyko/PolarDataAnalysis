@@ -23,3 +23,6 @@ std::string ActivityTable::GenerateTable() {
                         table_name_.data();
     return fmt.str();
 }
+std::string ActivityTable::GetName() {
+    return table_name_.data();
+}

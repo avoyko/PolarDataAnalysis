@@ -1,17 +1,18 @@
 #pragma once
 #include "table_base.h"
 
-class DaySleepTable : public BaseTable {
+class SleepTable : public BaseTable {
 public:
-    DaySleepTable() : BaseTable(table_name_) {
+    SleepTable() : BaseTable(table_name_.data()) {
         if (!CheckExistence()) {
             Create(GenerateTable());
         }
     };
 
     std::string GenerateTable();
+    static std::string GetName();
     void Update(const wjson &sleep);
 
 private:
-    static constexpr std::string table_name_ = "sleep";
+    static constexpr frozen::string table_name_ = "sleep";
 };

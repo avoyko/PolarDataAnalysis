@@ -1,6 +1,6 @@
 #include "table_sleep.h"
 
-void DaySleepTable::Update(const wjson& sleep) {
+void SleepTable::Update(const wjson& sleep) {
     std::string last_date = LastRecordDate();
 
     for (size_t i = 0; i < sleep.size(); ++i) {
@@ -16,7 +16,7 @@ void DaySleepTable::Update(const wjson& sleep) {
         }
     }
 }
-std::string DaySleepTable::GenerateTable() {
+std::string SleepTable::GenerateTable() {
     boost::format fmt = boost::format(
                             "CREATE TABLE %1%("
                             "date DATE,"
@@ -28,4 +28,7 @@ std::string DaySleepTable::GenerateTable() {
                             ");") %
                         table_name_.data();
     return fmt.str();
+}
+std::string SleepTable::GetName() {
+    return table_name_.data();
 }
