@@ -20,13 +20,12 @@ const std::string DATA_URI = "http://localhost:5002/data";
 
 class PolarApp {
 public:
-
-    int Activate();
+    static int Activate();
 
 private:
-    crow::response Authorize(const crow::request &req);
+    static crow::response Authorize(const crow::request &req);
 
-    crow::mustache::rendered_template ProcessData();
+    static crow::mustache::rendered_template ProcessData();
 
-    YAML::Node UpdateAccessConfig(const rjson &token_response);
+    static YAML::Node UpdateAccessConfig(const rjson &token_response);
 };
