@@ -32,7 +32,9 @@ void OAuth2Client::PrepareRequest(RequestWrapper &request_body, const std::strin
     } else {
         cpr::Header auth_headers = GetAuthHeaders(access_token);
         request_body.UpdateHeaders(auth_headers);
-        request_body.UpdateUrl(url_ + request_body.GetEndpoint());
+        if (!request_body.GetEndpoint().starts_with(url_)) {
+            request_body.UpdateUrl(url_ + request_body.GetEndpoint());
+        }
     }
 }
 

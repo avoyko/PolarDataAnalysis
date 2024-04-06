@@ -1,7 +1,8 @@
 #include "daily_activity.h"
 
-DailyActivityTransaction DailyActivity::CreateTransaction(const int user_id, const std::string &access_token) {
-    std::string user_exercise_transactions_path = "/users/" + std::to_string(user_id) + "/exercise-transactions";
+DailyActivityTransaction DailyActivity::CreateTransaction(const std::string &access_token,
+                                                          const std::string &user_id) {
+    std::string user_exercise_transactions_path = "/users/" + user_id + "/activity-transactions";
     RequestWrapper request_body{user_exercise_transactions_path};
     oauth_.PrepareRequest(request_body, access_token);
     auto response = PostData(request_body.CprUrl(), request_body.CprHeader());

@@ -5,9 +5,9 @@
 
 class TrainingDataTransaction : public Transaction {
 public:
-    TrainingDataTransaction(const OAuth2Client &oauth, const std::string transactionUrl,
-                            const int userId, std::string accessToken)
-        : Transaction(oauth, transactionUrl, userId, accessToken) {
+    TrainingDataTransaction(const OAuth2Client &oauth, std::string transactionUrl,
+                            std::string userId, std::string accessToken)
+        : Transaction(oauth, std::move(transactionUrl), std::move(userId), std::move(accessToken)) {
     }
 
     ParsedResponse ListExercises();

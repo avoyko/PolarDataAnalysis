@@ -15,10 +15,10 @@ int PolarApp::Activate() {
     });
 
     CROW_ROUTE(app, Callback::OAUTHPOINT)
-    ([](const crow::request &req) { return Authorize(req); });
+    ([this](const crow::request &req) { return Authorize(req); });
 
     CROW_ROUTE(app, Callback::DATAPOINT)
-    ([](const crow::request &req) { return ProcessData(); });
+    ([this](const crow::request &req) { return ProcessData(); });
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
     app.port(Callback::PORT).run();
 
@@ -59,14 +59,16 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
     const auto user_id = config["user_id"].as<std::string>();
 
     ParsedResponse user_info = accesslink.GetUserdata(access_token, user_id);
-    ParsedResponse exercises_info = accesslink.GetExercises(access_token);
-    ParsedResponse activity_info = accesslink.GetActivity(access_token);
-    ParsedResponse phys_info = accesslink.GetPhysicalInfo(access_token);
-    ParsedResponse sleep_info = accesslink.GetSleep(access_token);
+    std::vector<ParsedResponse> exercises_info = accesslink.GetExercises(access_token, user_id);
+    std::vector<ParsedResponse> activity_info = accesslink.GetActivity(access_token, user_id);
+    std::vector<ParsedResponse> phys_info = accesslink.GetPhysicalInfo(access_token, user_id);
+    std::vector<ParsedResponse> sleep_info = accesslink.GetSleep(access_token, user_id);
     DBWorker &db_worker = DBWorker::GetInstance();
-    db_worker.UpdateDB({exercises_info, activity_info, phys_info, sleep_info});
+ //   db_worker.UpdateDB({exercises_info, activity_info, phys_info, sleep_info});
 
     crow::mustache::set_base("../../src/templates");
     auto page = crow::mustache::load("hello.html");
     return page.render(user_info);
-};
+}
+
+

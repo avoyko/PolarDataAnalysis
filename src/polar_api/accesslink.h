@@ -44,15 +44,15 @@ public:
 
     ParsedResponse GetAccessToken(const std::string &authorization_code);
 
-    ParsedResponse GetActivity(const std::string &access_token);
+    std::vector<ParsedResponse> GetActivity(const std::string &access_token, const std::string &user_id);
 
-    ParsedResponse GetExercises(const std::string &access_token);
+    std::vector<ParsedResponse> GetExercises(const std::string &access_token, const std::string &user_id);
 
-    ParsedResponse GetPhysicalInfo(const std::string &access_token);
+    std::vector<ParsedResponse> GetPhysicalInfo(const std::string &access_token, const std::string &user_id);
 
-    ParsedResponse GetSleep(const std::string &access_token);
+    std::vector<ParsedResponse> GetSleep(const std::string &access_token, const std::string &user_id);
 
-    ParsedResponse GetRecharge(const std::string &access_token);
+    ParsedResponse GetRecharge(const std::string &access_token, const std::string &user_id);
 
     ParsedResponse GetUserdata(const std::string &access_token, const std::string &user_id);
 

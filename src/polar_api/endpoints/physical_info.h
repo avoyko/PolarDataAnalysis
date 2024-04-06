@@ -6,5 +6,6 @@ class PhysicalInfo : public Resource {
 public:
     explicit PhysicalInfo(OAuth2Client &oauth) : Resource(oauth){};
 
-    PhysicalInfoTransaction CreateTransaction(const int user_id, const std::string &access_token);
+    PhysicalInfoTransaction CreateTransaction(const std::string &access_token,
+                                              const std::string &user_id);
 };

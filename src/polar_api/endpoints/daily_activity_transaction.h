@@ -5,8 +5,8 @@
 class DailyActivityTransaction : public Transaction {
 public:
     DailyActivityTransaction(const OAuth2Client &oauth, std::string transactionUrl,
-                             const int userId, std::string accessToken)
-        : Transaction(oauth, std::move(transactionUrl), userId, std::move(accessToken)){};
+                             std::string userId, std::string accessToken)
+        : Transaction(oauth, std::move(transactionUrl), std::move(userId), std::move(accessToken)){};
 
     ParsedResponse ListActivities();
 
