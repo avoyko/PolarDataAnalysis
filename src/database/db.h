@@ -9,7 +9,7 @@ public:
 
     static DBWorker &GetInstance();
 
-    static void UpdateDB(const PolarUser &polar_user);
+    void UpdateDB(const PolarUser &polar_user);
 
     mysqlx::SqlResult SQL(const std::string &query);
 

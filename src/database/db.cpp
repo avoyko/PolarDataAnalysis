@@ -24,10 +24,10 @@ void DBWorker::UpdateDB(const PolarUser &polar_user) {
     PhysTable phys_table;
     SleepTable sleep_table;
 
-    exercises_table.Update(polar_user.exercises_info);
-    activity_table.Update(polar_user.activity_info);
-    phys_table.Update(polar_user.physical_info);
-    sleep_table.Update(polar_user.sleep_info);
+    exercises_table.Update(polar_user.exercises_json);
+    activity_table.Update(polar_user.activity_json);
+    phys_table.Update(polar_user.physical_json);
+    sleep_table.Update(polar_user.sleep_json);
 }
 
 mysqlx::SqlResult DBWorker::SQL(const std::string &query) {
