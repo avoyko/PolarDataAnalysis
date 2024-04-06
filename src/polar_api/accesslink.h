@@ -14,10 +14,18 @@ const std::string ACCESSLINK_URL = "https://www.polaraccesslink.com/v3";
 
 /// i couldn't come up with a better place to put it
 struct PolarUser {
-    const wjson exercises_info;
-    const wjson activity_info;
-    const wjson physical_info;
-    const wjson sleep_info;
+
+    PolarUser(const ParsedResponse &exercises, const ParsedResponse &activity,
+              const ParsedResponse &physique, const ParsedResponse &sleep)
+        : exercises_json(exercises),
+          activity_json(activity),
+          physical_json(physique),
+          sleep_json(sleep){};
+
+    const wjson exercises_json;
+    const wjson activity_json;
+    const wjson physical_json;
+    const wjson sleep_json;
 };
 
 class AccessLink {
@@ -36,7 +44,11 @@ public:
 
     ParsedResponse GetAccessToken(const std::string &authorization_code);
 
+    ParsedResponse GetActivity(const std::string &access_token);
+
     ParsedResponse GetExercises(const std::string &access_token);
+
+    ParsedResponse GetPhysicalInfo(const std::string &access_token);
 
     ParsedResponse GetSleep(const std::string &access_token);
 

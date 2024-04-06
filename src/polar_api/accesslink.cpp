@@ -35,3 +35,9 @@ ParsedResponse AccessLink::GetUserdata(const std::string &access_token, const st
 ParsedResponse AccessLink::RegisterUser(const std::string &access_token) {
     return users_.Record(access_token);
 }
+ParsedResponse AccessLink::GetActivity(const std::string &access_token) {
+    return ParsedResponse();
+}
+ParsedResponse AccessLink::GetPhysicalInfo(const std::string &access_token) {
+    return ParsedResponse();
+}
