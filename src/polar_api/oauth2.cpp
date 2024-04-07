@@ -2,8 +2,8 @@
 
 cpr::Header OAuth2Client::GetAuthHeaders(const std::string &access_token) {
     cpr::Header headers{{"Authorization", "Bearer " + access_token},
-                    {"Content-Type", "application/json"},
-                    {"Accept", "application/json"}};
+                        {"Content-Type", "application/json"},
+                        {"Accept", "application/json"}};
     return headers;
 }
 
@@ -16,7 +16,7 @@ std::string OAuth2Client::GetAuthorizationUrl(const std::string response_type) {
 
 ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_code) {
     cpr::Header headers = {{"Content-Type", "application/x-www-form-urlencoded"},
-                       {"Accept", "application/json;charset=UTF-8"}};
+                           {"Accept", "application/json;charset=UTF-8"}};
 
     cpr::Parameters payload{{"grant_type", "authorization_code"}, {"code", authorization_code}};
 
@@ -32,7 +32,9 @@ void OAuth2Client::PrepareRequest(RequestWrapper &request_body, const std::strin
     } else {
         cpr::Header auth_headers = GetAuthHeaders(access_token);
         request_body.UpdateHeaders(auth_headers);
-        if (!request_body.GetEndpoint().starts_with(url_)) {
+        if (request_body.GetEndpoint().starts_with(url_)) {
+            request_body.UpdateUrl(request_body.GetEndpoint());
+        } else {
             request_body.UpdateUrl(url_ + request_body.GetEndpoint());
         }
     }

@@ -2,12 +2,12 @@
 
 #include "transaction.h"
 
-
 class TrainingDataTransaction : public Transaction {
 public:
     TrainingDataTransaction(const OAuth2Client &oauth, std::string transactionUrl,
-                            std::string userId, std::string accessToken)
-        : Transaction(oauth, std::move(transactionUrl), std::move(userId), std::move(accessToken)) {
+                            std::string transaction_id, std::string userId, std::string accessToken)
+        : Transaction(oauth, std::move(transactionUrl), std::move(transaction_id),
+                      std::move(userId), std::move(accessToken)) {
     }
 
     ParsedResponse ListExercises();
