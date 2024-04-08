@@ -1,10 +1,5 @@
 #include "table_exercises.h"
 
-static std::vector<std::string> GetDefaultValues() {
-    return {"00-00-00", "NULL", "NULL", "NULL", "NULL", "NULL",
-            "NULL",     "NULL", "NULL", "NULL", "NULL"};
-}
-
 /// im so sorry for being stupid...
 std::string ExercisesTable::GenerateTable() {
     boost::format fmt = boost::format(
@@ -27,43 +22,32 @@ std::string ExercisesTable::GenerateTable() {
 
 void ExercisesTable::Update(const WriteJson& exercises) {
     std::string last_date = LastRecordDate();
-    std::vector<std::string> day_exercises = GetDefaultValues();
+    std::vector<std::string> day_exercises = JsonHelper::GetDefaultExercises();
     size_t index = 0;
+    bool can_fill_row = false;
 
     for (size_t i = 0; i < exercises.size(); ++i) {
         std::string start_time = JsonHelper::DateValue(exercises[i], "start-time");
         std::string sport_name = JsonHelper::StringValue(exercises[i], "detailed-sport-info");
-        if (last_date > start_time) {
-            continue;
-        }
-        if (last_date != start_time) {
+        if (last_date < start_time) {
             InsertIntoTable(day_exercises[0], day_exercises[1], day_exercises[2], day_exercises[3],
                             day_exercises[4], day_exercises[5], day_exercises[6], day_exercises[7],
                             day_exercises[8], day_exercises[9], day_exercises[10]);
             last_date = start_time;
-            day_exercises = GetDefaultValues();
+            day_exercises = JsonHelper::GetDefaultExercises();
             index = 0;
+            can_fill_row = true;
             day_exercises[index++] = start_time;
-        } else {
+        }
+        if (can_fill_row) {
             day_exercises[index++] = sport_name;
         }
     }
+    InsertIntoTable(day_exercises[0], day_exercises[1], day_exercises[2], day_exercises[3],
+                    day_exercises[4], day_exercises[5], day_exercises[6], day_exercises[7],
+                    day_exercises[8], day_exercises[9], day_exercises[10]);
 }
+
 std::string ExercisesTable::GetName() {
     return table_name_.data();
 }
-
-// this is a possible implementation for unpacking vector
-
-//
-// template <std::size_t... S>
-// void unpack_vector(const std::vector<std::string>& vec, std::index_sequence<S...>) {
-//    InsertIntoTable(vec[S]...);
-//}
-//
-// template <std::size_t size>
-// void unpack_vector(const std::vector<std::string>& vec) {
-//    if (vec.size() != size)
-//        throw /* choose your error */;
-//    unpack_vector(vec, std::make_index_sequence<size>());
-//}

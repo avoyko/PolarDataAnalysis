@@ -9,7 +9,11 @@ std::string BaseTable::LastRecordDate() {
     DBWorker &db_worker = DBWorker::GetInstance();
     mysqlx::Table table = db_worker.GetTable(table_name_);
     mysqlx::RowResult rowResult = table.select("*").orderBy("date DESC").limit(1).execute();
-    return mysqlx::get_string_date(rowResult.fetchOne());
+    try {
+        return mysqlx::get_string_date(rowResult.fetchOne());
+    } catch (...) {
+        return mysqlx::DEFAULT_DATE;
+    }
 }
 
 void BaseTable::Delete() {

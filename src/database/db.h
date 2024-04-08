@@ -2,6 +2,7 @@
 
 #include "db_utilities.h"
 #include "../polar_api/accesslink.h"
+#include "frozen/bits/basic_types.h"
 
 class DBWorker {
 public:
@@ -23,9 +24,6 @@ public:
 
     mysqlx::SqlResult JoinAllTables();
 
-public:
-    mysqlx::Session session;
-
 private:
     static void RunSetup();
 
@@ -42,4 +40,8 @@ private:
     static constexpr frozen::string user_name_ = "polar_user";
     static constexpr frozen::string pass_ = "2004";
     static constexpr frozen::string db_name_ = "POLAR_DATA";
+
+    mysqlx::Session session;
 };
+
+

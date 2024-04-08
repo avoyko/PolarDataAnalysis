@@ -7,8 +7,7 @@ TrainingDataTransaction TrainingData::CreateTransaction(const std::string &acces
     oauth_.PrepareRequest(request_body, access_token);
     ReadJson response = PostData(request_body.CprUrl(), request_body.CprHeader());
     std::string resource_uri;
-    if (response.has("resource-uri")) {
-
+    if (!response.error()) {
         resource_uri = response["resource-uri"].s();
     }
     return {oauth_, resource_uri, user_id, access_token};

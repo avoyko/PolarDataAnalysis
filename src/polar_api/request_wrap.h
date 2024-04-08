@@ -7,9 +7,9 @@ class RequestWrapper {
 public:
     RequestWrapper() = default;
 
-    RequestWrapper(std::string_view endpoint, cpr::Parameters query_args = {},
-            cpr::Header headers = {})
-        : endpoint_(endpoint), parameters_(std::move(query_args)), headers_(std::move(headers)){};
+    RequestWrapper(std::string endpoint, cpr::Parameters query_args = {},
+            cpr::Header headers = {}, std::string url = "")
+        : endpoint_(std::move(endpoint)), parameters_(std::move(query_args)), headers_(std::move(headers)), url_(std::move(url)){};
 
 
     std::string &GetEndpoint();

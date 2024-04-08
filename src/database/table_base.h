@@ -16,9 +16,12 @@ public:
 
     template <typename... Args>
     void InsertIntoTable(Args &&...args) {
+        if (mysqlx::IsValidRow(std::forward<Args>(args)...)) {
+            return;
+        }
         DBWorker &db_worker = DBWorker::GetInstance();
         mysqlx::Table table = db_worker.GetTable(table_name_);
-        table.insert().values(args...);
+        table.insert().values(std::forward<Args>(args)...).execute();
     };
 
     void Delete();

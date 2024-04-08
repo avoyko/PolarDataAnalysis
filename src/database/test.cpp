@@ -14,12 +14,10 @@ TEST(TEST_CREATE_DB, simple_insertion) {
     DBWorker& db_worker = DBWorker::GetInstance();
     auto activity_table = db_worker.GetTable("exercise");
     auto r = activity_table.insert()
-                 .values("2024-04-05", "swim", "swim", "swim", "swim", "swim", "swim", "swim",
+                 .values("2030-02-02", "swim", "swim", "swim", "swim", "swim", "swim", "swim",
                          "swim", "swim", "swim")
                  .execute();
     ASSERT_NO_THROW(activity_table.select("*").execute());
-    mysqlx::Row row = activity_table.select("*").execute().fetchOne();
-    std::string date = mysqlx::get_string_date(row);
 }
 
 TEST(TEST_CREATE_DB, convert_to_csv) {

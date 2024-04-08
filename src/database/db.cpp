@@ -9,6 +9,7 @@ static bool db_can_be_used = false;
 DBWorker::DBWorker()
     : session(server_name_.data(), port_, user_name_.data(), pass_.data(), db_name_.data()){};
 
+
 DBWorker &DBWorker::GetInstance() {
     if (!db_can_be_used) {
         RunSetup();

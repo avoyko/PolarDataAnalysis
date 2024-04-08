@@ -4,15 +4,15 @@ void PhysTable::Update(const WriteJson& phys) {
     std::string last_date = LastRecordDate();
 
     for (size_t i = 0; i < phys.size(); ++i) {
-        std::string date = JsonHelper::StringValue(phys[i], "date");
-        std::string weight = JsonHelper::StringValue(phys[i], "weight");
-        std::string height = JsonHelper::StringValue(phys[i], "height");
+        std::string date = JsonHelper::DateValue(phys[i], "date");
+        std::string weight = JsonHelper::IntValue(phys[i], "weight");
+        std::string height = JsonHelper::IntValue(phys[i], "height");
         std::string max_heart_rate = JsonHelper::IntValue(phys[i], "max-heart-rate");
         std::string resting_heart_rate = JsonHelper::IntValue(phys[i], "resting-heart-rate");
         std::string aerobic_threshold = JsonHelper::IntValue(phys[i], "aerobic-threshold");
         std::string anaerobic_threshold = JsonHelper::IntValue(phys[i], "anaerobic-threshold");
         std::string vo2_max = JsonHelper::IntValue(phys[i], "vo2-max");
-        if (date > last_date) {
+        if (date != mysqlx::DEFAULT_DATE && date > last_date) {
             InsertIntoTable(date, weight, height, max_heart_rate, resting_heart_rate,
                             aerobic_threshold, anaerobic_threshold, vo2_max);
         }
