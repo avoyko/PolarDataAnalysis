@@ -1,6 +1,6 @@
 #include "table_sleep.h"
 
-void SleepTable::Update(const wjson& sleep) {
+void SleepTable::Update(const WriteJson& sleep) {
     std::string last_date = LastRecordDate();
 
     for (size_t i = 0; i < sleep.size(); ++i) {

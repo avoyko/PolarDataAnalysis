@@ -1,6 +1,6 @@
 #include "table_activity.h"
 
-void ActivityTable::Update(const wjson& activities) {
+void ActivityTable::Update(const WriteJson& activities) {
     std::string last_date = LastRecordDate();
 
     for (size_t i = 0; i < activities.size(); ++i) {

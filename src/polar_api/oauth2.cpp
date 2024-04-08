@@ -14,7 +14,7 @@ std::string OAuth2Client::GetAuthorizationUrl(const std::string response_type) {
     return fmt.str();
 }
 
-ParsedResponse OAuth2Client::GetAccessToken(const std::string &authorization_code) {
+ReadJson OAuth2Client::GetAccessToken(const std::string &authorization_code) {
     cpr::Header headers = {{"Content-Type", "application/x-www-form-urlencoded"},
                            {"Accept", "application/json;charset=UTF-8"}};
 
@@ -40,7 +40,7 @@ void OAuth2Client::PrepareRequest(RequestWrapper &request_body, const std::strin
     }
 }
 
-ParsedResponse OAuth2Client::ParseResponse(cpr::Response &response) {
+ReadJson OAuth2Client::ParseResponse(cpr::Response &response) {
     if (response.status_code >= 400) {
         throw response.status_code;
     }

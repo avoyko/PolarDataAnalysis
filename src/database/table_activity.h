@@ -12,7 +12,7 @@ public:
 
     std::string GenerateTable();
     static std::string GetName();
-    void Update(const wjson &activities);
+    void Update(const WriteJson &activities);
 
     mysqlx::Row Read();
 

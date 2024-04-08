@@ -5,22 +5,22 @@
 class TrainingDataTransaction : public Transaction {
 public:
     TrainingDataTransaction(const OAuth2Client &oauth, std::string transactionUrl,
-                            std::string transaction_id, std::string userId, std::string accessToken)
-        : Transaction(oauth, std::move(transactionUrl), std::move(transaction_id),
+                             std::string userId, std::string accessToken)
+        : Transaction(oauth, std::move(transactionUrl),
                       std::move(userId), std::move(accessToken)) {
     }
 
-    ParsedResponse ListExercises();
+    ReadJson ListExercises();
 
-    ParsedResponse GetExerciseSummary(const std::string &url);
+    ReadJson GetExerciseSummary(const std::string &url);
 
-    ParsedResponse GetGpx(const std::string &url);
+    ReadJson GetGpx(const std::string &url);
 
-    ParsedResponse GetTcx(const std::string &url);
+    ReadJson GetTcx(const std::string &url);
 
-    ParsedResponse GetHeartRateZones(const std::string &url);
+    ReadJson GetHeartRateZones(const std::string &url);
 
-    ParsedResponse GetAvailableSamples(const std::string &url);
+    ReadJson GetAvailableSamples(const std::string &url);
 
-    ParsedResponse GetSamples(const std::string &url);
+    ReadJson GetSamples(const std::string &url);
 };

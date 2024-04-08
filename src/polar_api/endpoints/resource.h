@@ -7,21 +7,21 @@ public:
     explicit Resource(const OAuth2Client &oauth) : oauth_(oauth) {};
 
     template<typename ...CprRequestParameters>
-    ParsedResponse GetData(CprRequestParameters &&... parameters) {
+    ReadJson GetData(CprRequestParameters &&... parameters) {
         return oauth_.Get(std::forward<CprRequestParameters>(parameters)...);
     }
 
     template<typename ...CprRequestParameters>
-    ParsedResponse PostData(CprRequestParameters &&... parameters) {
+    ReadJson PostData(CprRequestParameters &&... parameters) {
         return oauth_.Post(std::forward<CprRequestParameters>(parameters)...);
     }
 
     template<typename ...CprRequestParameters>
-    ParsedResponse PutData(CprRequestParameters &&... parameters) {
+    ReadJson PutData(CprRequestParameters &&... parameters) {
         return oauth_.Put(std::forward<CprRequestParameters>(parameters)...);
     }
     template<typename ...CprRequestParameters>
-    ParsedResponse DeleteData(CprRequestParameters &&... parameters) {
+    ReadJson DeleteData(CprRequestParameters &&... parameters) {
         return oauth_.Delete(std::forward<CprRequestParameters>(parameters)...);
     }
 

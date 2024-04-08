@@ -9,10 +9,10 @@ class Users : public Resource {
 public:
     explicit Users(OAuth2Client &oauth) : Resource(oauth){};
 
-    ParsedResponse Record(const std::string &access_token,
+    ReadJson Record(const std::string &access_token,
                           boost::uuids::uuid member_id = boost::uuids::random_generator()());
 
-    ParsedResponse Remove(int user_id, std::string &access_token);
+    ReadJson Remove(int user_id, std::string &access_token);
 
-    ParsedResponse GetInformation(int user_id, std::string &access_token);
+    ReadJson GetInformation(int user_id, std::string &access_token);
 };

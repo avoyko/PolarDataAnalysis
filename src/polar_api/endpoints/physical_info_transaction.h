@@ -4,12 +4,12 @@
 
 class PhysicalInfoTransaction : public Transaction {
 public:
-    PhysicalInfoTransaction(const OAuth2Client &oauth, std::string transactionUrl, std::string transaction_id,
+    PhysicalInfoTransaction(const OAuth2Client &oauth, std::string transactionUrl,
                             std::string userId, std::string accessToken)
-        : Transaction(oauth, std::move(transactionUrl), std::move(transaction_id), std::move(userId),
+        : Transaction(oauth, std::move(transactionUrl), std::move(userId),
                       std::move(accessToken)){};
 
-    ParsedResponse ListPhysicalInfos();
+    ReadJson ListPhysicalInfos();
 
-    ParsedResponse GetPhysicalInfo(const std::string &url);
+    ReadJson GetPhysicalInfo(const std::string &url);
 };

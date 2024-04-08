@@ -25,7 +25,7 @@ int PolarApp::Activate() {
     return 0;
 }
 
-YAML::Node PolarApp::UpdateAccessConfig(const rjson &token_response) {
+YAML::Node PolarApp::UpdateAccessConfig(const ReadJson &token_response) {
     std::string string_access_token = token_response["access_token"].s();
     YAML::Node config = YAML::LoadFile("../../config.yaml");
     config["user_id"] = std::to_string(token_response["x_user_id"].i());
@@ -38,7 +38,7 @@ YAML::Node PolarApp::UpdateAccessConfig(const rjson &token_response) {
 
 crow::response PolarApp::Authorize(const crow::request &req) {
     std::string authorization_code = req.url_params.get("code");
-    rjson token_response = accesslink.GetAccessToken(authorization_code);
+    ReadJson token_response = accesslink.GetAccessToken(authorization_code);
     YAML::Node config = UpdateAccessConfig(token_response);
     try {
         accesslink.RegisterUser(config["access_token"].as<std::string>());
@@ -58,17 +58,16 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
     const auto access_token = config["access_token"].as<std::string>();
     const auto user_id = config["user_id"].as<std::string>();
 
-    ParsedResponse user_info = accesslink.GetUserdata(access_token, user_id);
-    std::vector<ParsedResponse> exercises_info = accesslink.GetExercises(access_token, user_id);
-    std::vector<ParsedResponse> activity_info = accesslink.GetActivity(access_token, user_id);
-    std::vector<ParsedResponse> phys_info = accesslink.GetPhysicalInfo(access_token, user_id);
-    std::vector<ParsedResponse> sleep_info = accesslink.GetSleep(access_token, user_id);
+    WriteJson user_info = accesslink.GetUserdata(access_token, user_id);
+    WriteJson exercises_info = accesslink.GetExercises(access_token, user_id);
+    WriteJson activity_info = accesslink.GetActivity(access_token, user_id);
+    WriteJson phys_info = accesslink.GetPhysicalInfo(access_token, user_id);
+    WriteJson sleep_info = accesslink.GetSleep(access_token, user_id);
+
     DBWorker &db_worker = DBWorker::GetInstance();
- //   db_worker.UpdateDB({exercises_info, activity_info, phys_info, sleep_info});
+    db_worker.UpdateDB({exercises_info, activity_info, phys_info, sleep_info});
 
     crow::mustache::set_base("../../src/templates");
     auto page = crow::mustache::load("hello.html");
     return page.render(user_info);
 }
-
-

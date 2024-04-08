@@ -4,19 +4,19 @@
 
 class Transaction : public Resource {
 public:
-    Transaction(const OAuth2Client &oauth, std::string transaction_url, std::string transaction_id, std::string user_id,
+    Transaction(const OAuth2Client &oauth, std::string transaction_url, std::string user_id,
                 std::string access_token)
         : Resource(oauth),
           transaction_url_(std::move(transaction_url)),
-          transaction_id_(std::move(transaction_id)),
           user_id_(std::move(user_id)),
           access_token_(std::move(access_token)){};
 
-    ParsedResponse Commit();
+    bool IsValid();
+
+    ReadJson Commit();
 
 protected:
     const std::string transaction_url_;
-    const std::string transaction_id_;
     const std::string user_id_;
     const std::string access_token_;
 };

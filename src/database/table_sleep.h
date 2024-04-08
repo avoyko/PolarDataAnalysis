@@ -11,7 +11,7 @@ public:
 
     std::string GenerateTable();
     static std::string GetName();
-    void Update(const wjson &sleep);
+    void Update(const WriteJson &sleep);
 
 private:
     static constexpr frozen::string table_name_ = "sleep";

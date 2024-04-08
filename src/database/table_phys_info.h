@@ -12,7 +12,7 @@ public:
 
     std::string GenerateTable();
     static std::string GetName();
-    void Update(const wjson &heart_samples);
+    void Update(const WriteJson &heart_samples);
 
 private:
     static constexpr frozen::string table_name_ = "phys_info";

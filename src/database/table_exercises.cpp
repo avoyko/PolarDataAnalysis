@@ -25,7 +25,7 @@ std::string ExercisesTable::GenerateTable() {
     return fmt.str();
 }
 
-void ExercisesTable::Update(const wjson& exercises) {
+void ExercisesTable::Update(const WriteJson& exercises) {
     std::string last_date = LastRecordDate();
     std::vector<std::string> day_exercises = GetDefaultValues();
     size_t index = 0;

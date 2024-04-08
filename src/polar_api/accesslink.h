@@ -1,5 +1,7 @@
 #pragma once
 
+#include <utility>
+
 #include "endpoints/users.h"
 #include "endpoints/pull_notifications.h"
 #include "endpoints/training_data.h"
@@ -15,17 +17,16 @@ const std::string ACCESSLINK_URL = "https://www.polaraccesslink.com/v3";
 /// i couldn't come up with a better place to put it
 struct PolarUser {
 
-    PolarUser(const ParsedResponse &exercises, const ParsedResponse &activity,
-              const ParsedResponse &physique, const ParsedResponse &sleep)
-        : exercises_json(exercises),
-          activity_json(activity),
-          physical_json(physique),
-          sleep_json(sleep){};
+    PolarUser(WriteJson exercises, WriteJson activity, WriteJson physique, WriteJson sleep)
+        : exercises_json(std::move(exercises)),
+          activity_json(std::move(activity)),
+          physical_json(std::move(physique)),
+          sleep_json(std::move(sleep)){};
 
-    const wjson exercises_json;
-    const wjson activity_json;
-    const wjson physical_json;
-    const wjson sleep_json;
+    const WriteJson exercises_json;
+    const WriteJson activity_json;
+    const WriteJson physical_json;
+    const WriteJson sleep_json;
 };
 
 class AccessLink {
@@ -42,21 +43,21 @@ public:
 
     std::string GetAuthUrl();
 
-    ParsedResponse GetAccessToken(const std::string &authorization_code);
+    ReadJson GetAccessToken(const std::string &authorization_code);
 
-    std::vector<ParsedResponse> GetActivity(const std::string &access_token, const std::string &user_id);
+    WriteJson GetActivity(const std::string &access_token, const std::string &user_id);
 
-    std::vector<ParsedResponse> GetExercises(const std::string &access_token, const std::string &user_id);
+    WriteJson GetExercises(const std::string &access_token, const std::string &user_id);
 
-    std::vector<ParsedResponse> GetPhysicalInfo(const std::string &access_token, const std::string &user_id);
+    WriteJson GetPhysicalInfo(const std::string &access_token, const std::string &user_id);
 
-    std::vector<ParsedResponse> GetSleep(const std::string &access_token, const std::string &user_id);
+    WriteJson GetSleep(const std::string &access_token, const std::string &user_id);
 
-    ParsedResponse GetRecharge(const std::string &access_token, const std::string &user_id);
+    WriteJson GetRecharge(const std::string &access_token, const std::string &user_id);
 
-    ParsedResponse GetUserdata(const std::string &access_token, const std::string &user_id);
+    WriteJson GetUserdata(const std::string &access_token, const std::string &user_id);
 
-    ParsedResponse RegisterUser(const std::string &access_token);
+    ReadJson RegisterUser(const std::string &access_token);
 
 private:
     OAuth2Client oauth_;

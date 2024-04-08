@@ -4,9 +4,8 @@
 #include <crow/json.h>
 #include "request_wrap.h"
 
-using rjson = crow::json::rvalue;
-using wjson = crow::json::wvalue;
-using ParsedResponse = rjson;
+using ReadJson = crow::json::rvalue;
+using WriteJson = crow::json::wvalue;
 
 class OAuth2Client {
 public:
@@ -26,32 +25,32 @@ public:
 
     std::string GetAuthorizationUrl(std::string response_type = "code");
 
-    rjson GetAccessToken(const std::string &authorization_code);
+    ReadJson GetAccessToken(const std::string &authorization_code);
 
     void PrepareRequest(RequestWrapper &request_body, const std::string &access_token = "");
 
-    ParsedResponse ParseResponse(cpr::Response &response);
+    ReadJson ParseResponse(cpr::Response &response);
 
     template <typename... CprRequestParameters>
-    ParsedResponse Get(CprRequestParameters &&...parameters) {
+    ReadJson Get(CprRequestParameters &&...parameters) {
         cpr::Response response = cpr::Get(std::forward<CprRequestParameters>(parameters)...);
         return ParseResponse(response);
     }
 
     template <typename... CprRequestParameters>
-    ParsedResponse Put(CprRequestParameters &&...parameters) {
+    ReadJson Put(CprRequestParameters &&...parameters) {
         cpr::Response response = cpr::Put(std::forward<CprRequestParameters>(parameters)...);
         return ParseResponse(response);
     }
 
     template <typename... CprRequestParameters>
-    ParsedResponse Post(CprRequestParameters &&...parameters) {
+    ReadJson Post(CprRequestParameters &&...parameters) {
         cpr::Response response = cpr::Post(std::forward<CprRequestParameters>(parameters)...);
         return ParseResponse(response);
     }
 
     template <typename... CprRequestParameters>
-    ParsedResponse Delete(CprRequestParameters &&...parameters) {
+    ReadJson Delete(CprRequestParameters &&...parameters) {
         cpr::Response response = cpr::Delete(std::forward<CprRequestParameters>(parameters)...);
         return ParseResponse(response);
     }

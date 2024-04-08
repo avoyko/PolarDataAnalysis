@@ -4,15 +4,16 @@
 
 class DailyActivityTransaction : public Transaction {
 public:
-    DailyActivityTransaction(const OAuth2Client &oauth, std::string transactionUrl, std::string transaction_id,
+    DailyActivityTransaction(const OAuth2Client &oauth, std::string transactionUrl,
                              std::string userId, std::string accessToken)
-        : Transaction(oauth, std::move(transactionUrl), std::move(transaction_id), std::move(userId), std::move(accessToken)){};
+        : Transaction(oauth, std::move(transactionUrl), std::move(userId),
+                      std::move(accessToken)){};
 
-    ParsedResponse ListActivities();
+    ReadJson ListActivities();
 
-    ParsedResponse GetActivity_summary(const std::string &url);
+    ReadJson GetActivity_summary(const std::string &url);
 
-    ParsedResponse GetStepSamples(const std::string &url);
+    ReadJson GetStepSamples(const std::string &url);
 
-    ParsedResponse GetZoneSamples(const std::string &url);
+    ReadJson GetZoneSamples(const std::string &url);
 };

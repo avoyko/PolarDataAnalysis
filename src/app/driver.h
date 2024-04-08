@@ -27,7 +27,7 @@ private:
 
     crow::mustache::rendered_template ProcessData();
 
-    YAML::Node UpdateAccessConfig(const rjson &token_response);
+    YAML::Node UpdateAccessConfig(const ReadJson &token_response);
 };
 
 

@@ -4,28 +4,28 @@
 #include <frozen/string.h>
 #include <crow/json.h>
 
-using rjson = crow::json::rvalue;
-using wjson = crow::json::wvalue;
+using ReadJson = crow::json::rvalue;
+using WriteJson = crow::json::wvalue;
 
 namespace JsonHelper {
 static inline std::string NormalizedString(const std::string &s) {
     return s.substr(1, s.size() - 2);
 }
 
-static inline std::string StringValue(const wjson &json, const std::string &field) {
+static inline std::string StringValue(const WriteJson &json, const std::string &field) {
     return NormalizedString(json[field].dump());
 }
 
-static inline std::string IntValue(const wjson &json, const std::string &field) {
+static inline std::string IntValue(const WriteJson &json, const std::string &field) {
     return NormalizedString(json[field].dump());
 }
 
-static inline std::string DateValue(const wjson &json, const std::string &field) {
+static inline std::string DateValue(const WriteJson &json, const std::string &field) {
     std::string date = json[field].dump();
     return date.substr(0, 10);
 }
 
-static inline wjson JsonValue(const wjson &json, const std::string &field) {
+static inline WriteJson JsonValue(const WriteJson &json, const std::string &field) {
     return json[field];
 }
 }  // namespace JsonHelper

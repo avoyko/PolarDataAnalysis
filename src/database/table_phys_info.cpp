@@ -1,6 +1,6 @@
 #include "table_phys_info.h"
 
-void PhysTable::Update(const wjson& phys) {
+void PhysTable::Update(const WriteJson& phys) {
     std::string last_date = LastRecordDate();
 
     for (size_t i = 0; i < phys.size(); ++i) {
