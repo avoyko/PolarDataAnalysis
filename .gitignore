@@ -8,3 +8,4 @@ cmake-build-debug
 config.yaml
 /src/calendar_scheduler/CALENDAR_TEST
 /src/calendar_scheduler/token.json
+src/data_analyser/tuner_results
