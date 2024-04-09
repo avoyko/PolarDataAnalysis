@@ -82,15 +82,15 @@
       ```
 2. Tensorflow, sklearn, keras_tuner
 
-    * Самым лучшим решением на наш взгляд является создание виртуального окружения
-   ```
-   python3 -m venv venv
-   source venv/bin/activate
-   ```
-    * Дальнейшая установка нужных библиотек выполняется следующим образом:
-   ```
-   pip install tensorflow
-   pip install scikit-learn
-   pip install keras_tuner
-   ```
+   * Самым лучшим решением на наш взгляд является создание виртуального окружения
+     ``` 
+     python3 -m venv venv
+     source venv/bin/activate
+     ```
+   * Дальнейшая установка нужных библиотек выполняется следующим образом:
+     ```
+     pip install tensorflow
+     pip install scikit-learn
+     pip install keras_tuner
+     ```
 
