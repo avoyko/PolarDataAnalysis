@@ -9,7 +9,6 @@ static bool db_can_be_used = false;
 DBWorker::DBWorker()
     : session(server_name_.data(), port_, user_name_.data(), pass_.data(), db_name_.data()){};
 
-
 DBWorker &DBWorker::GetInstance() {
     if (!db_can_be_used) {
         RunSetup();
@@ -106,8 +105,8 @@ void DBWorker::SetupUser(mysqlx::Session &temp_session) {
     boost::format fmt = boost::format(R"(CREATE USER '%1%'@'%2%' IDENTIFIED BY '%3%')") %
                         user_name_.data() % server_name_.data() % pass_.data();
     temp_session.sql(fmt.str()).execute();
-    fmt = boost::format(R"(GRANT ALL PRIVILEGES ON *.* TO '%1%'@'%2%';)") % user_name_.data() %
-          server_name_.data();
+    fmt = boost::format(R"(GRANT ALL PRIVILEGES ON %1%.* TO '%2%'@'%3%';)") % db_name_.data() %
+          user_name_.data() % server_name_.data();
     temp_session.sql(fmt.str()).execute();
 }
 

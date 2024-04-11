@@ -13,13 +13,15 @@ ReadJson TrainingDataTransaction::GetExerciseSummary(const std::string &url) {
 }
 
 ReadJson TrainingDataTransaction::GetGpx(const std::string &url) {
-    RequestWrapper request_body{url + "/heart-rate-zones", {}, cpr::Header{{"Accept", "application/gpx+xml"}}};
+    RequestWrapper request_body{
+        url + "/heart-rate-zones", {}, cpr::Header{{"Accept", "application/gpx+xml"}}};
     oauth_.PrepareRequest(request_body, access_token_);
     return GetData(request_body.CprUrl(), request_body.CprHeader());
 }
 
 ReadJson TrainingDataTransaction::GetTcx(const std::string &url) {
-    RequestWrapper request_body{url + "/tcx", {}, cpr::Header{{"Accept", "application/vnd.garmin.tcx+xml"}}};
+    RequestWrapper request_body{
+        url + "/tcx", {}, cpr::Header{{"Accept", "application/vnd.garmin.tcx+xml"}}};
     oauth_.PrepareRequest(request_body, access_token_);
     return GetData(request_body.CprUrl(), request_body.CprHeader());
 }
