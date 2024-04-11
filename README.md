@@ -76,9 +76,15 @@
     * Далее, для IDE CLion (пока VSCode мы не научились поддерживать) требуется зайти в настройки Build, Execution,
       Deployment и в
       качестве параметров CMake options указать:
-
       ```
       -Dmysql-concpp_DIR:PATH=/путь/до/библиотеки/mysql-connector-c++
+      ```
+    * Так как БД развернута локально, то нам требуется иметь уже созданного "пользователя" с рут-правами для того, чтобы
+      хранить информацию о людях, пользующихся приложением. Мы надеемся это исправить, но пока выход из ситуации - это
+      ручное создание такого пользователя **до запуска** приложения. Например:
+      ```
+      CREATE USER '<name>'@'localhost' IDENTIFIED BY '<password>';
+      GRANT ALL PRIVILEGES *.* TO '<name>'@'localhost' WITH GRANT OPTION;
       ```
 2. Tensorflow, sklearn, keras_tuner
 
