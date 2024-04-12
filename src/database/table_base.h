@@ -1,10 +1,11 @@
 #pragma once
 
-#include "db.h"
+#include "db_worker.h"
 
 class BaseTable {
 public:
     BaseTable() = default;
+    ~BaseTable() = default;
 
     explicit BaseTable(std::string table_name) : table_name_(std::move(table_name)){};
 

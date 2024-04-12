@@ -11,7 +11,7 @@ add_library(sources_files
         polar_api/endpoints/training_data_transaction.cpp
         polar_api/endpoints/transaction.cpp
         polar_api/endpoints/users.cpp
-        database/db.cpp
+        database/db_worker.cpp
         database/table_exercises.cpp
         database/table_base.cpp
         database/table_activity.cpp

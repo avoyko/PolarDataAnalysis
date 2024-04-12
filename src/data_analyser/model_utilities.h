@@ -1,7 +1,7 @@
 #pragma once
 
 #include <fstream>
-#include "../database/db.h"
+#include "../database/db_worker.h"
 
 namespace CSVHelpers {
 
