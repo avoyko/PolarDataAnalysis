@@ -1,80 +1,51 @@
 import numpy as np
-
-from tensorflow.python import keras
+import pandas as pd
+from sklearn.preprocessing import MinMaxScaler, LabelEncoder
 from keras.models import Sequential
-from keras.layers import LSTM, Dense, Conv1D, MaxPooling1D, Flatten, TimeDistributed
-from keras.utils import to_categorical
-from sklearn.ensemble import RandomForestClassifier
-from keras_tuner import RandomSearch
-from keras_tuner.engine.hyperparameters import HyperParameters
+from keras.layers import LSTM, Dense, Dropout, Input
 
-# List of activity options
-activity_options = ['swimming', 'jogging', 'walking', 'cycling', 'gym exercises', 'stay at home']
-num_activities = len(activity_options)
+# Загружаем данные о здоровье + активность, тренировка которая была сегодня
+polar_table = pd.read_csv('polar_user_data.csv')
+health_data = polar_table[['date', 'steps', 'active_calories', 'max_hr', 'ae_t', 'light_sleep', 'deep_sleep']]
+activities = polar_table[['date', 'exercise1']]
 
-# Generate random data
-num_samples = 1000
-sequence_length = 30
-num_features = 5  # e.g., heart rate, sleep hours, stress level, and other schedule features
+activities['exercise1'].fillna('stay at home', inplace=True)
 
-# Generate random input data
-X = np.random.rand(num_samples, sequence_length, num_features)
+print(health_data)
+print(activities)
 
-# Generate random target activities
-activities = np.random.randint(num_activities, size=num_samples)
-y = to_categorical(activities, num_classes=num_activities)
+# Скейлим фичи с помощью MinMaxScaler
+scaler = MinMaxScaler()
+X = scaler.fit_transform(health_data.drop('date', axis=1))
 
-# Split data into train and test sets
-train_size = int(num_samples * 0.8)
-X_train, y_train = X[:train_size], y[:train_size]
-X_test, y_test = X[train_size:], y[train_size:]
+# Perform label encoding for the activity column
+label_encoder = LabelEncoder()
+y = label_encoder.fit_transform(activities['exercise1'])
 
-# Reshape input data for CNN
-X_train = X_train.reshape(X_train.shape[0], X_train.shape[1], X_train.shape[2], 1)
-X_test = X_test.reshape(X_test.shape[0], X_test.shape[1], X_test.shape[2], 1)
+timesteps = 3  # кол-во дней, на которые мы смотрим для того, чтобы сделать prediction
+# (то есть будем считать, что на наш выбор завтра влияет наше состояние не только за сегодня, но и за два дня до этого)
+X = np.array([X[i - timesteps:i] for i in range(timesteps, X.shape[0])])
+y = y[timesteps:]
 
+# Define the LSTM model
+model = Sequential()
+model.add(Input(shape=(timesteps, X.shape[2])))
+model.add(LSTM(units=128, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LSTM(units=64))
+model.add(Dropout(0.2))
+model.add(Dense(units=64, activation='relu'))
+model.add(Dense(len(label_encoder.classes_), activation='softmax'))
+model.compile(optimizer='adam', loss='sparse_categorical_crossentropy', metrics=['accuracy'])
 
-# Hyperparameter tuning function
-def build_model(hp):
-    model = Sequential()
-    model.add(TimeDistributed(Conv1D(filters=hp.Int('conv_filters', min_value=32, max_value=128, step=16),
-                                     kernel_size=hp.Int('conv_kernel_size', min_value=2, max_value=5),
-                                     activation='relu'), input_shape=(None, X_train.shape[2], 1)))
-    model.add(TimeDistributed(MaxPooling1D(pool_size=2)))
-    model.add(TimeDistributed(Flatten()))
-    model.add(LSTM(hp.Int('lstm_units', min_value=32, max_value=128, step=16), return_sequences=True))
-    model.add(LSTM(hp.Int('lstm_units', min_value=32, max_value=128, step=16)))
-    model.add(Dense(num_activities, activation='softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-    return model
+model.fit(X, y, epochs=50, batch_size=32, validation_split=0.2)
 
+last_3_days_data = health_data.tail(timesteps).drop('date', axis=1)
+scaled_last_3_days_data = scaler.transform(last_3_days_data)
+X_test = scaled_last_3_days_data.reshape((1, timesteps, scaled_last_3_days_data.shape[1]))
 
-# Hyperparameter tuning
-tuner = RandomSearch(build_model, objective='val_accuracy', max_trials=5, directory='tuner_results',
-                     project_name='activity_prediction')
-tuner.search(X_train, y_train, epochs=10, validation_data=(X_test, y_test))
+# предсказание активности на следующий день
+prediction = model.predict(X_test)
+predicted_label = label_encoder.inverse_transform(np.argmax(prediction, axis=1))[0]
 
-# Get the best hyperparameters
-best_hps = tuner.get_best_hyperparameters(num_trials=1)[0]
-
-# Build the model with the best hyperparameters
-model = tuner.hypermodel.build(best_hps)
-
-# Predict activities for the next day
-# Assuming health data for the next day is the average of the previous 3 days
-next_day_health_data = np.mean(X_test[-3:, :, :], axis=0)
-next_day_health_data = next_day_health_data.reshape(1, sequence_length, num_features)
-
-# Predict activities using the neural network
-nn_next_day_activities_probs = model.predict(next_day_health_data)[0]
-nn_next_day_activity_idx = np.argmax(nn_next_day_activities_probs)
-nn_next_day_activity = activity_options[nn_next_day_activity_idx]
-print(f"Predicted activity (NN) for the next day: {nn_next_day_activity}")
-
-# Ensemble method: Random Forest
-rf_model = RandomForestClassifier(n_estimators=100)
-rf_model.fit(X_train.reshape(X_train.shape[0], -1), np.argmax(y_train, axis=1))
-next_day_health_data_flat = next_day_health_data.reshape(1, -1)
-rf_next_day_activity_idx = rf_model.predict(next_day_health_data_flat)[0]
-rf_next_day_activity = activity_options[rf_next_day_activity_idx]
-print(f"Predicted activity (RF) for the next day: {rf_next_day_activity}")
+print(f"Predicted activity for the next day: {predicted_label}")
