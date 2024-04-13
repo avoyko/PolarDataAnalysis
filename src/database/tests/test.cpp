@@ -1,10 +1,10 @@
-#include "db_worker.h"
-#include "table_exercises.h"
-#include "table_activity.h"
-#include "table_phys_info.h"
-#include "table_sleep.h"
+#include "../db_worker.h"
+#include "../table_exercises.h"
+#include "../table_activity.h"
+#include "../table_phys_info.h"
+#include "../table_sleep.h"
 #include <gtest/gtest.h>
-#include "../data_analyser/model_utilities.h"
+#include "../../data_analyser/model_utilities.h"
 
 TEST(TEST_CREATE_DB, get_instance_method_nothrow) {
     ASSERT_NO_THROW(DBWorker::GetInstance());

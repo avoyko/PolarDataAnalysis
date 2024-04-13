@@ -19,6 +19,16 @@ if (NOT cpr_POPULATED)
     add_subdirectory(${cpr_SOURCE_DIR} ${cpr_BINARY_DIR})
 endif ()
 
+FetchContent_Declare(crow
+        GIT_REPOSITORY https://github.com/CrowCpp/Crow
+        GIT_TAG master)
+FetchContent_GetProperties(crow)
+if (NOT crow_POPULATED)
+    message(STATUS "Fetching crow...")
+    FetchContent_Populate(crow)
+    add_subdirectory(${crow_SOURCE_DIR} ${crow_BINARY_DIR})
+endif ()
+
 find_package(mysql-concpp REQUIRED)
 if (mysql-concpp_FOUND)
     message(STATUS "Successfully found mysql...")
