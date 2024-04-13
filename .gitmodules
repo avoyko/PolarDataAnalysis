@@ -1,0 +1,3 @@
+[submodule "src/polar_api/tests/PolarServerStub"]
+	path = src/polar_api/tests/PolarServerStub
+	url = https://github.com/avoyko/PolarServerStub
