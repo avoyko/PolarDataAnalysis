@@ -72,7 +72,8 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
     model.Activate();
     CalendarClient calendarClient;
     DateStamp dateStamp = {2024, 04, 15, 18, 00, 00};
-    calendarClient.PostEvent(model.GetPrediction(), dateStamp, dateStamp);
+    std::string event_name = model.GetPrediction();
+    calendarClient.PostEvent(event_name, dateStamp, dateStamp);
 
     crow::mustache::set_base("../../src/templates");
     auto page = crow::mustache::load("hello.html");

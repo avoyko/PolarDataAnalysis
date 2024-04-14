@@ -13,7 +13,8 @@ void Model::Activate() {
     pid_t pid = fork();
     if (pid == 0) {
         std::flush(std::cout);
-        std::system("../../venv/bin/python3.12 ../model/model.py");
+        std::string command = venv_executable + " ../model/model.py";
+        std::system(command.c_str());
         exit(0);
     }
     wait(nullptr);

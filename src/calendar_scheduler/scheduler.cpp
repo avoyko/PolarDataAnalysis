@@ -1,7 +1,8 @@
 #include <boost/format.hpp>
-
+#include <sys/wait.h>
 #include "include/calendar_exception.h"
 #include "include/scheduler.h"
+
 
 const std::string venv_executable = "../../venv/bin/python";
 
@@ -18,7 +19,7 @@ void CalendarClient::PostEvent(const std::string &event_name, DateStamp start_da
     if (pid == 0) {
         std::flush(std::cout);
         std::string args = event_name + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
-        std::string command = "../../venv/bin/python3.12 ../calendar_scheduler/post.py " + args;
+        std::string command = venv_executable + " ../calendar_scheduler/post.py " + args;
         std::system(command.c_str());
         exit(0);
     }
