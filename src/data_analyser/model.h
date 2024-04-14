@@ -1,4 +1,10 @@
 #pragma once
-#include "NumCpp/Coordinates.hpp"
 
-class UserModel;
+#include <string>
+
+class Model {
+public:
+    void Activate();
+
+    std::string GetPrediction();
+};

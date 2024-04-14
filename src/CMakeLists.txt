@@ -46,13 +46,13 @@ if (NOT frozen_POPULATED)
     add_subdirectory(${frozen_SOURCE_DIR} ${frozen_BINARY_DIR})
 endif ()
 
+# собирает таргет для теста календаря
+add_subdirectory(calendar_scheduler)
+add_subdirectory(data_analyser)
+
 include(sources.cmake)
 target_include_directories(sources_files PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(sources_files cpr::cpr yaml-cpp::yaml-cpp mysql::concpp frozen)
-add_executable(application app/driver.cpp
-        main.cpp)
-target_link_libraries(application sources_files)
+add_executable(application app/driver.cpp)
+target_link_libraries(application sources_files model)
 
-# собирает таргет для теста календаря
-add_subdirectory(calendar_scheduler)
-add_subdirectory(database)

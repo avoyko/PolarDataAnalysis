@@ -1,27 +1,27 @@
 #include "driver.h"
+#include "data_analyser/model.h"
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
 int PolarApp::Activate() {
     crow::SimpleApp app;
     app.loglevel(crow::LogLevel::Info);
-    ;
+
     CROW_ROUTE(app, "/")
-    ([](const crow::request &req) {
-        CROW_LOG_INFO << "Client is redirected for authorization";
-        crow::response res{200};
-        res.redirect(accesslink.GetAuthUrl());
-        return res;
-    });
+            ([](const crow::request &req) {
+                CROW_LOG_INFO << "Client is redirected for authorization";
+                crow::response res{200};
+                res.redirect(accesslink.GetAuthUrl());
+                return res;
+            });
 
     CROW_ROUTE(app, Callback::OAUTHPOINT)
-    ([this](const crow::request &req) { return Authorize(req); });
+            ([this](const crow::request &req) { return Authorize(req); });
 
     CROW_ROUTE(app, Callback::DATAPOINT)
-    ([this](const crow::request &req) { return ProcessData(); });
+            ([this](const crow::request &req) { return ProcessData(); });
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
     app.port(Callback::PORT).run();
-
     return 0;
 }
 
@@ -66,6 +66,9 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
 
     DBWorker &db_worker = DBWorker::GetInstance();
     db_worker.UpdateDB({exercises_info, activity_info, phys_info, sleep_info});
+
+    Model model;
+    model.Activate();
 
     crow::mustache::set_base("../../src/templates");
     auto page = crow::mustache::load("hello.html");

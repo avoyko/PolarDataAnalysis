@@ -2,67 +2,71 @@
 
 #include <fstream>
 #include "../database/db_worker.h"
+#include "../database/table_activity.h"
+#include "../database/table_base.h"
+#include "../database/table_sleep.h"
+#include "../database/table_exercises.h"
+#include "../database/table_phys_info.h"
 
 namespace CSVHelpers {
+    static constexpr size_t DEFAULT_COLUMN_VALUE = 0;
+    static const std::string FILENAME = "polar_user_data.csv";
+    static constexpr size_t BATCH_SIZE = 10;
 
-static constexpr size_t DEFAULT_COLUMN_VALUE = 0;
-static const std::string FILENAME = "polar_user_data.csv";
-static constexpr size_t BATCH_SIZE = 10;
-
-static inline std::string get_column_names() {
-    DBWorker& db_worker = DBWorker::GetInstance();
-    std::string activity_cols =
-        db_worker.GetTableColumns(ActivityTable::GetName()).fetchOne()[0].get<std::string>();
-    std::string exercise_cols =
-        db_worker.GetTableColumns(ExercisesTable::GetName()).fetchOne()[0].get<std::string>();
-    std::string phys_cols =
-        db_worker.GetTableColumns(PhysTable::GetName()).fetchOne()[0].get<std::string>();
-    std::string sleep_cols =
-        db_worker.GetTableColumns(SleepTable::GetName()).fetchOne()[0].get<std::string>();
-    return "date," + activity_cols + "," + exercise_cols + "," + phys_cols + "," + sleep_cols;
-}
-
-static inline void write_to_csv(std::vector<std::string>& csv_rows_batch) {
-    static std::ofstream os(FILENAME);
-
-    for (const auto& csv_row : csv_rows_batch) {
-        os << csv_row << std::endl;
+    static inline std::string get_column_names() {
+        DBWorker &db_worker = DBWorker::GetInstance();
+        std::string activity_cols =
+                db_worker.GetTableColumns(ActivityTable::GetName()).fetchOne()[0].get<std::string>();
+        std::string exercise_cols =
+                db_worker.GetTableColumns(ExercisesTable::GetName()).fetchOne()[0].get<std::string>();
+        std::string phys_cols =
+                db_worker.GetTableColumns(PhysTable::GetName()).fetchOne()[0].get<std::string>();
+        std::string sleep_cols =
+                db_worker.GetTableColumns(SleepTable::GetName()).fetchOne()[0].get<std::string>();
+        return "date," + activity_cols + "," + exercise_cols + "," + phys_cols + "," + sleep_cols;
     }
-}
 
-static inline void ConvertToCSV() {
-    DBWorker& db_worker = DBWorker::GetInstance();
-    mysqlx::SqlResult records = db_worker.JoinAllTables();
-    std::vector<std::string> csv_rows_batch;
-    csv_rows_batch.push_back(get_column_names());
+    static inline void write_to_csv(std::vector<std::string> &csv_rows_batch) {
+        static std::ofstream os(FILENAME);
 
-    while (auto row = records.fetchOne()) {
-        std::string csv_row = mysqlx::get_string_date(row) + ",";
-        for (size_t i = 1; i < row.colCount(); ++i) {
-            if (row[i].getType() == mysqlx::Value::Type::INT64) {
-                csv_row += std::to_string(row[i].get<int64_t>());
-            } else if (row[i].getType() == mysqlx::Value::Type::STRING) {
-                csv_row += row[i].get<std::string>();
-            } else if (row[i].getType() == mysqlx::Value::Type::VNULL) {
-                csv_row += std::to_string(DEFAULT_COLUMN_VALUE);
-            } else {
-                throw std::runtime_error("Unsupported value type");
+        for (const auto &csv_row: csv_rows_batch) {
+            os << csv_row << std::endl;
+        }
+    }
+
+    static inline void ConvertToCSV() {
+        DBWorker &db_worker = DBWorker::GetInstance();
+        mysqlx::SqlResult records = db_worker.JoinAllTables();
+        std::vector<std::string> csv_rows_batch;
+        csv_rows_batch.push_back(get_column_names());
+
+        while (auto row = records.fetchOne()) {
+            std::string csv_row = mysqlx::get_string_date(row) + ",";
+            for (size_t i = 1; i < row.colCount(); ++i) {
+                if (row[i].getType() == mysqlx::Value::Type::INT64) {
+                    csv_row += std::to_string(row[i].get<int64_t>());
+                } else if (row[i].getType() == mysqlx::Value::Type::STRING) {
+                    csv_row += row[i].get<std::string>();
+                } else if (row[i].getType() == mysqlx::Value::Type::VNULL) {
+                    csv_row += std::to_string(DEFAULT_COLUMN_VALUE);
+                } else {
+                    throw std::runtime_error("Unsupported value type");
+                }
+                csv_row += ",";
             }
-            csv_row += ",";
+            csv_rows_batch.push_back(csv_row);
+            if (csv_rows_batch.size() == BATCH_SIZE) {
+                write_to_csv(csv_rows_batch);
+                csv_rows_batch.clear();
+            }
         }
-        csv_rows_batch.push_back(csv_row);
-        if (csv_rows_batch.size() == BATCH_SIZE) {
+        if (!csv_rows_batch.empty()) {
             write_to_csv(csv_rows_batch);
-            csv_rows_batch.clear();
         }
     }
-    if (!csv_rows_batch.empty()) {
-        write_to_csv(csv_rows_batch);
-    }
-}
 
-static inline void DeleteCSV() {
-    std::remove(FILENAME.data());
-};
+    static inline void DeleteCSV() {
+        std::remove(FILENAME.data());
+    };
 
 }  // namespace CSVHelpers

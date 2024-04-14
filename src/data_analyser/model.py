@@ -9,10 +9,7 @@ polar_table = pd.read_csv('polar_user_data.csv')
 health_data = polar_table[['date', 'steps', 'active_calories', 'max_hr', 'ae_t', 'light_sleep', 'deep_sleep']]
 activities = polar_table[['date', 'exercise1']]
 
-activities['exercise1'].fillna('stay at home', inplace=True)
-
-print(health_data)
-print(activities)
+activities['exercise1'] = activities['exercise1'].fillna('stay at home')
 
 # Скейлим фичи с помощью MinMaxScaler
 scaler = MinMaxScaler()
