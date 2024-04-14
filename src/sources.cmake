@@ -1,4 +1,5 @@
 add_library(sources_files
+        app/driver.cpp
         polar_api/oauth2.cpp
         polar_api/accesslink.cpp
         polar_api/request_wrap.cpp

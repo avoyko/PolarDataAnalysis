@@ -49,10 +49,11 @@ endif ()
 # собирает таргет для теста календаря
 add_subdirectory(calendar_scheduler)
 add_subdirectory(data_analyser)
+add_subdirectory(database)
 
 include(sources.cmake)
 target_include_directories(sources_files PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(sources_files cpr::cpr yaml-cpp::yaml-cpp mysql::concpp frozen)
-add_executable(application app/driver.cpp)
+add_executable(application main.cpp)
 target_link_libraries(application sources_files model)
 
