@@ -5,7 +5,7 @@
 #include <sys/wait.h>
 #include <fstream>
 
-const std::string venv_executable = "../../venv/bin/python3.12";
+const std::string venv_executable = "../../venv/bin/python";
 
 void Model::Activate() {
 //    CSVHelpers::ConvertToCSV();

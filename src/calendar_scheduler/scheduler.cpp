@@ -3,7 +3,7 @@
 #include "include/calendar_exception.h"
 #include "include/scheduler.h"
 
-const std::string venv_executable = "../../venv/bin/python3.12";
+const std::string venv_executable = "../../venv/bin/python";
 
 std::string DateStamp::Serialize() const {
     boost::format fmt = boost::format("%1%-%2%-%3%T%4%:%5%:%6%+03:00") % std::to_string(year) %
