@@ -1,14 +1,14 @@
 add_library(db_sources_files
-        ../../polar_api/accesslink.h
-        ../db_worker.cpp
-        ../table_exercises.h
-        ../table_exercises.cpp
-        ../table_base.h
-        ../table_base.cpp
-        ../table_activity.h
-        ../table_activity.cpp
-        ../table_sleep.h
-        ../table_sleep.cpp
-        ../table_phys_info.h
-        ../table_phys_info.cpp
+        ../../polar_api/include/accesslink.h
+        ../lib/db_worker.cpp
+        ../include/table_exercises.h
+        ../lib/table_exercises.cpp
+        ../include/table_base.h
+        ../lib/table_base.cpp
+        ../include/table_activity.h
+        ../lib/table_activity.cpp
+        ../include/table_sleep.h
+        ../lib/table_sleep.cpp
+        ../include/table_phys_info.h
+        ../lib/table_phys_info.cpp
 )

@@ -1,4 +1,4 @@
-#include "training_data_transaction.h"
+#include "../include/training_data_transaction.h"
 
 ReadJson TrainingDataTransaction::ListExercises() {
     RequestWrapper request_body{transaction_url_};

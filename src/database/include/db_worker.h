@@ -1,8 +1,9 @@
 #pragma once
 
 #include "db_utilities.h"
-#include "../polar_api/accesslink.h"
-#include "frozen/bits/basic_types.h"
+#include "../../polar_api/include/accesslink.h"
+
+#include <frozen/bits/basic_types.h>
 
 class DBWorker {
 public:

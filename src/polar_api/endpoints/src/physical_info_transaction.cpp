@@ -1,4 +1,4 @@
-#include "physical_info_transaction.h"
+#include "../include/physical_info_transaction.h"
 
 ReadJson PhysicalInfoTransaction::ListPhysicalInfos() {
     RequestWrapper request_body{transaction_url_};

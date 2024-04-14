@@ -2,11 +2,13 @@
 
 #include <utility>
 
-#include "endpoints/users.h"
-#include "endpoints/pull_notifications.h"
-#include "endpoints/training_data.h"
-#include "endpoints/physical_info.h"
-#include "endpoints/daily_activity.h"
+#include "../endpoints/include/users.h"
+#include "../endpoints/include/pull_notifications.h"
+#include "../endpoints/include/training_data.h"
+#include "../endpoints/include/physical_info.h"
+#include "../endpoints/include/daily_activity.h"
+#include "../endpoints/include/daily_activity_transaction.h"
+#include "oauth2.h"
 
 namespace Links {
 const std::string AUTHORIZATION_URL = "https://flow.polar.com/oauth2/authorization";

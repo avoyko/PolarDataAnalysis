@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../oauth2.h"
+#include "../../include/oauth2.h"
 
 class Resource {
 public:

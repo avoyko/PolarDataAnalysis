@@ -3,8 +3,8 @@
 #include <algorithm>
 #include <array>
 
-#include "calendar_exception.h"
-#include "scheduler.h"
+#include "include/calendar_exception.h"
+#include "include/scheduler.h"
 
 const std::wstring venv_executable = L"../../venv/bin/python3.11";
 

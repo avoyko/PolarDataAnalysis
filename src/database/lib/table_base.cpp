@@ -1,4 +1,4 @@
-#include "table_base.h"
+#include "../include/table_base.h"
 
 void BaseTable::Create(const std::string &sql_query) {
     DBWorker &db_worker = DBWorker::GetInstance();

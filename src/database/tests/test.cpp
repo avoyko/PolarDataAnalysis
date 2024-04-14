@@ -1,8 +1,8 @@
-#include "../db_worker.h"
-#include "../table_exercises.h"
-#include "../table_activity.h"
-#include "../table_phys_info.h"
-#include "../table_sleep.h"
+#include "include/db_worker.h"
+#include "include/table_exercises.h"
+#include "include/table_activity.h"
+#include "include/table_phys_info.h"
+#include "include/table_sleep.h"
 #include <gtest/gtest.h>
 #include "../../data_analyser/model_utilities.h"
 

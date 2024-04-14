@@ -1,4 +1,4 @@
-#include "table_exercises.h"
+#include "../include/table_exercises.h"
 
 /// im so sorry for being stupid...
 std::string ExercisesTable::GenerateTable() {

@@ -1,5 +1,5 @@
 #include "driver.h"
-#include "data_analyser/model.h"
+#include "../model/model.h"
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 

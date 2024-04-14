@@ -1,4 +1,4 @@
-#include "table_phys_info.h"
+#include "../include/table_phys_info.h"
 
 void PhysTable::Update(const WriteJson& phys) {
     std::string last_date = LastRecordDate();

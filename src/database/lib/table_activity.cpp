@@ -1,4 +1,4 @@
-#include "table_activity.h"
+#include "../include/table_activity.h"
 
 void ActivityTable::Update(const WriteJson& activities) {
     std::string last_date = LastRecordDate();

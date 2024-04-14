@@ -1,4 +1,4 @@
-#include "oauth2.h"
+#include "../include/oauth2.h"
 
 cpr::Header OAuth2Client::GetAuthHeaders(const std::string &access_token) {
     cpr::Header headers{{"Authorization", "Bearer " + access_token},

@@ -1,4 +1,4 @@
-#include "pull_notifications.h"
+#include "../include/pull_notifications.h"
 
 ReadJson PullNotifications::List() {
     RequestWrapper request_body{"/notifications"};

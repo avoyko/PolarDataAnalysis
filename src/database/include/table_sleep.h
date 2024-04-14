@@ -1,4 +1,5 @@
 #pragma once
+
 #include "table_base.h"
 
 class SleepTable : public BaseTable {

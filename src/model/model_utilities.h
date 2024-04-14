@@ -1,12 +1,12 @@
 #pragma once
 
 #include <fstream>
-#include "../database/db_worker.h"
-#include "../database/table_activity.h"
-#include "../database/table_base.h"
-#include "../database/table_sleep.h"
-#include "../database/table_exercises.h"
-#include "../database/table_phys_info.h"
+#include "../database/include/db_worker.h"
+#include "../database/include/table_activity.h"
+#include "../database/include/table_base.h"
+#include "../database/include/table_sleep.h"
+#include "../database/include/table_exercises.h"
+#include "../database/include/table_phys_info.h"
 
 namespace CSVHelpers {
     static constexpr size_t DEFAULT_COLUMN_VALUE = 0;
