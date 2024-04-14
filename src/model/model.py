@@ -15,7 +15,8 @@ activities.loc[:, 'exercise1'] = activities.loc[:, 'exercise1'].fillna('stay at 
 scaler = MinMaxScaler()
 X = scaler.fit_transform(health_data.drop('date', axis=1))
 
-# Perform label encoding for the activity column
+
+# Произведем label encoding для колонки с упражнением
 label_encoder = LabelEncoder()
 y = label_encoder.fit_transform(activities['exercise1'])
 
@@ -24,7 +25,7 @@ timesteps = 3  # кол-во дней, на которые мы смотрим �
 X = np.array([X[i - timesteps:i] for i in range(timesteps, X.shape[0])])
 y = y[timesteps:]
 
-# Define the LSTM model
+# Определение LSTM модели
 model = Sequential()
 model.add(Input(shape=(timesteps, X.shape[2])))
 model.add(LSTM(units=128, return_sequences=True))

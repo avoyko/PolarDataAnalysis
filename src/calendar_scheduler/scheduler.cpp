@@ -18,7 +18,7 @@ void CalendarClient::PostEvent(const std::string &event_name, DateStamp start_da
     pid_t pid = fork();
     if (pid == 0) {
         std::flush(std::cout);
-        std::string args = event_name + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
+        std::string args = "\'" + event_name + "\'" + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
         std::string command = venv_executable + " ../calendar_scheduler/post.py " + args;
         std::system(command.c_str());
         exit(0);
