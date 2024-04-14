@@ -45,3 +45,4 @@ add_subdirectory(calendar_scheduler)
 
 add_executable(application main.cpp app/driver.cpp)
 target_link_libraries(application model DataBaseLib SchedulerLib PolarAPILib yaml-cpp::yaml-cpp)
+set_target_properties(application PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res")

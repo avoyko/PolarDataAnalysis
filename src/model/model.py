@@ -45,4 +45,5 @@ X_test = scaled_last_3_days_data.reshape((1, timesteps, scaled_last_3_days_data.
 prediction = model.predict(X_test)
 predicted_label = label_encoder.inverse_transform(np.argmax(prediction, axis=1))[0]
 
-print(f"Predicted activity for the next day: {predicted_label}")
+with open("prediction", "w") as token:
+    token.write(predicted_label)

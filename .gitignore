@@ -5,9 +5,10 @@ build
 cmake-build-debug
 .idea/
 .DS_Store
-config.yaml
 /src/calendar_scheduler/CALENDAR_TEST
 /src/calendar_scheduler/token.json
 src/model/tuner_results
 src/model/polar_user_data.csv
 cmake-build-debug-event-trace
+config.yaml
+res

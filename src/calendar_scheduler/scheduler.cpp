@@ -6,7 +6,7 @@
 #include "include/calendar_exception.h"
 #include "include/scheduler.h"
 
-const std::wstring venv_executable = L"../../venv/bin/python3.11";
+const std::wstring venv_executable = L"../../venv/bin/python3.12";
 
 std::wstring DateStamp::Serialize() const {
     boost::wformat fmt = boost::wformat(L"%1%-%2%-%3%T%4%:%5%:%6%+03:00") % std::to_wstring(year) %
@@ -29,11 +29,11 @@ void CalendarClient::PostEvent(const std::wstring &event_name, DateStamp start_d
     if (PyStatus_Exception(status)) {
         throw CalendarException(status.err_msg ? status.err_msg : "N/A");
     }
-    FILE *fp = fopen("post.py", "r");
+    FILE *fp = fopen("../calendar_scheduler/post.py", "r");
     if (fp == nullptr) {
         throw CalendarException("Post failed because file's not been opened.");
     }
-    PyRun_SimpleFile(fp, "post.py");
+    PyRun_SimpleFile(fp, "../calendar_scheduler/post.py");
     FreeEventArgv(4, argv);
 }
 
