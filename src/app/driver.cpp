@@ -1,5 +1,6 @@
 #include "driver.h"
 #include "../model/include/model.h"
+#include "../calendar_scheduler/include/scheduler.h"
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
@@ -69,6 +70,9 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
 
     Model model;
     model.Activate();
+    CalendarClient calendarClient;
+    DateStamp dateStamp = {2024, 04, 15, 18, 00, 00};
+    calendarClient.PostEvent("EVENT", dateStamp, dateStamp);
 
     crow::mustache::set_base("../../src/templates");
     auto page = crow::mustache::load("hello.html");

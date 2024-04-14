@@ -1,26 +1,28 @@
 #include "include/model.h"
 #include "include/model_exception.h"
 #include "model_utilities.h"
-#include "Python.h"
 #include "../calendar_scheduler/include/scheduler.h"
+#include <sys/wait.h>
+#include <fstream>
 
-const std::wstring venv_executable = L"../../venv/bin/python3.12";
+const std::string venv_executable = "../../venv/bin/python3.12";
 
 void Model::Activate() {
 //    CSVHelpers::ConvertToCSV();
     CROW_LOG_INFO << "Model is working...";
-    PyConfig config;
-    PyConfig_InitIsolatedConfig(&config);
-    PyConfig_SetString(&config, &config.executable, venv_executable.data());
-    auto status = Py_InitializeFromConfig(&config);
-    PyConfig_Clear(&config);
-    if (PyStatus_Exception(status)) {
-        throw ModelException(status.err_msg ? status.err_msg : "N/A");
+    pid_t pid = fork();
+    if (pid == 0) {
+        std::flush(std::cout);
+        std::system("../../venv/bin/python3.12 ../model/model.py");
+        exit(0);
     }
-    FILE *fp = fopen("../model/model.py", "r+");
-    if (fp == nullptr) {
-        throw ModelException("Model failed because file's not been opened.");
-    }
-    PyRun_SimpleFile(fp, "../model/model.py");
+    wait(nullptr);
     CROW_LOG_INFO << "Model has finished";
+}
+
+std::string Model::GetPrediction() {
+    std::ifstream fin("prediction.txt");
+    std::string prediction;
+    std::getline(fin, prediction);
+    return prediction;
 }

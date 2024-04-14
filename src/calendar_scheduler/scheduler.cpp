@@ -1,67 +1,26 @@
 #include <boost/format.hpp>
-#include <Python.h>
-#include <algorithm>
-#include <array>
 
 #include "include/calendar_exception.h"
 #include "include/scheduler.h"
 
-const std::wstring venv_executable = L"../../venv/bin/python3.12";
+const std::string venv_executable = "../../venv/bin/python3.12";
 
-std::wstring DateStamp::Serialize() const {
-    boost::wformat fmt = boost::wformat(L"%1%-%2%-%3%T%4%:%5%:%6%+03:00") % std::to_wstring(year) %
-                         std::to_wstring(month) % std::to_wstring(day) % std::to_wstring(hour) %
-                         std::to_wstring(minutes) % std::to_wstring(seconds);
+std::string DateStamp::Serialize() const {
+    boost::format fmt = boost::format("%1%-%2%-%3%T%4%:%5%:%6%+03:00") % std::to_string(year) %
+                        std::to_string(month) % std::to_string(day) % std::to_string(hour) %
+                        std::to_string(minutes) % std::to_string(seconds);
     return fmt.str();
 }
 
-void CalendarClient::PostEvent(const std::wstring &event_name, DateStamp start_datestamp,
+void CalendarClient::PostEvent(const std::string &event_name, DateStamp start_datestamp,
                                DateStamp end_datestamp) {
-    PyConfig config;
-    PyConfig_InitIsolatedConfig(&config);
-    PyConfig_SetString(&config, &config.executable, venv_executable.data());
-    auto argv =
-        InitializeEventArgv(event_name, start_datestamp.Serialize(), end_datestamp.Serialize());
-    PyConfig_SetArgv(&config, 4, argv);
-    auto status = Py_InitializeFromConfig(&config);
-    PyConfig_Clear(&config);
-
-    if (PyStatus_Exception(status)) {
-        throw CalendarException(status.err_msg ? status.err_msg : "N/A");
+    pid_t pid = fork();
+    if (pid == 0) {
+        std::flush(std::cout);
+        std::string args = event_name + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
+        std::string command = "../../venv/bin/python3.12 ../calendar_scheduler/post.py " + args;
+        std::system(command.c_str());
+        exit(0);
     }
-    FILE *fp = fopen("../calendar_scheduler/post.py", "r");
-    if (fp == nullptr) {
-        throw CalendarException("Post failed because file's not been opened.");
-    }
-    PyRun_SimpleFile(fp, "../calendar_scheduler/post.py");
-    FreeEventArgv(4, argv);
-}
-
-wchar_t *CalendarClient::CopyWcharArgument(const std::wstring &wstr) {
-    auto *buf = new wchar_t[wstr.size() + 1];
-    std::ranges::copy(wstr.begin(), wstr.end(), buf);
-    buf[wstr.size()] = '\0';
-    return buf;
-}
-
-wchar_t **CalendarClient::InitializeEventArgv(const std::wstring &event_name,
-                                              const std::wstring &start_date_string,
-                                              const std::wstring &end_date_string) {
-    std::array<std::wstring, 4> wstring_args;
-    wstring_args[0] = L"post.py";
-    wstring_args[1] = event_name;
-    wstring_args[2] = start_date_string;
-    wstring_args[3] = end_date_string;
-    auto **argv = new wchar_t *[4];
-    for (size_t i = 0; i < wstring_args.size(); ++i) {
-        argv[i] = CopyWcharArgument(wstring_args[i]);
-    }
-    return argv;
-};
-
-void CalendarClient::FreeEventArgv(int argc, wchar_t **argv) {
-    for (size_t i = 0; i < argc; ++i) {
-        delete[] argv[i];
-    }
-    delete[] argv;
+    wait(nullptr);
 }

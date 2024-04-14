@@ -9,7 +9,7 @@ polar_table = pd.read_csv('polar_user_data.csv')
 health_data = polar_table[['date', 'steps', 'active_calories', 'max_hr', 'ae_t', 'light_sleep', 'deep_sleep']]
 activities = polar_table[['date', 'exercise1']]
 
-activities['exercise1'] = activities['exercise1'].fillna('stay at home')
+activities.loc[:, 'exercise1'] = activities.loc[:, 'exercise1'].fillna('stay at home')
 
 # Скейлим фичи с помощью MinMaxScaler
 scaler = MinMaxScaler()
@@ -45,5 +45,6 @@ X_test = scaled_last_3_days_data.reshape((1, timesteps, scaled_last_3_days_data.
 prediction = model.predict(X_test)
 predicted_label = label_encoder.inverse_transform(np.argmax(prediction, axis=1))[0]
 
-with open("prediction", "w") as token:
-    token.write(predicted_label)
+prediction_file = open("prediction.txt", "w")
+prediction_file.write(predicted_label)
+prediction_file.close()
