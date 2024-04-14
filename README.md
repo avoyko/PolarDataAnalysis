@@ -84,7 +84,7 @@
       ручное создание такого пользователя **до запуска** приложения. Например:
       ```
       CREATE USER '<name>'@'localhost' IDENTIFIED BY '<password>';
-      GRANT ALL PRIVILEGES *.* TO '<name>'@'localhost' WITH GRANT OPTION;
+      GRANT ALL PRIVILEGES ON *.* TO '<name>'@'localhost' WITH GRANT OPTION;
       ```
 2. Tensorflow, sklearn, keras_tuner
 
