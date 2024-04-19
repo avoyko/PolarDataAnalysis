@@ -32,5 +32,5 @@ RUN apt-get update && apt-get -y install mysql-server \
 RUN apt-get update \
     &&  apt-get install -y git \
     && apt-get install -y cmake \
-    && git clone 'https://github.com/avoyko/PolarDataAnalysis' \
-
+    && apt-get install -y g++-20 \
+    && git clone 'https://github.com/avoyko/PolarDataAnalysis'

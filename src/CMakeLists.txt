@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.22)
 
 include(FetchContent)
 FetchContent_Declare(yaml-cpp

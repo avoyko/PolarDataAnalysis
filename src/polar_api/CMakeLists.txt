@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.27)
+cmake_minimum_required(VERSION 3.22)
 set(CMAKE_CXX_STANDARD 20)
 
 file(GLOB POLAR_API_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/lib/*.cpp)
