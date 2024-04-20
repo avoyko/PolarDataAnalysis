@@ -47,12 +47,10 @@ RUN mkdir "repos" && cd repos \
     && git clone "https://github.com/CrowCpp/Crow" \
     && cd Crow && mkdir build && cd build \
     && cmake .. \
-    && make install \
-    && apt-get install htop
-
+    && make install
 
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
     && cd PolarDataAnalysis && cd src \
-    && cmake .. \
-    && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ ..
+    && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ .. \
+    && make
 
