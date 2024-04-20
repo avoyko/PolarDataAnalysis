@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22)
+cmake_minimum_required(VERSION 3.14)
 
 include(FetchContent)
 FetchContent_Declare(yaml-cpp
@@ -21,8 +21,10 @@ if (NOT cpr_POPULATED)
     add_subdirectory(${cpr_SOURCE_DIR} ${cpr_BINARY_DIR})
 endif ()
 
-set(-Dmysql-concpp_DIR:PATH=/home/a/Downloads/mysql-connector-c++)
-find_package(mysql-concpp REQUIRED)
+FetchContent_Declare(mysql-concpp
+        GIT_REPOSITORY https://github.com/mysql/mysql-connector-cpp.git
+        GIT_TAG trunk)
+find_package(mysql-concpp)
 if (mysql-concpp_FOUND)
     message(STATUS "Successfully found mysql...")
     include_directories(${mysql-concpp_DIR}/include)
