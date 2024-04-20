@@ -29,6 +29,12 @@ RUN apt-get update && apt-get -y install mysql-server \
     && dpkg -i libmysqlcppconn-dev_8.0.25-1ubuntu20.04_amd64.deb \
     && apt-get install -y libmysqlcppconn-dev
 
+WORKDIR usr/include/mysql-cppconn-8
+RUN cp -r ./mysqlx ../. \
+    && cp -r ./mysql ../. \
+    && cp -r ./jdbc ../.
+WORKDIR ../../../
+
 RUN apt-get update \
     && apt-get install -y vim \
     && apt-get install -y git \
@@ -43,4 +49,6 @@ RUN mkdir "repos" && cd repos \
     && cmake .. \
     && make install
 
+
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis'
+
