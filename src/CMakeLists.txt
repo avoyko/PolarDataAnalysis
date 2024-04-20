@@ -21,9 +21,7 @@ if (NOT cpr_POPULATED)
     add_subdirectory(${cpr_SOURCE_DIR} ${cpr_BINARY_DIR})
 endif ()
 
-FetchContent_Declare(mysql-concpp
-        GIT_REPOSITORY https://github.com/mysql/mysql-connector-cpp.git
-        GIT_TAG trunk)
+set(mysql-concpp_DIR "/opt/homebrew/opt/mysql-connector-c++")
 find_package(mysql-concpp)
 if (mysql-concpp_FOUND)
     message(STATUS "Successfully found mysql...")
