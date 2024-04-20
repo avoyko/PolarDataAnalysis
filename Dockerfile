@@ -49,9 +49,9 @@ RUN mkdir "repos" && cd repos \
     && cmake .. \
     && make install
 
-RUN wget "https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.2.0-linux-glibc2.28-x86-64bit.tar.gz" \
-    && tar -zxvf mysql-connector-c++-8.2.0-linux-glibc2.28-x86-64bit.tar.gz -C . \
-    && mv mysql-connector-c++-8.2.0-linux-glibc2.28-x86-64bit mysql-connector-c++
+RUN wget "https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit.tar.gz" \
+    && tar -zxvf mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit.tar.gz -C . \
+    && mv mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit mysql-connector-c++
 
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis'
 
