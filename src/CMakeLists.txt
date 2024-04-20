@@ -21,6 +21,7 @@ if (NOT cpr_POPULATED)
     add_subdirectory(${cpr_SOURCE_DIR} ${cpr_BINARY_DIR})
 endif ()
 
+set(-Dmysql-concpp_DIR:PATH=/home/a/Downloads/mysql-connector-c++)
 find_package(mysql-concpp REQUIRED)
 if (mysql-concpp_FOUND)
     message(STATUS "Successfully found mysql...")

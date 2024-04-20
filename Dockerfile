@@ -30,7 +30,17 @@ RUN apt-get update && apt-get -y install mysql-server \
     && apt-get install -y libmysqlcppconn-dev
 
 RUN apt-get update \
-    &&  apt-get install -y git \
+    && apt-get install -y vim \
+    && apt-get install -y git \
     && apt-get install -y cmake \
-    && apt-get install -y g++-20 \
-    && git clone 'https://github.com/avoyko/PolarDataAnalysis'
+    && apt-get install -y g++ \
+    && apt-get install -y libboost-all-dev \
+    && apt-get install -y libasio-dev
+
+RUN mkdir "repos" && cd repos \
+    && git clone "https://github.com/CrowCpp/Crow" \
+    && cd Crow && mkdir build && cd build \
+    && cmake .. \
+    && make install
+
+RUN git clone 'https://github.com/avoyko/PolarDataAnalysis'
