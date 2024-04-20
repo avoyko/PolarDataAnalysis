@@ -29,11 +29,11 @@ RUN apt-get update && apt-get -y install mysql-server \
     && dpkg -i libmysqlcppconn-dev_8.0.25-1ubuntu20.04_amd64.deb \
     && apt-get install -y libmysqlcppconn-dev
 
-WORKDIR usr/include/mysql-cppconn-8
-RUN cp -r ./mysqlx ../. \
-    && cp -r ./mysql ../. \
-    && cp -r ./jdbc ../.
-WORKDIR ../../../
+
+
+RUN wget "https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit.tar.gz" \
+    && tar -zxvf mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit.tar.gz -C . \
+    && mv mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit mysql-connector-c++
 
 RUN apt-get update \
     && apt-get install -y vim \
@@ -47,11 +47,12 @@ RUN mkdir "repos" && cd repos \
     && git clone "https://github.com/CrowCpp/Crow" \
     && cd Crow && mkdir build && cd build \
     && cmake .. \
-    && make install
+    && make install \
+    && apt-get install htop
 
-RUN wget "https://dev.mysql.com/get/Downloads/Connector-C++/mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit.tar.gz" \
-    && tar -zxvf mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit.tar.gz -C . \
-    && mv mysql-connector-c++-8.3.0-linux-glibc2.28-x86-64bit mysql-connector-c++
 
-RUN git clone 'https://github.com/avoyko/PolarDataAnalysis'
+RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
+    && cd PolarDataAnalysis && cd src \
+    && cmake .. \
+    && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ ..
 
