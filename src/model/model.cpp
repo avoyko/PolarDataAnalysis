@@ -21,9 +21,12 @@ void Model::Activate() {
     CROW_LOG_INFO << "Model has finished";
 }
 
-std::string Model::GetPrediction() {
+std::vector<std::string> Model::GetPrediction() {
     std::ifstream fin("prediction.txt");
     std::string prediction;
-    std::getline(fin, prediction);
-    return prediction;
+    std::vector<std::string> exercises;
+    while (fin >> prediction) {
+        exercises.push_back(prediction);
+    }
+    return exercises;
 }

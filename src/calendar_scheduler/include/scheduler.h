@@ -18,4 +18,6 @@ private:
 class CalendarClient {
 public:
     void PostEvent(const std::string &event_name, DateStamp start_datestamp, DateStamp end_datestamp);
+
+    void ScheduleEvents(const std::vector<std::string>& event_names);
 };

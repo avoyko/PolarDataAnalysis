@@ -9,18 +9,18 @@ int PolarApp::Activate() {
     app.loglevel(crow::LogLevel::Info);
 
     CROW_ROUTE(app, "/")
-    ([](const crow::request &req) {
-        CROW_LOG_INFO << "Client is redirected for authorization";
-        crow::response res{200};
-        res.redirect(accesslink.GetAuthUrl());
-        return res;
-    });
+            ([](const crow::request &req) {
+                CROW_LOG_INFO << "Client is redirected for authorization";
+                crow::response res{200};
+                res.redirect(accesslink.GetAuthUrl());
+                return res;
+            });
 
     CROW_ROUTE(app, Callback::OAUTHPOINT)
-    ([this](const crow::request &req) { return Authorize(req); });
+            ([this](const crow::request &req) { return Authorize(req); });
 
     CROW_ROUTE(app, Callback::DATAPOINT)
-    ([this](const crow::request &req) { return ProcessData(); });
+            ([this](const crow::request &req) { return ProcessData(); });
 #if (DEVELOPER_MODE == 1)
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
 #elif
@@ -75,9 +75,8 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
     Model model;
     model.Activate();
     CalendarClient calendarClient;
-    DateStamp dateStamp = {2024, 04, 15, 18, 00, 00};
-    std::string event_name = model.GetPrediction();
-    calendarClient.PostEvent(event_name, dateStamp, dateStamp);
+    std::vector<std::string> event_names = model.GetPrediction();
+    calendarClient.ScheduleEvents(event_names);
 
     crow::mustache::set_base("../../src/templates");
     auto page = crow::mustache::load("hello.html");

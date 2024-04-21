@@ -6,5 +6,5 @@ class Model {
 public:
     void Activate();
 
-    std::string GetPrediction();
+    std::vector<std::string> GetPrediction();
 };

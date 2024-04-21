@@ -3,7 +3,6 @@
 #include "include/calendar_exception.h"
 #include "include/scheduler.h"
 
-
 const std::string venv_executable = "../../venv/bin/python";
 
 std::string DateStamp::Serialize() const {
@@ -18,10 +17,18 @@ void CalendarClient::PostEvent(const std::string &event_name, DateStamp start_da
     pid_t pid = fork();
     if (pid == 0) {
         std::flush(std::cout);
-        std::string args = "\'" + event_name + "\'" + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
+        std::string args =
+                "\'" + event_name + "\'" + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
         std::string command = venv_executable + " ../calendar_scheduler/post.py " + args;
         std::system(command.c_str());
         exit(0);
     }
     wait(nullptr);
+}
+
+void CalendarClient::ScheduleEvents(const std::vector<std::string> &event_names) {
+    for (int i = 0; i < event_names.size(); ++i) {
+        DateStamp dateStamp(2024, 05, 01, 18 + i, 00, 00);
+        PostEvent(event_names[i], dateStamp, dateStamp);
+    }
 }
