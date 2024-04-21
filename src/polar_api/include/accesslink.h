@@ -10,7 +10,7 @@
 #include "../endpoints/include/daily_activity_transaction.h"
 #include "oauth2.h"
 
-#define DEVELOPER_MODE 0
+#define DEVELOPER_MODE 1
 
 namespace Links {
 const std::string AUTHORIZATION_URL = "https://flow.polar.com/oauth2/authorization";
