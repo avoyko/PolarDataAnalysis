@@ -22,9 +22,7 @@ if (NOT cpr_POPULATED)
 endif ()
 
 
-#set(mysql-concpp_DIR "/home/a/Downloads/mysql-connector-c++")
-#set(mysql-concpp_DIR "/mysql-connector-c++")
-find_package(mysql-concpp)
+find_package(mysql-concpp REQUIRED)
 if (mysql-concpp_FOUND)
     message(STATUS "Successfully found mysql...")
     include_directories(${mysql-concpp_DIR}/include)
