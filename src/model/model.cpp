@@ -8,16 +8,11 @@
 const std::string venv_executable = "../../venv/bin/python";
 
 void Model::Activate() {
-//    CSVHelpers::ConvertToCSV();
+    //    CSVHelpers::ConvertToCSV();
     CROW_LOG_INFO << "Model is working...";
-    pid_t pid = fork();
-    if (pid == 0) {
-        std::flush(std::cout);
-        std::string command = venv_executable + " ../model/model.py";
-        std::system(command.c_str());
-        exit(0);
-    }
-    wait(nullptr);
+    std::flush(std::cout);
+    std::string command = venv_executable + " ../model/model.py";
+    std::system(command.c_str());
     CROW_LOG_INFO << "Model has finished";
 }
 
