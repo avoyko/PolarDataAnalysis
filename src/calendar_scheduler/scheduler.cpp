@@ -3,7 +3,7 @@
 #include "include/calendar_exception.h"
 #include "include/scheduler.h"
 
-#define DEVELOPER_MODE 1
+
 
 #if (DEVELOPER_MODE == 1)
 const std::string venv_executable = "../../venv/bin/python";

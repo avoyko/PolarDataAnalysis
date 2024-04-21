@@ -2,7 +2,7 @@
 
 #include "db_utilities.h"
 #include "../../polar_api/include/accesslink.h"
-
+#include "../../debug.h"
 #include <frozen/bits/basic_types.h>
 
 

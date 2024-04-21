@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include "../../debug.h"
 
 struct DateStamp {
 public:

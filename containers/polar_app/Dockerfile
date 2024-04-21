@@ -1,14 +1,6 @@
 FROM ubuntu:latest
 
-#installing python and must-have python packages
-#RUN apt-get update -y --fix-missing\
-#    && apt install python3 -y \
-#    && apt install python3-pip -y \
-#    && pip3 install numpy \
-#    && pip3 install tensorflow \
-#    && pip3 install scikit-learn \
-#    && pip3 install keras_tuner \
-#    && pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib
+
 
 
 
@@ -49,11 +41,24 @@ RUN mkdir "repos" && cd repos \
     && cmake .. \
     && make install
 
+#installing python and must-have python packages
+RUN apt-get update -y --fix-missing\
+    && apt install python3 -y \
+    && apt install python3-pip -y \
+    && pip3 install numpy \
+    && pip3 install tensorflow \
+    && pip3 install scikit-learn \
+    && pip3 install keras_tuner \
+    && pip3 install --upgrade google-api-python-client google-auth-httplib2 google-auth-oauthlib \
+    && pip3 install pandas
+
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
     && cd PolarDataAnalysis && cd src \
     && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ .. \
     && make \
     && apt-get install -y apparmor
+
+
 
 WORKDIR PolarDataAnalysis/src/res
 

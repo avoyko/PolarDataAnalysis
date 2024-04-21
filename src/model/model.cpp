@@ -12,7 +12,7 @@ const std::string venv_executable = "python3";
 #endif
 
 void Model::Activate() {
-    //    CSVHelpers::ConvertToCSV();
+    CSVHelpers::ConvertToCSV();
     CROW_LOG_INFO << "Model is working...";
     std::flush(std::cout);
     std::string command = venv_executable + " ../model/model.py";
