@@ -52,5 +52,8 @@ RUN mkdir "repos" && cd repos \
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
     && cd PolarDataAnalysis && cd src \
     && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ .. \
-    && make
+    && make \
+
+
+WORKDIR PolarDataAnalysis/src/res
 

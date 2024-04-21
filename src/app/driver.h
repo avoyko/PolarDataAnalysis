@@ -5,7 +5,7 @@
 #include "../database/include/db_worker.h"
 #include "../polar_api/include/accesslink.h"
 
-#define DEVELOPER_MODE 0
+
 /// SET DEVELOPER_MODE TO 0 WHEN EXPORTING TO DOCKER
 
 namespace Callback {

@@ -10,6 +10,8 @@
 #include "../endpoints/include/daily_activity_transaction.h"
 #include "oauth2.h"
 
+#define DEVELOPER_MODE 0
+
 namespace Links {
 const std::string AUTHORIZATION_URL = "https://flow.polar.com/oauth2/authorization";
 const std::string ACCESS_TOKEN_URL = "https://polarremote.com/v2/oauth2/token";

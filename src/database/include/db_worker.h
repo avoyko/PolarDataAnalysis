@@ -5,6 +5,7 @@
 
 #include <frozen/bits/basic_types.h>
 
+
 class DBWorker {
 public:
     DBWorker();
@@ -36,7 +37,11 @@ private:
 
     static bool FindDB(mysqlx::Session &temp_session);
 
+#if (DEVELOPER_MODE == 1)
     static constexpr frozen::string server_name_ = "localhost";
+#else
+    static constexpr frozen::string server_name_ = "172.17.0.2";
+#endif
     static constexpr int port_ = 33060;
     static constexpr frozen::string user_name_ = "polar_user";
     static constexpr frozen::string pass_ = "2004";
