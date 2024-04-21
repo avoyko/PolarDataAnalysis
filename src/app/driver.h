@@ -5,7 +5,7 @@
 #include "../database/include/db_worker.h"
 #include "../polar_api/include/accesslink.h"
 
-#define DEVELOPER_MODE 1
+#define DEVELOPER_MODE 0
 /// SET DEVELOPER_MODE TO 0 WHEN EXPORTING TO DOCKER
 
 namespace Callback {
@@ -21,7 +21,7 @@ const std::string CLIENT_SECRET = "b854a0ca-2a74-4dde-9196-0c0b1b63110e";
 #if (DEVELOPER_MODE == 1)
 const std::string REDIRECT_URI = "http://localhost:5002/oauth2_callback";
 const std::string DATA_URI = "http://localhost:5002/data";
-#elif
+#else
 const std::string REDIRECT_URI = "http://172.17.0.2:5002/oauth2_callback";
 const std::string DATA_URI = "http://172.17.0.2:5002/data";
 #endif
