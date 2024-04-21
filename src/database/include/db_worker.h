@@ -37,7 +37,7 @@ private:
 
     static bool FindDB(mysqlx::Session &temp_session);
 
-#if (DEVELOPER_MODE == 0)
+#if (DEVELOPER_MODE == 1)
     static constexpr frozen::string server_name_ = "localhost";
 #else
     static constexpr frozen::string server_name_ = "172.17.0.3";

@@ -53,7 +53,7 @@ RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
     && cd PolarDataAnalysis && cd src \
     && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ .. \
     && make \
-    && apt-get install -y net-tools
+    && apt-get install -y apparmor
 
 WORKDIR PolarDataAnalysis/src/res
 
