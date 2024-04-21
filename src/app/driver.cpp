@@ -23,7 +23,7 @@ int PolarApp::Activate() {
     ([this](const crow::request &req) { return ProcessData(); });
 #if (DEVELOPER_MODE == 1)
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
-#elif
+#else
     CROW_LOG_INFO << "Navigate to http://172.17.0.2:5002/ to register user.";
 #endif
     app.port(Callback::PORT).run();
