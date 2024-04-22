@@ -14,16 +14,11 @@ std::string DateStamp::Serialize() const {
 
 void CalendarClient::PostEvent(const std::string &event_name, DateStamp start_datestamp,
                                DateStamp end_datestamp) {
-    pid_t pid = fork();
-    if (pid == 0) {
-        std::flush(std::cout);
-        std::string args =
-                "\'" + event_name + "\'" + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
-        std::string command = venv_executable + " ../calendar_scheduler/post.py " + args;
-        std::system(command.c_str());
-        exit(0);
-    }
-    wait(nullptr);
+    std::flush(std::cout);
+    std::string args =
+            "\'" + event_name + "\'" + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
+    std::string command = venv_executable + " ../calendar_scheduler/post.py " + args;
+    std::system(command.c_str());
 }
 
 void CalendarClient::ScheduleEvents(const std::vector<std::string> &event_names) {
