@@ -5,10 +5,14 @@
 #include <sys/wait.h>
 #include <fstream>
 
+#if (DEVELOPER_MODE == 1)
 const std::string venv_executable = "../../venv/bin/python";
+#else
+const std::string venv_executable = "python3";
+#endif
 
 void Model::Activate() {
-//    CSVHelpers::ConvertToCSV();
+    CSVHelpers::ConvertToCSV();
     CROW_LOG_INFO << "Model is working...";
     std::flush(std::cout);
     std::string command = venv_executable + " ../model/model.py";

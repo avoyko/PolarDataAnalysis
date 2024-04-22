@@ -2,7 +2,7 @@
 
 #include "db_utilities.h"
 #include "../../polar_api/include/accesslink.h"
-
+#include "../../debug.h"
 #include <frozen/bits/basic_types.h>
 
 
@@ -40,7 +40,7 @@ private:
 #if (DEVELOPER_MODE == 1)
     static constexpr frozen::string server_name_ = "localhost";
 #else
-    static constexpr frozen::string server_name_ = "172.17.0.2";
+    static constexpr frozen::string server_name_ = "172.17.0.3";
 #endif
     static constexpr int port_ = 33060;
     static constexpr frozen::string user_name_ = "polar_user";

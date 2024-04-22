@@ -4,6 +4,7 @@
 #include <yaml-cpp/yaml.h>
 #include "../database/include/db_worker.h"
 #include "../polar_api/include/accesslink.h"
+#include "../debug.h"
 
 
 /// SET DEVELOPER_MODE TO 0 WHEN EXPORTING TO DOCKER
