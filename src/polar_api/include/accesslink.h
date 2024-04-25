@@ -9,13 +9,18 @@
 #include "../endpoints/include/daily_activity.h"
 #include "../endpoints/include/daily_activity_transaction.h"
 #include "oauth2.h"
+#include "../../debug.h"
 
-#define DEVELOPER_MODE 1
+
 
 namespace Links {
 const std::string AUTHORIZATION_URL = "https://flow.polar.com/oauth2/authorization";
 const std::string ACCESS_TOKEN_URL = "https://polarremote.com/v2/oauth2/token";
+#if (DEVELOPER_MODE == 1 && !TEST_MODE)
 const std::string ACCESSLINK_URL = "https://www.polaraccesslink.com/v3";
+#elif (TEST_MODE == 1)
+const std::string ACCESSLINK_URL = "http://localhost:8080/v3";
+#endif
 };  // namespace Links
 
 /// i couldn't come up with a better place to put it
