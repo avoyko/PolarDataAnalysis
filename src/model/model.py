@@ -1,17 +1,15 @@
 import os
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import warnings
-
 import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, MultiLabelBinarizer
-
 from keras import config
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout, Input
 
 config.disable_interactive_logging()
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 # Reshape the input data for LSTM
