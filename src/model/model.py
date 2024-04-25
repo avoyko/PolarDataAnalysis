@@ -2,8 +2,11 @@ import numpy as np
 import pandas as pd
 from sklearn.preprocessing import MinMaxScaler, MultiLabelBinarizer
 
+from keras import config
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout, Input
+
+config.disable_interactive_logging()
 
 # Reshape the input data for LSTM
 timesteps = 3  # Number of timesteps (days) to consider for each input sequence

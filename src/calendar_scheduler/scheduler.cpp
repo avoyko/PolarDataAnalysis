@@ -4,7 +4,6 @@
 #include "include/scheduler.h"
 
 
-
 #if (DEVELOPER_MODE == 1)
 const std::string venv_executable = "../../venv/bin/python";
 #else
@@ -20,16 +19,9 @@ std::string DateStamp::Serialize() const {
 
 void CalendarClient::PostEvent(const std::string &event_name, DateStamp start_datestamp,
                                DateStamp end_datestamp) {
-<<<<<<< HEAD
     std::flush(std::cout);
     std::string args =
             "\'" + event_name + "\'" + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
-=======
-
-    std::flush(std::cout);
-    std::string args = "\'" + event_name + "\'" + ' ' + start_datestamp.Serialize() + ' ' +
-                       end_datestamp.Serialize();
->>>>>>> a0aadc77b2a6fec0e78eb1afb8e323f3150903ed
     std::string command = venv_executable + " ../calendar_scheduler/post.py " + args;
     std::system(command.c_str());
 }

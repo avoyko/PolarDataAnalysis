@@ -2,7 +2,6 @@
 #include "include/model_exception.h"
 #include "model_utilities.h"
 #include "../calendar_scheduler/include/scheduler.h"
-#include <sys/wait.h>
 #include <fstream>
 
 #if (DEVELOPER_MODE == 1)
@@ -12,7 +11,7 @@ const std::string venv_executable = "python3";
 #endif
 
 void Model::Activate() {
-    CSVHelpers::ConvertToCSV();
+//    CSVHelpers::ConvertToCSV();
     CROW_LOG_INFO << "Model is working...";
     std::flush(std::cout);
     std::string command = venv_executable + " ../model/model.py";
