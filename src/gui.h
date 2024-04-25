@@ -20,3 +20,7 @@ void InitialiseMainWindow(ScreenConfig &config);
 void InitialiseOptionPanel(const ScreenConfig &config);
 
 std::vector<bool> ActivateOptionsScreen(const ScreenConfig &config);
+
+void ClearBox(const ScreenConfig &config);
+
+void DisplayLoadingPanel(const ScreenConfig &config, const std::atomic_bool &model_finished);

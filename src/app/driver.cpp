@@ -5,6 +5,8 @@
 
 #include <fstream>
 #include <iostream>
+#include <thread>
+
 
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
@@ -51,9 +53,6 @@ int PolarApp::Activate() {
     CROW_LOG_INFO << "Navigate to http://172.17.0.2:5002/ to register user.";
 #endif
     app.port(Callback::PORT).run();
-
-    delwin(screen_config.main_window);
-    endwin();
     return 0;
 }
 
@@ -76,7 +75,7 @@ crow::response PolarApp::Authorize(const crow::request &req) {
         accesslink.RegisterUser(config["access_token"].as<std::string>());
         std::string login_message = "Successfully logged in!";
         CROW_LOG_INFO << login_message;
-        mvwprintw(screen_config.main_window, screen_config.windowHeight / 2,
+        mvwprintw(screen_config.main_window, screen_config.windowHeight / 4 + 2,
                   (screen_config.windowWidth - login_message.size()) / 2,
                   login_message.c_str());
         wrefresh(screen_config.main_window);
@@ -84,7 +83,7 @@ crow::response PolarApp::Authorize(const crow::request &req) {
         if (exception_code == 409) {
             std::string login_message = "User has been already registered";
             CROW_LOG_INFO << login_message;
-            mvwprintw(screen_config.main_window, screen_config.windowHeight / 2,
+            mvwprintw(screen_config.main_window, screen_config.windowHeight / 4 + 2,
                       (screen_config.windowWidth - login_message.size()) / 2,
                       login_message.c_str());
             wrefresh(screen_config.main_window);
@@ -100,6 +99,11 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
     const auto access_token = config["access_token"].as<std::string>();
     const auto user_id = config["user_id"].as<std::string>();
 
+    InitialiseOptionPanel(screen_config);
+    auto options = ActivateOptionsScreen(screen_config);
+
+    ClearBox(screen_config);
+
     WriteJson user_info = accesslink.GetUserdata(access_token, user_id);
     WriteJson exercises_info = accesslink.GetExercises(access_token, user_id);
     WriteJson activity_info = accesslink.GetActivity(access_token, user_id);
@@ -109,15 +113,43 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
     DBWorker &db_worker = DBWorker::GetInstance();
     db_worker.UpdateDB({exercises_info, activity_info, phys_info, sleep_info});
 
-    InitialiseOptionPanel(screen_config);
-    auto options = ActivateOptionsScreen(screen_config);
+    if (options[1]) {
+        Model model;
+        std::atomic_bool model_finished = false;
 
-    Model model;
-    model.Activate();
-    std::vector<std::string> event_names = model.GetPrediction();
+        std::thread waiting_panel(DisplayLoadingPanel, std::cref(screen_config), std::cref(model_finished));
+        model.Activate();
 
-    CalendarClient calendarClient;
-    calendarClient.ScheduleEvents(event_names);
+        std::vector<std::string> event_names = model.GetPrediction();
+
+        model_finished = true;
+        waiting_panel.join();
+
+        std::string finish_message = "Model has finished";
+        mvwprintw(screen_config.main_window, screen_config.windowHeight / 4,
+                  (screen_config.windowWidth - finish_message.size()) / 2,
+                  finish_message.c_str());
+        wrefresh(screen_config.main_window);
+
+        CalendarClient calendarClient;
+        calendarClient.ScheduleEvents(event_names);
+
+        std::string goodbye_message = "Events for the next are scheduled. Press Enter to exit...";
+        mvwprintw(screen_config.main_window, screen_config.windowHeight / 4 + 2,
+                  (screen_config.windowWidth - goodbye_message.size()) / 2,
+                  goodbye_message.c_str());
+        wrefresh(screen_config.main_window);
+    } else {
+        std::string goodbye_message = "Data is synchronised. Press Enter to exit...";
+        mvwprintw(screen_config.main_window, screen_config.windowHeight / 4,
+                  (screen_config.windowWidth - goodbye_message.size()) / 2,
+                  goodbye_message.c_str());
+        wrefresh(screen_config.main_window);
+    }
+
+    while (wgetch(screen_config.main_window) != 10) {}
+    delwin(screen_config.main_window);
+    endwin();
 
     crow::mustache::set_base("../../src/templates");
     auto page = crow::mustache::load("hello.html");

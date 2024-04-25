@@ -30,10 +30,9 @@ def schedule():
         service = build("calendar", "v3", credentials=creds)
         event = {'summary': event_name, 'start': {'dateTime': start_date}, 'end': {'dateTime': end_date}}
         event = service.events().insert(calendarId='primary', body=event).execute()
-        print(f"Event created: {event.get('htmlLink')}")
 
     except HttpError as error:
-        print(f"An error occurred: {error}")
+        pass
 
 
 if __name__ == "__main__":
