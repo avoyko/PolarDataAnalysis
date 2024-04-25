@@ -28,14 +28,17 @@ const std::string DATA_URI = "http://172.17.0.2:5002/data";
 #endif
 };  // namespace Client
 
+using HtmlPage = crow::mustache::rendered_template;
+
 class PolarApp {
 public:
+
     int Activate();
 
-private:
     crow::response Authorize(const crow::request &req);
 
-    crow::mustache::rendered_template ProcessData();
+    HtmlPage ProcessData();
 
+private:
     YAML::Node UpdateAccessConfig(const ReadJson &token_response);
 };

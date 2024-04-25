@@ -4,17 +4,13 @@
 
 class ActivityTable : public BaseTable {
 public:
-    ActivityTable() : BaseTable(table_name_.data()) {
-        if (!CheckExistence()) {
-            Create(GenerateTable());
-        }
-    };
+    ActivityTable();
 
     std::string GenerateTable();
-    static std::string GetName();
-    void Update(const WriteJson &activities);
 
-    mysqlx::Row Read();
+    static std::string GetName();
+
+    void Update(const WriteJson &activities);
 
 private:
     static constexpr frozen::string table_name_ = "activity";

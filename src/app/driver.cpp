@@ -44,6 +44,7 @@ int PolarApp::Activate() {
 
     CROW_ROUTE(app, Callback::DATAPOINT)
             ([this](const crow::request &req) { return ProcessData(); });
+
 #if (DEVELOPER_MODE == 1)
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
 #else
@@ -113,8 +114,9 @@ crow::mustache::rendered_template PolarApp::ProcessData() {
 
     Model model;
     model.Activate();
-    CalendarClient calendarClient;
     std::vector<std::string> event_names = model.GetPrediction();
+
+    CalendarClient calendarClient;
     calendarClient.ScheduleEvents(event_names);
 
     crow::mustache::set_base("../../src/templates");
