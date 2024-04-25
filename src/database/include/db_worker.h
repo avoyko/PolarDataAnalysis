@@ -16,8 +16,6 @@ public:
 
     mysqlx::SqlResult SQL(const std::string &query);
 
-    mysqlx::Schema GetDB();
-
     mysqlx::Table GetTable(const std::string &table_name);
 
     mysqlx::SqlResult GetTableColumns(const std::string &table_name);
@@ -46,7 +44,7 @@ private:
     static constexpr frozen::string user_name_ = "polar_user";
     static constexpr frozen::string pass_ = "2004";
     static constexpr frozen::string db_name_ = "POLAR_DATA";
-
+    static const bool f = true;
     mysqlx::Session session;
 };
 

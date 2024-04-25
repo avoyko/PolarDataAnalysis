@@ -8,6 +8,8 @@
 
 ### БД
 
+1. Метод GetTableColumns нужно убрать в BaseTable и вызывать как db_worker.GetTable().GetTableColumns();
+
 
 ### Модель
 

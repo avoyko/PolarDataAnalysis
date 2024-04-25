@@ -1,5 +1,11 @@
 #include "../include/table_activity.h"
 
+ActivityTable::ActivityTable(): BaseTable(table_name_.data()) {
+    if (!CheckExistence()) {
+        Create(GenerateTable());
+    }
+};
+
 void ActivityTable::Update(const WriteJson& activities) {
     std::string last_date = LastRecordDate();
 
@@ -28,3 +34,5 @@ std::string ActivityTable::GenerateTable() {
 std::string ActivityTable::GetName() {
     return table_name_.data();
 }
+
+

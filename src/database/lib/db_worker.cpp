@@ -37,12 +37,8 @@ mysqlx::SqlResult DBWorker::SQL(const std::string &query) {
     return session.sql(query).execute();
 }
 
-mysqlx::Schema DBWorker::GetDB() {
-    return session.getSchema(db_name_.data());
-}
-
 mysqlx::Table DBWorker::GetTable(const std::string &table_name) {
-    return GetDB().getTable(table_name);
+    return session.getSchema(db_name_.data()).getTable(table_name);
 }
 
 bool DBWorker::FindTable(const std::string &table_name) {
