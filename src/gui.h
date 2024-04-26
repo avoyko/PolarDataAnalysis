@@ -2,6 +2,7 @@
 
 #include <ncurses.h>
 #include <vector>
+#include <atomic>
 
 struct ScreenConfig {
     WINDOW *main_window;
