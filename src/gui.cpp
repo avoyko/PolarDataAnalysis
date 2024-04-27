@@ -39,8 +39,8 @@ void InitialiseMainWindow(ScreenConfig &config) {
 }
 
 void InitialiseOptionPanel(const ScreenConfig &config) {
-    std::string option1 = "[*] 1. Synchronise and start working";
-    std::string option2 = "[ ] 2. Exit";
+    std::string option1 = "[*] 1. Synchronise database";
+    std::string option2 = "[ ] 2. Synchronise and run";
     std::string message = "Choose one option and press Enter to continue";
     int option_padding = (config.windowWidth - option1.size()) / 2;
     mvwprintw(config.main_window, config.windowHeight / 2, (config.windowWidth - message.size()) / 2, message.c_str());
@@ -49,8 +49,8 @@ void InitialiseOptionPanel(const ScreenConfig &config) {
 }
 
 std::vector<bool> ActivateOptionsScreen(const ScreenConfig &config) {
-    std::string option1 = "[*] 1. Synchronise and start working";
-    std::string option2 = "[ ] 2. Exit";
+    std::string option1 = "[*] 1. Synchronise database";
+    std::string option2 = "[ ] 2. Synchronise and run";
     std::vector<bool> options{true, false};
     int choice;
     while ((choice = wgetch(config.main_window)) != 10) {
@@ -59,17 +59,17 @@ std::vector<bool> ActivateOptionsScreen(const ScreenConfig &config) {
                 options[0] = true;
                 options[1] = false;
                 mvwprintw(config.main_window, config.windowHeight / 2 + 2, (config.windowWidth - option1.length()) / 2,
-                          "[*] 1. Synchronise and start working");
+                          "[*] 1. Synchronise database");
                 mvwprintw(config.main_window, config.windowHeight / 2 + 4, (config.windowWidth - option1.length()) / 2,
-                          "[ ] 2. Exit");
+                          "[ ] 2. Synchronise and run");
                 break;
             case '2':
                 options[1] = true;
                 options[0] = false;
                 mvwprintw(config.main_window, config.windowHeight / 2 + 4, (config.windowWidth - option1.length()) / 2,
-                          "[*] 2. Exit");
+                          "[*] 2. Synchronise and run");
                 mvwprintw(config.main_window, config.windowHeight / 2 + 2, (config.windowWidth - option1.length()) / 2,
-                          "[ ] 1. Synchronise and start working");
+                          "[ ] 1. Synchronise database");
                 break;
             default:
                 break;

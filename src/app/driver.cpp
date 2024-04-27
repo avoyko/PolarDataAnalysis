@@ -47,18 +47,12 @@ int PolarApp::Activate() {
     CROW_ROUTE(app, Callback::DATAPOINT)
             ([this](const crow::request &req) { return ProcessData(); });
 
-    CROW_ROUTE(app, Callback::WAITPOINT)
-            ([this](const crow::request &req) { return Poll(); });
-
 #if (DEVELOPER_MODE == 1)
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
 #else
     CROW_LOG_INFO << "Navigate to http://172.17.0.2:5002/ to register user.";
 #endif
     app.port(Callback::PORT).run();
-
-    delwin(screen_config.main_window);
-    endwin();
     return 0;
 }
 
@@ -67,7 +61,6 @@ YAML::Node PolarApp::UpdateAccessConfig(const ReadJson &token_response) {
     YAML::Node config = YAML::LoadFile("../../config.yaml");
     config["user_id"] = std::to_string(token_response["x_user_id"].i());
     config["access_token"] = string_access_token;
-    config["first_run"] = 1;
     std::ofstream file_out("../../config.yaml");
     file_out << config;
     file_out.close();
@@ -101,22 +94,13 @@ crow::response PolarApp::Authorize(const crow::request &req) {
     return res;
 }
 
-crow::response PolarApp::ProcessData() {
+crow::mustache::rendered_template PolarApp::ProcessData() {
     YAML::Node config = YAML::LoadFile("../../config.yaml");
     const auto access_token = config["access_token"].as<std::string>();
     const auto user_id = config["user_id"].as<std::string>();
 
-    std::vector<bool> options(2, false);
-    if (config["first_run"].as<int>() == 1) {
-        InitialiseOptionPanel(screen_config);
-        options = ActivateOptionsScreen(screen_config);
-        config["first_run"] = 0;
-        std::ofstream file_out("../../config.yaml");
-        file_out << config;
-        file_out.close();
-    } else {
-        options[0] = true;
-    }
+    InitialiseOptionPanel(screen_config);
+    auto options = ActivateOptionsScreen(screen_config);
 
     ClearBox(screen_config);
 
@@ -129,7 +113,7 @@ crow::response PolarApp::ProcessData() {
     DBWorker &db_worker = DBWorker::GetInstance();
     db_worker.UpdateDB({exercises_info, activity_info, phys_info, sleep_info});
 
-    if (options[0]) {
+    if (options[1]) {
         Model model;
         std::atomic_bool model_finished = false;
 
@@ -150,30 +134,24 @@ crow::response PolarApp::ProcessData() {
         CalendarClient calendarClient;
         calendarClient.ScheduleEvents(event_names);
 
-        std::string goodbye_message = "Events for the next day are scheduled";
+        std::string goodbye_message = "Events for the next are scheduled. Press Enter to exit...";
         mvwprintw(screen_config.main_window, screen_config.windowHeight / 4 + 2,
                   (screen_config.windowWidth - goodbye_message.size()) / 2,
                   goodbye_message.c_str());
         wrefresh(screen_config.main_window);
     } else {
-        delwin(screen_config.main_window);
-        endwin();
-        exit(0);
+        std::string goodbye_message = "Data is synchronised. Press Enter to exit...";
+        mvwprintw(screen_config.main_window, screen_config.windowHeight / 4,
+                  (screen_config.windowWidth - goodbye_message.size()) / 2,
+                  goodbye_message.c_str());
+        wrefresh(screen_config.main_window);
     }
 
-    crow::response res{200};
-    res.redirect(Client::WAIT_URI);
-    return res;
-}
+    while (wgetch(screen_config.main_window) != 10) {}
+    delwin(screen_config.main_window);
+    endwin();
 
-crow::response PolarApp::Poll() {
-    int cur_hour = -1;
-    while (cur_hour != 1) { // will upload in 1am
-        auto current_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
-        auto local_time = *std::localtime(&current_time);
-        cur_hour = local_time.tm_hour;
-    }
-    crow::response res{200};
-    res.redirect(Client::DATA_URI);
-    return res; // go to model section
+    crow::mustache::set_base("../../src/templates");
+    auto page = crow::mustache::load("hello.html");
+    return page.render(user_info);
 }

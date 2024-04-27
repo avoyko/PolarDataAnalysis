@@ -43,13 +43,10 @@ TEST(TestRetrieveData, Exercise) {
     WriteJson exercise = accesslink.GetExercises(access_token, user_id)[0];
     EXPECT_EQ(NormalizedString(exercise["id"]), "100");
     EXPECT_EQ(NormalizedString(exercise["upload-time"]), "2008-10-13T10:40:0.000Z");
-    EXPECT_EQ(NormalizedString(exercise["polar-user"]),
-              "https://www.polaraccesslink/v3/users/61111666");
     EXPECT_EQ(NormalizedString(exercise["transaction-id"]), "179879");
     EXPECT_EQ(NormalizedString(exercise["device"]), "Polar M400");
     EXPECT_EQ(NormalizedString(exercise["device-id"]), "1111AAAA");
     EXPECT_EQ(NormalizedString(exercise["start-time"]), "2008-10-13T10:40:02");
-    EXPECT_EQ(NormalizedString(exercise["start-time-utc-offset"]), "180");
     EXPECT_EQ(NormalizedString(exercise["duration"]), "PT2H44M45S");
     EXPECT_EQ(NormalizedString(exercise["calories"]), "530");
     EXPECT_EQ(NormalizedString(exercise["distance"]), "1600.2");

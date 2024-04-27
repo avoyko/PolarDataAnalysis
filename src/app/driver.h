@@ -34,6 +34,8 @@ namespace Client {
 class PolarApp {
 public:
 
+    PolarApp() = default;
+
     int Activate();
 
     crow::response Authorize(const crow::request &req);
@@ -41,6 +43,8 @@ public:
     crow::response ProcessData();
 
     crow::response Poll();
+
+    ~PolarApp() = default;
 
 private:
     YAML::Node UpdateAccessConfig(const ReadJson &token_response);
