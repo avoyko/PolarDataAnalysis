@@ -1,9 +1,9 @@
-FROM ubuntu:22.04
+FROM ubuntu:latest
 
 
 #installing python and must-have python packages
 RUN apt-get update -y --fix-missing\
-    && apt install python3 -y \
+    && apt install python3.11 -y \
     && apt install python3-pip -y \
     && pip3 install numpy \
     && pip3 install tensorflow \
@@ -43,8 +43,7 @@ RUN apt-get update \
     && apt-get install -y cmake \
     && apt-get install -y g++ \
     && apt-get install -y libboost-all-dev \
-    && apt-get install -y libasio-dev \
-    && apt-get install -y libncurses5-dev libncursesw5-dev
+    && apt-get install -y libasio-dev
 
 RUN mkdir "repos" && cd repos \
     && git clone "https://github.com/CrowCpp/Crow" \
@@ -56,16 +55,14 @@ RUN mkdir "repos" && cd repos \
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
     && cd PolarDataAnalysis && cd src \
     && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ .. \
-    && make \
-    && apt-get install -y htop
+    && make
 
 
+RUN apt-get update; apt-get clean
 
 # Install wget.
 
 RUN apt-get install -y gnupg
-
-EXPOSE 5002
 
 
 WORKDIR PolarDataAnalysis/src/res
