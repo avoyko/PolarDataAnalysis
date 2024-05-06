@@ -1,5 +1,5 @@
 #pragma once
 
-#define DEVELOPER_MODE 1
+#define DEVELOPER_MODE 0
 
 #define TEST_MODE 0

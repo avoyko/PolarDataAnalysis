@@ -20,15 +20,9 @@ namespace Client {
 const std::string CLIENT_ID = "bd3a77a4-0edc-44e5-81a5-309644f0fc9a";
 const std::string CLIENT_SECRET = "b854a0ca-2a74-4dde-9196-0c0b1b63110e";
 
-#if (DEVELOPER_MODE == 1)
 const std::string REDIRECT_URI = "http://localhost:5002/oauth2_callback";
 const std::string DATA_URI = "http://localhost:5002/data";
 const std::string WAIT_URI = "http://localhost:5002/wait";
-#else
-const std::string REDIRECT_URI = "http://172.17.0.2:5002/oauth2_callback";
-const std::string DATA_URI = "http://172.17.0.2:5002/data";
-const std::string WAIT_URI = "http://172.17.0.2:5002/wait";
-#endif
 };  // namespace Client
 
 class PolarApp {

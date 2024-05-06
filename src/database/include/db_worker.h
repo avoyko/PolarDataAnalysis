@@ -38,13 +38,12 @@ private:
 #if (DEVELOPER_MODE == 1)
     static constexpr frozen::string server_name_ = "localhost";
 #else
-    static constexpr frozen::string server_name_ = "172.17.0.3";
+    static constexpr frozen::string server_name_ = "172.20.0.3";
 #endif
     static constexpr int port_ = 33060;
     static constexpr frozen::string user_name_ = "polar_user";
     static constexpr frozen::string pass_ = "2004";
     static constexpr frozen::string db_name_ = "POLAR_DATA";
-    static const bool f = true;
     mysqlx::Session session;
 };
 

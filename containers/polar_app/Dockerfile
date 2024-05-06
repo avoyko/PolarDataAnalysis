@@ -1,9 +1,9 @@
-FROM ubuntu:latest
+FROM ubuntu:22.04
 
 
 #installing python and must-have python packages
 RUN apt-get update -y --fix-missing\
-    && apt install python3.11 -y \
+    && apt install python3 -y \
     && apt install python3-pip -y \
     && pip3 install numpy \
     && pip3 install tensorflow \
@@ -53,6 +53,7 @@ RUN mkdir "repos" && cd repos \
 
 
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
+    && apt-get install libncurses5-dev libncursesw5-dev -y \
     && cd PolarDataAnalysis && cd src \
     && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ .. \
     && make
@@ -66,4 +67,3 @@ RUN apt-get install -y gnupg
 
 
 WORKDIR PolarDataAnalysis/src/res
-
