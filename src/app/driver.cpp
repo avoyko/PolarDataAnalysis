@@ -50,11 +50,8 @@ int PolarApp::Activate() {
     CROW_ROUTE(app, Callback::WAITPOINT)
     ([this](const crow::request &req) { return Poll(); });
 
-#if (DEVELOPER_MODE == 1)
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
-#else
-    CROW_LOG_INFO << "Navigate to http://172.17.0.2:5002/ to register user.";
-#endif
+
     app.port(Callback::PORT).run();
 
     delwin(screen_config.main_window);
