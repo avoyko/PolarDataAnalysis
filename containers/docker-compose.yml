@@ -5,6 +5,7 @@ services:
     build: polar_app
     ports:
       - "5002:5002"
+      - "5003:5003"
     stdin_open: true
     tty: true
     networks:
@@ -22,7 +23,6 @@ services:
       MYSQL_ROOT_HOST: '%'
     networks:
       - local_network
-
 networks:
   local_network:
     driver: bridge
