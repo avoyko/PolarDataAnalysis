@@ -21,7 +21,7 @@ def schedule():
             creds.refresh(Request())
         else:
             flow = InstalledAppFlow.from_client_secrets_file("../calendar_scheduler/credentials.json", SCOPES)
-            creds = flow.run_local_server(port=0, open_browser=False, )
+            creds = flow.run_local_server(bind_addr="0.0.0.0", port=5003, open_browser=False, )
         with open("../calendar_scheduler/token.json", "w") as token:
             token.write(creds.to_json())
     try:
