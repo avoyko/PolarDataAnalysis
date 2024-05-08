@@ -61,42 +61,27 @@
     * Библиотека от Google для написания тестов
 7. Tensorflow, sklearn, keras_tuner
     * Библиотеки, требуемые для построения рекомендательной модели
+8. ncurses
+    * Библиотека для написанияя графического интерфейса
+9. Google-api-python-client, google-auth-httplib2, google-auth-oauthlib
+    * Python-библиотеки, позволяющие работать с API Google и производить авторизацию пользова-
+      теля в его аккаунте Google.
+10. Boost 
+    * По большей части использовался в проекте для удобного форматирования строк
+      (boost::format)
 
-### Пререквизиты для запуска
+### Запуск приложения
 
-Для работы c API Google мы используем Python 3.11, поэтому мы ожидаем, что у Вас поддерживается эта версия
 
-Для запуска проекта требуется явно установить следующие библиотеки:
 
-1. MySQL Connector/C++
+Для запуска проекта нужно склонировать этот репозиторий:
+```
+git clone https://github.com/avoyko/PolarDataAnalysis
+```
 
-    * Для того чтобы установить MySQL Connector/C++ потребуется скачать архив для подходящей ОС на
-      сайте: https://dev.mysql.com/downloads/connector/cpp/
-
-    * Далее, для IDE CLion (пока VSCode мы не научились поддерживать) требуется зайти в настройки Build, Execution,
-      Deployment и в
-      качестве параметров CMake options указать:
-      ```
-      -Dmysql-concpp_DIR:PATH=/путь/до/библиотеки/mysql-connector-c++
-      ```
-    * Так как БД развернута локально, то нам требуется иметь уже созданного "пользователя" с рут-правами для того, чтобы
-      хранить информацию о людях, пользующихся приложением. Мы надеемся это исправить, но пока выход из ситуации - это
-      ручное создание такого пользователя **до запуска** приложения. Например:
-      ```
-      CREATE USER '<name>'@'localhost' IDENTIFIED BY '<password>';
-      GRANT ALL PRIVILEGES ON *.* TO '<name>'@'localhost' WITH GRANT OPTION;
-      ```
-2. Tensorflow, sklearn, keras_tuner
-
-    * Самым лучшим решением на наш взгляд является создание виртуального окружения
-      ``` 
-      python3 -m venv venv
-      source venv/bin/activate
-      ```
-    * Дальнейшая установка нужных библиотек выполняется следующим образом:
-      ```
-      pip install tensorflow
-      pip install scikit-learn
-      pip install keras_tuner
-      ```
+И затем требуется поднять docker-контейнер (сборка может занять в районе 7-10 минут):
+```
+cd containers
+docker compose up
+```
 
