@@ -42,7 +42,6 @@ if (NOT frozen_POPULATED)
     add_subdirectory(${frozen_SOURCE_DIR} ${frozen_BINARY_DIR})
 endif ()
 
-include(FetchContent)
 FetchContent_Declare(gtest
         GIT_REPOSITORY https://github.com/google/googletest
         GIT_TAG v1.14.0)
@@ -53,6 +52,17 @@ if (NOT gtest_POPULATED)
     add_subdirectory(${gtest_SOURCE_DIR} ${gtest_BINARY_DIR})
 endif ()
 
+FetchContent_Declare(crow
+        GIT_REPOSITORY https://github.com/CrowCpp/Crow.git
+        GIT_TAG master)
+FetchContent_GetProperties(crow)
+if (NOT crow_POPULATED)
+    message(STATUS "Fetching crow...")
+    FetchContent_Populate(crow)
+    add_subdirectory(${crow_SOURCE_DIR} ${crow_BINARY_DIR})
+endif ()
+
+
 add_subdirectory(polar_api)
 add_subdirectory(database)
 add_subdirectory(model)
@@ -62,5 +72,5 @@ add_library(GUILib gui.cpp gui.h)
 target_link_libraries(GUILib ${CURSES_LIBRARIES})
 
 add_executable(application main.cpp app/driver.cpp)
-target_link_libraries(application model DataBaseLib SchedulerLib PolarAPILib yaml-cpp::yaml-cpp GUILib)
+target_link_libraries(application model DataBaseLib SchedulerLib PolarAPILib yaml-cpp::yaml-cpp GUILib Crow::Crow)
 set_target_properties(application PROPERTIES RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/res")

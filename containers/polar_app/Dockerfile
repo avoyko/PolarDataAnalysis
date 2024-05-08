@@ -46,21 +46,13 @@ RUN apt-get update \
     && apt-get install -y libasio-dev \
     && apt-get install libncurses5-dev libncursesw5-dev -y
 
-RUN mkdir "repos" && cd repos \
-    && git clone "https://github.com/CrowCpp/Crow" \
-    && cd Crow && mkdir build && cd build \
-    && cmake .. \
-    && make install
-
 
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
     && cd PolarDataAnalysis && cd src \
     && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ .. \
+    && apt-get install -y gnupg \
     && make
 
 
-# Install wget.
-
-
-
 WORKDIR PolarDataAnalysis/src/res
+

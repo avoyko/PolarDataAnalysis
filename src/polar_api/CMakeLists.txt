@@ -4,6 +4,6 @@ file(GLOB POLAR_ENDPOINTS_SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/endpoints/src/*.cp
 add_library(PolarAPILib ${POLAR_API_SOURCES} ${POLAR_ENDPOINTS_SOURCES})
 target_include_directories(PolarAPILib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/include)
 target_include_directories(PolarAPILib PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/endpoints/include)
-target_link_libraries(PolarAPILib cpr::cpr)
+target_link_libraries(PolarAPILib cpr::cpr Crow::Crow)
 
 add_subdirectory(tests)
