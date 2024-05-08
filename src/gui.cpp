@@ -28,8 +28,7 @@ void InitialiseMainWindow(ScreenConfig &config) {
     std::string title = " AI Application ";
     mvwprintw(window, 0, (config.windowWidth - title.size()) / 2, title.c_str());
 
-    std::string welcome_message = (DEVELOPER_MODE == 1) ? "Hello user! Navigate to http://localhost:5002/ to register."
-                                                        : "Hello user! Navigate to http://172.17.0.2:5002/ to register";
+    std::string welcome_message = "Hello user! Navigate to http://localhost:5002/ to register.";
 
     mvwprintw(window, config.windowHeight / 4, (config.windowWidth - welcome_message.size()) / 2,
               welcome_message.c_str());

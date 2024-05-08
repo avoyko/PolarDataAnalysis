@@ -43,7 +43,8 @@ WriteJson AccessLink::GetPhysicalInfo(const std::string &access_token, const std
     }
     ReadJson physical_urls = transaction.ListPhysicalInfos();
     std::vector<WriteJson> physique;
-    for (const auto &each : physical_urls["physical-informations"]) {
+    auto r = physical_urls["physical-informations"];
+    for (const auto each : physical_urls["physical-informations"]) {
         physique.emplace_back(transaction.GetPhysicalInfo(each.s()));
     }
     transaction.Commit();
@@ -55,7 +56,7 @@ WriteJson AccessLink::GetSleep(const std::string &access_token, const std::strin
     oauth_.PrepareRequest(request_body, access_token);
     ReadJson sleep_json = oauth_.Get(request_body.CprUrl(), request_body.CprHeader());
     std::vector<WriteJson> sleep;
-    if (sleep_json.error()){
+    if (sleep_json.error()) {
         return {};
     }
     for (const auto &each : sleep_json) {
