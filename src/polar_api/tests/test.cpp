@@ -52,18 +52,6 @@ TEST(TestTransactions, PhysTransaction) {
 //    EXPECT_EQ(NormalizedString(exercise["distance"]), "1600.2");
 //}
 
- id = "123"
-     transaction_id = 179879
-     created = "2016-04-27T20:11:33.000Z"
-     polar_user = "https://www.polaraccesslink/v3/users/1"
-     weight = "80"
-     height = "180"
-     maximum_heart_rate = "160"
-     resting_heart_rate = "60"
-     aerobic_threshold = "123"
-     anaerobic_threshold = "123"
-     vo2_max = "12"
-     weight_source = "SOURCE_MEASURED"
 
 TEST(TestRetrieveData, PhysicalInfo) {
     WriteJson exercise = accesslink.GetPhysicalInfo(access_token, user_id)[0];
