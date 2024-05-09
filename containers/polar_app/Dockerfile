@@ -50,9 +50,7 @@ RUN apt-get update \
 RUN git clone 'https://github.com/avoyko/PolarDataAnalysis' \
     && cd PolarDataAnalysis && cd src \
     && cmake -Dmysql-concpp_DIR=/mysql-connector-c++ .. \
-    && apt-get install -y gnupg \
     && make
 
 
 WORKDIR PolarDataAnalysis/src/res
-

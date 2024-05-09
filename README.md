@@ -82,6 +82,8 @@ git clone https://github.com/avoyko/PolarDataAnalysis
 И затем требуется поднять docker-контейнер (сборка может занять в районе 7-10 минут):
 ```
 cd containers
-docker compose up
+docker compose create
+docker compose start app database
+docker compose exec app ./application 
 ```
 
