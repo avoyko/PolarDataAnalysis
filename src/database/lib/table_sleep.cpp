@@ -5,8 +5,8 @@ void SleepTable::Update(const WriteJson& sleep) {
 
     for (size_t i = 0; i < sleep.size(); ++i) {
         std::string date = JsonHelper::DateValue(sleep[i], "date");
-        std::string sleep_start_time = JsonHelper::StringValue(sleep[i], "sleep-start-time").substr(11, 8);
-        std::string sleep_end_time = JsonHelper::StringValue(sleep[i], "sleep-end-time").substr(11, 8);
+        std::string sleep_start_time = JsonHelper::StringValue(sleep[i], "sleep-start-time");
+        std::string sleep_end_time = JsonHelper::StringValue(sleep[i], "sleep-end-time");
         std::string light_sleep = JsonHelper::IntValue(sleep[i], "light-sleep");
         std::string deep_sleep = JsonHelper::IntValue(sleep[i], "deep-sleep");
         std::string sleep_score = JsonHelper::IntValue(sleep[i], "sleep-score");
