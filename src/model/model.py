@@ -9,8 +9,16 @@ from keras import config
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout, Input
 
+
 # config.disable_interactive_logging()
 # warnings.filterwarnings("ignore", category=RuntimeWarning)
+
+
+def write_to_file(predictions):
+    prediction_file = open("prediction.txt", "w")
+    prediction_file.write(' '.join(predictions))
+    prediction_file.close()
+
 
 # Парсинг даннных для LSTM
 timesteps = 3  # Число дней, которых хар-ют "текущее" состояние
@@ -21,6 +29,10 @@ max_exercises = 10
 polar_table = pd.read_csv('polar_user_data.csv')
 health_data = polar_table[['date', 'steps', 'active_calories', 'max_hr', 'ae_t', 'light_sleep', 'deep_sleep']]
 activities = polar_table[['date', *[f'exercise{i}' for i in range(1, 11)]]]
+
+if polar_table.shape[0] == 0:
+    write_to_file("stay at home")
+    exit(0)
 
 # Скейлым параметры
 scaler = MinMaxScaler()
@@ -58,6 +70,4 @@ prediction = model.predict(X_test)
 # Get the predicted exercise names for the next day
 predicted_exercise_names = mlb.inverse_transform(prediction > probability_threshold)[0]
 
-prediction_file = open("prediction.txt", "w")
-prediction_file.write(' '.join(predicted_exercise_names))
-prediction_file.close()
+write_to_file(predicted_exercise_names)
