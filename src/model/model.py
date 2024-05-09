@@ -1,5 +1,5 @@
 import os
-# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import warnings
 import numpy as np
@@ -10,8 +10,8 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout, Input
 
 
-# config.disable_interactive_logging()
-# warnings.filterwarnings("ignore", category=RuntimeWarning)
+config.disable_interactive_logging()
+warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 def write_to_file(predictions):
