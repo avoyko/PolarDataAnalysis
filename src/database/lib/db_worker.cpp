@@ -77,17 +77,20 @@ void DBWorker::RunSetup() {
     } catch (...) {
         std::string existing_user;
         std::string pwd;
-        std::cout << "TYPE YOUR CURRENT EXISTING MYSQL-USER LOGIN:\n";
-        std::cin >> existing_user;
-        std::cout << "PASSWORD:\n";
-        std::cin >> pwd;
+//        std::cout << "TYPE YOUR CURRENT EXISTING MYSQL-USER LOGIN:\n";
+//        std::cin >> existing_user;
+//        std::cout << "PASSWORD:\n";
+//        std::cin >> pwd;
         mysqlx::Session setup_session(server_name_.data(), port_, existing_user, pwd);
+        CROW_LOG_INFO << "connected to setup session";
         if (!FindDB(setup_session)) {
             SetupDB(setup_session);
         }
+        CROW_LOG_INFO << "found db";
         if (!FindUser(setup_session)) {
             SetupUser(setup_session);
         }
+        CROW_LOG_INFO << "found usr";
     }
 }
 

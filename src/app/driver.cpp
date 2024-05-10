@@ -34,21 +34,21 @@ int PolarApp::Activate() {
     InitialiseMainWindow(screen_config);
 
     CROW_ROUTE(app, "/")
-    ([](const crow::request &req) {
-        CROW_LOG_INFO << "Client is redirected for authorization";
-        crow::response res{200};
-        res.redirect(accesslink.GetAuthUrl());
-        return res;
-    });
+            ([](const crow::request &req) {
+                CROW_LOG_INFO << "Client is redirected for authorization";
+                crow::response res{200};
+                res.redirect(accesslink.GetAuthUrl());
+                return res;
+            });
 
     CROW_ROUTE(app, Callback::OAUTHPOINT)
-    ([this](const crow::request &req) { return Authorize(req); });
+            ([this](const crow::request &req) { return Authorize(req); });
 
     CROW_ROUTE(app, Callback::DATAPOINT)
-    ([this](const crow::request &req) { return ProcessData(); });
+            ([this](const crow::request &req) { return ProcessData(); });
 
     CROW_ROUTE(app, Callback::WAITPOINT)
-    ([this](const crow::request &req) { return Poll(); });
+            ([this](const crow::request &req) { return Poll(); });
 
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
 

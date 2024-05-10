@@ -2,6 +2,8 @@
 #include <sys/wait.h>
 #include "include/calendar_exception.h"
 #include "include/scheduler.h"
+#include <unistd.h>
+#include <fcntl.h>
 
 
 #if (DEVELOPER_MODE == 1)
@@ -19,11 +21,16 @@ std::string DateStamp::Serialize() const {
 
 void CalendarClient::PostEvent(const std::string &event_name, DateStamp start_datestamp,
                                DateStamp end_datestamp) {
+    int stdout_copy = dup(STDOUT_FILENO);
+    int link_fd = open("link.txt", O_WRONLY | O_TRUNC | O_CREAT, 0666);
+    dup2(link_fd, STDIN_FILENO);
+    close(link_fd);
     std::flush(std::cout);
     std::string args =
             "\'" + event_name + "\'" + ' ' + start_datestamp.Serialize() + ' ' + end_datestamp.Serialize();
     std::string command = venv_executable + " ../calendar_scheduler/post.py " + args;
     std::system(command.c_str());
+    dup2(stdout_copy, STDOUT_FILENO);
 }
 
 void CalendarClient::ScheduleEvents(const std::vector<std::string> &event_names) {
