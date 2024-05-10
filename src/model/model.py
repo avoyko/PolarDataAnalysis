@@ -1,5 +1,5 @@
 import os
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 
 import warnings
 import numpy as np
@@ -9,9 +9,9 @@ from keras import config
 from keras.models import Sequential
 from keras.layers import LSTM, Dense, Dropout, Input
 
-
-config.disable_interactive_logging()
-warnings.filterwarnings("ignore", category=RuntimeWarning)
+#
+# config.disable_interactive_logging()
+# warnings.filterwarnings("ignore", category=RuntimeWarning)
 
 
 def write_to_file(predictions):
@@ -26,7 +26,7 @@ probability_threshold = 0.5
 max_exercises = 10
 
 # Выгразка данных из заранее преобазованных в CSV таблиц
-polar_table = pd.read_csv('polar_user_data.csv')
+polar_table = pd.read_csv('../res/polar_user_data.csv')
 health_data = polar_table[['date', 'steps', 'active_calories', 'max_hr', 'ae_t', 'light_sleep', 'deep_sleep']]
 activities = polar_table[['date', *[f'exercise{i}' for i in range(1, 11)]]]
 

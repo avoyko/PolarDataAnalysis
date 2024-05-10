@@ -1,15 +1,15 @@
 #include "../include/table_sleep.h"
 
-void SleepTable::Update(const WriteJson& sleep) {
+void SleepTable::Update(const WriteJson& nights) {
     std::string last_date = LastRecordDate();
-
+    WriteJson sleep = nights["nights"];
     for (size_t i = 0; i < sleep.size(); ++i) {
         std::string date = JsonHelper::DateValue(sleep[i], "date");
-        std::string sleep_start_time = JsonHelper::StringValue(sleep[i], "sleep-start-time");
-        std::string sleep_end_time = JsonHelper::StringValue(sleep[i], "sleep-end-time");
-        std::string light_sleep = JsonHelper::IntValue(sleep[i], "light-sleep");
-        std::string deep_sleep = JsonHelper::IntValue(sleep[i], "deep-sleep");
-        std::string sleep_score = JsonHelper::IntValue(sleep[i], "sleep-score");
+        std::string sleep_start_time = JsonHelper::StringValue(sleep[i], "sleep_start_time");
+        std::string sleep_end_time = JsonHelper::StringValue(sleep[i], "sleep_end_time");
+        std::string light_sleep = JsonHelper::IntValue(sleep[i], "light_sleep");
+        std::string deep_sleep = JsonHelper::IntValue(sleep[i], "deep_sleep");
+        std::string sleep_score = JsonHelper::IntValue(sleep[i], "sleep_score");
         if (date != mysqlx::DEFAULT_DATE && date > last_date) {
             InsertIntoTable(date, sleep_start_time, sleep_end_time, light_sleep, deep_sleep,
                             sleep_score);
