@@ -79,7 +79,7 @@ std::vector<bool> ActivateOptionsScreen(const ScreenConfig &config) {
 }
 
 void ClearBox(const ScreenConfig &config) {
-    werase(config.main_window);
+    wclear(config.main_window);
     box(config.main_window, 0, 0);
 
     std::string title = " AI Application ";

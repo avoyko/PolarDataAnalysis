@@ -7,14 +7,13 @@
 #include <iostream>
 #include <thread>
 
-
 static AccessLink accesslink(Client::CLIENT_ID, Client::CLIENT_SECRET, Client::REDIRECT_URI);
 
 ScreenConfig screen_config;
 
 class CustomLogger : public crow::ILogHandler {
 public:
-    CustomLogger() : logs_("../../log/crow_logs.txt") {};
+    CustomLogger() : logs_("../../log/crow_logs.txt"){};
 
     void log(std::string message, crow::LogLevel) override {
         logs_ << message << std::endl;
@@ -34,21 +33,21 @@ int PolarApp::Activate() {
     InitialiseMainWindow(screen_config);
 
     CROW_ROUTE(app, "/")
-            ([](const crow::request &req) {
-                CROW_LOG_INFO << "Client is redirected for authorization";
-                crow::response res{200};
-                res.redirect(accesslink.GetAuthUrl());
-                return res;
-            });
+    ([](const crow::request &req) {
+        CROW_LOG_INFO << "Client is redirected for authorization";
+        crow::response res{200};
+        res.redirect(accesslink.GetAuthUrl());
+        return res;
+    });
 
     CROW_ROUTE(app, Callback::OAUTHPOINT)
-            ([this](const crow::request &req) { return Authorize(req); });
+    ([this](const crow::request &req) { return Authorize(req); });
 
     CROW_ROUTE(app, Callback::DATAPOINT)
-            ([this](const crow::request &req) { return ProcessData(); });
+    ([this](const crow::request &req) { return ProcessData(); });
 
     CROW_ROUTE(app, Callback::WAITPOINT)
-            ([this](const crow::request &req) { return Poll(); });
+    ([this](const crow::request &req) { return Poll(); });
 
     CROW_LOG_INFO << "Navigate to http://localhost:5002/ to register user.";
 
@@ -80,8 +79,7 @@ crow::response PolarApp::Authorize(const crow::request &req) {
         std::string login_message = "Successfully logged in!";
         CROW_LOG_INFO << login_message;
         mvwprintw(screen_config.main_window, screen_config.windowHeight / 4 + 2,
-                  (screen_config.windowWidth - login_message.size()) / 2,
-                  login_message.c_str());
+                  (screen_config.windowWidth - login_message.size()) / 2, login_message.c_str());
         wrefresh(screen_config.main_window);
     } catch (long exception_code) {
         if (exception_code == 409) {
@@ -130,7 +128,8 @@ crow::response PolarApp::ProcessData() {
         Model model;
         std::atomic_bool model_finished = false;
 
-        std::thread waiting_panel(DisplayLoadingPanel, std::cref(screen_config), std::cref(model_finished));
+        std::thread waiting_panel(DisplayLoadingPanel, std::cref(screen_config),
+                                  std::cref(model_finished));
         model.Activate();
 
         std::vector<std::string> event_names = model.GetPrediction();
@@ -140,12 +139,16 @@ crow::response PolarApp::ProcessData() {
 
         std::string finish_message = "Model has finished";
         mvwprintw(screen_config.main_window, screen_config.windowHeight / 4,
-                  (screen_config.windowWidth - finish_message.size()) / 2,
-                  finish_message.c_str());
+                  (screen_config.windowWidth - finish_message.size()) / 2, finish_message.c_str());
+        wrefresh(screen_config.main_window);
+
+        wclear(screen_config.main_window);
         wrefresh(screen_config.main_window);
 
         CalendarClient calendarClient;
         calendarClient.ScheduleEvents(event_names);
+
+        ClearBox(screen_config);
 
         std::string goodbye_message = "Events for the next day are scheduled";
         mvwprintw(screen_config.main_window, screen_config.windowHeight / 4 + 2,
@@ -165,12 +168,12 @@ crow::response PolarApp::ProcessData() {
 
 crow::response PolarApp::Poll() {
     int cur_hour = -1;
-    while (cur_hour != 1) { // will upload in 1am
+    while (cur_hour != 1) {  // will upload in 1am
         auto current_time = std::chrono::system_clock::to_time_t(std::chrono::system_clock::now());
         auto local_time = *std::localtime(&current_time);
         cur_hour = local_time.tm_hour;
     }
     crow::response res{200};
     res.redirect(Client::DATA_URI);
-    return res; // go to model section
+    return res;  // go to model section
 }
