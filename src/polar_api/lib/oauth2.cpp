@@ -47,5 +47,6 @@ ReadJson OAuth2Client::ParseResponse(cpr::Response &response) {
     if (response.status_code == 204) {
         return {};
     }
+   // std::cout << response.text << std::endl;
     return crow::json::load(response.text);
 };

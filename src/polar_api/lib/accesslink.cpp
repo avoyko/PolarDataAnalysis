@@ -16,6 +16,7 @@ WriteJson AccessLink::GetActivity(const std::string &access_token, const std::st
     ReadJson activity_urls = transaction.ListActivities();
     std::vector<WriteJson> activity;
     for (const auto &each : activity_urls["activity-log"]) {
+       // std::cout<<each<<std::endl;
         activity.emplace_back(transaction.GetActivity_summary(each.s()));
     }
     transaction.Commit();
@@ -52,7 +53,7 @@ WriteJson AccessLink::GetPhysicalInfo(const std::string &access_token, const std
 }
 
 WriteJson AccessLink::GetSleep(const std::string &access_token, const std::string &user_id) {
-    RequestWrapper request_body{"/users/sleep/"};
+    RequestWrapper request_body{"/users/sleep"};
     oauth_.PrepareRequest(request_body, access_token);
     ReadJson sleep_json = oauth_.Get(request_body.CprUrl(), request_body.CprHeader());
     std::vector<WriteJson> sleep;
@@ -66,7 +67,7 @@ WriteJson AccessLink::GetSleep(const std::string &access_token, const std::strin
 }
 
 WriteJson AccessLink::GetRecharge(const std::string &access_token, const std::string &user_id) {
-    RequestWrapper request_body = {"/users/nightly-recharge/"};
+    RequestWrapper request_body = {"/users/nightly-recharge"};
     oauth_.PrepareRequest(request_body, access_token);
     return oauth_.Get(request_body.CprUrl(), request_body.CprParameters(),
                       request_body.CprHeader());
