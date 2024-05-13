@@ -83,7 +83,8 @@ git clone https://github.com/avoyko/PolarDataAnalysis
 ```
 cd containers
 docker compose create
-docker compose start app database
+docker compose start app
+docker compose start database
 docker compose exec app ./application 
 ```
 
